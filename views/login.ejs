@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบ - เว็บรีวิวหนัง</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body
+    class="bg-gradient-to-br from-purple-700 via-indigo-700 to-blue-600 flex items-center justify-center min-h-screen font-sans">
+
+    <div class="w-full max-w-md bg-white/95 backdrop-blur rounded-2xl shadow-2xl p-8 relative">
+        <!-- Logo / Icon -->
+        <div class="flex justify-center mb-6">
+            <div class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-full p-4 shadow-lg">
+                🎬
+            </div>
+        </div>
+
+        <!-- Title -->
+        <h2 class="text-2xl font-extrabold text-center text-gray-800 mb-2">เข้าสู่ระบบ</h2>
+        <p class="text-center text-gray-500 mb-6">เพื่อเริ่มต้นแชร์และอ่านรีวิวหนัง</p>
+
+        <!-- Login Form -->
+        <form action="/user/login" method="POST" class="space-y-4">
+            <% if (messages.error) { %>
+                <% messages.error.forEach(function(msg){ %>
+                    <p class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded text-sm" role="alert">
+                        <%= msg %>
+                    </p>
+                    <% }) %>
+                        <% } %>
+
+                            <!-- Email -->
+                            <div>
+                                <label for="email" class="block text-gray-700 font-medium mb-1">อีเมล</label>
+                                <input type="email" id="email" name="email" required
+                                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                            </div>
+
+                            <!-- Password -->
+                            <div>
+                                <label for="password" class="block text-gray-700 font-medium mb-1">รหัสผ่าน</label>
+                                <input type="password" id="password" name="password" required
+                                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                            </div>
+
+                            <!-- Button -->
+                            <button type="submit"
+                                class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-2 rounded-lg font-semibold shadow-md hover:opacity-90 transition">
+                                เข้าสู่ระบบ
+                            </button>
+        </form>
+
+        <!-- Register -->
+        <p class="text-center text-gray-600 mt-6">
+            ยังไม่มีบัญชี?
+            <a href="/register" class="text-indigo-600 font-medium hover:underline">สมัครสมาชิก</a>
+        </p>
+    </div>
+
+</body>
+
+</html>

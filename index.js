@@ -1,0 +1,65 @@
+const express = require('express')
+const app = express()
+const ejs = require('ejs')
+const mongoose = require('mongoose')
+const expressSession = require('express-session')
+const flash = require('connect-flash')
+const dotenv = require('dotenv')
+dotenv.config()
+
+// MongoDB Connnection
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+.then(() => console.log("MongoDB connected"))
+.catch(err => console.log("MongoDB connection error:", err))
+
+
+// Controllers import
+const indexController = require('./controllers/indexController')
+const loginController = require('./controllers/loginController')
+const registerController = require('./controllers/registerController')
+const storeController = require('./controllers/storeUserController')
+const loginUserController = require('./controllers/loginUserController')
+const adminDashboardController = require('./controllers/adminDashboardController')
+const userDashboardController = require('./controllers/userDashboardController')
+const logoutController = require('./controllers/logoutController')
+const movieDetailController = require('./controllers/movieDetailController')
+// Middleware Import
+const {isAuthenticated , isAdmin , isUser} = require('./middleware/authMiddleware')
+
+app.use(express.static('public'))
+app.use(express.json())
+app.use(express.urlencoded()) //encode form to object
+app.use(flash())
+app.use(expressSession({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 1000 * 60 * 60 } // เก็บข้อมูล login 1 ชั่วโมง
+}))
+// middleware สำหรับส่ง loggedIn ไปทุก view
+app.use((req, res, next) => {
+    res.locals.messages = req.flash()
+    res.locals.loggedIn = req.session.userId || null
+    next()
+})
+
+app.set('view engine' , 'ejs')
+
+// get controlelr
+app.get('/' , indexController)
+app.get('/login' , loginController)
+app.get('/register' , registerController)
+app.get('/admin/dashboard' , isAuthenticated , isAdmin , adminDashboardController)
+app.get('/user/dashboard' , isAuthenticated , isUser , userDashboardController)
+app.post('/user/register' , storeController)
+app.post('/user/login' , loginUserController)
+app.get('/logout' , logoutController)
+app.get('/movie/detail/:id', movieDetailController)
+
+
+app.listen(4000 , () => {
+    console.log("App listening on port 4000")
+})
