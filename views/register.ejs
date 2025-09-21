@@ -8,26 +8,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body
-    class="bg-gradient-to-br from-purple-700 via-indigo-700 to-blue-600 flex items-center justify-center min-h-screen font-sans">
+<body class="flex items-center justify-center min-h-screen bg-cover bg-center font-sans"
+    style="background-image: url('/images/login.png');">
 
-    <div class="w-full max-w-lg bg-white/95 backdrop-blur rounded-2xl shadow-2xl p-8 relative">
-        <!-- Logo -->
-        <div class="flex justify-center mb-6">
-            <div class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-full p-4 shadow-lg">
-                🍿
-            </div>
-        </div>
-
+    <div class="w-full max-w-lg bg-black/75 p-10 rounded-2xl shadow-xl">
         <!-- Title -->
-        <h2 class="text-2xl font-extrabold text-center text-gray-800 mb-2">สมัครสมาชิก</h2>
-        <p class="text-center text-gray-500 mb-6">สร้างบัญชีเพื่อเริ่มต้นรีวิวและค้นหาหนังใหม่ ๆ</p>
+        <h2 class="text-4xl font-bold text-white mb-3 text-left">สมัครสมาชิก</h2>
+        <p class="text-gray-300 mb-8 text-left text-base">สร้างบัญชีเพื่อเริ่มต้นแชร์และอ่านรีวิวหนัง</p>
 
         <!-- Register Form -->
-        <form action="/user/register" method="POST" class="space-y-4">
+        <form action="/user/register" method="POST" class="space-y-6">
             <% if(errors !=null && errors.length> 0) { %>
                 <% for(let i=0 ; i < errors.length ; i++) { %>
-                    <p class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded text-sm" role="alert">
+                    <p class="bg-red-600 text-white px-4 py-3 rounded text-sm" role="alert">
                         <%= errors[i] %>
                     </p>
                     <% } %>
@@ -35,46 +28,48 @@
 
                             <!-- Name -->
                             <div>
-                                <label for="name" class="block text-gray-700 font-medium mb-1">ชื่อ-สกุล</label>
                                 <input type="text" id="name" name="name" value="<%= name %>" required
-                                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                                    placeholder="ชื่อ-สกุล"
+                                    class="w-full px-5 py-4 text-white bg-white/5 border border-white/40 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 placeholder-gray-300 text-lg">
                             </div>
 
                             <!-- Email -->
                             <div>
-                                <label for="email" class="block text-gray-700 font-medium mb-1">อีเมล</label>
                                 <input type="email" id="email" name="email" value="<%= email %>" required
-                                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                                    placeholder="อีเมล"
+                                    class="w-full px-5 py-4 text-white bg-white/5 border border-white/40 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 placeholder-gray-300 text-lg">
                             </div>
 
                             <!-- Password -->
                             <div>
-                                <label for="password" class="block text-gray-700 font-medium mb-1">รหัสผ่าน</label>
                                 <input type="password" id="password" name="password" value="<%= password %>" required
-                                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                                    placeholder="รหัสผ่าน"
+                                    class="w-full px-5 py-4 text-white bg-white/5 border border-white/40 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 placeholder-gray-300 text-lg">
                             </div>
 
                             <!-- Role -->
                             <div>
-                                <label for="role" class="block text-gray-700 font-medium mb-1">บทบาท</label>
-                                <select id="role" name="role" required
-                                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                                <select id="role" name="role" required class="w-full px-5 py-4 text-white 
+               bg-white/5 border border-transparent rounded-lg 
+               focus:outline-none focus:ring-2 focus:ring-red-600 text-lg 
+               hover:border-white transition">
                                     <option value="user">ผู้ใช้ทั่วไป</option>
                                     <option value="admin">แอดมิน</option>
                                 </select>
                             </div>
 
+
                             <!-- Button -->
                             <button type="submit"
-                                class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-2 rounded-lg font-semibold shadow-md hover:opacity-90 transition">
+                                class="w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-lg font-semibold text-center text-lg transition">
                                 สมัครสมาชิก
                             </button>
         </form>
 
         <!-- Login link -->
-        <p class="text-center text-gray-600 mt-6">
+        <p class="text-gray-300 text-center mt-8 text-base">
             มีบัญชีแล้ว?
-            <a href="/login" class="text-indigo-600 font-medium hover:underline">เข้าสู่ระบบ</a>
+            <a href="/login" class="text-white font-medium hover:underline">เข้าสู่ระบบ</a>
         </p>
     </div>
 

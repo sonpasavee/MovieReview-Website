@@ -1,0 +1,39 @@
+<section id="hero" class="relative h-80 rounded-3xl overflow-hidden text-white">
+  <% recommendMovies.forEach((movie, index)=> { %>
+    <a href="/movie/detail/<%= movie.movieId %>"
+      class="group hero-slide absolute inset-0 bg-cover bg-center transition-opacity duration-700 <% if(index !== 0) { %>opacity-0 pointer-events-none<% } %>"
+      style="background-image: url('https://image.tmdb.org/t/p/w780<%= movie.poster_path %>');">
+
+      <!-- overlay มืดนิดหน่อย -->
+      <div class="absolute inset-0 bg-black/30"></div>
+
+      <!-- รายละเอียดหนัง โผล่เฉพาะตอน hover -->
+      <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 to-transparent 
+              opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        <h2 class="text-2xl sm:text-3xl font-semibold">
+          <%= movie.title %>
+        </h2>
+        <p class="mt-2 text-sm text-gray-200 max-w-2xl">
+          <%= movie.overview.length> 150 ? movie.overview.substring(0,150) + "..." : movie.overview %>
+        </p>
+      </div>
+    </a>
+
+    <% }) %>
+</section>
+
+<script>
+  const slides = document.querySelectorAll('.hero-slide');
+  let current = 0;
+
+  setInterval(() => {
+    // ซ่อนสไลด์ปัจจุบัน
+    slides[current].classList.add('opacity-0', 'pointer-events-none');
+
+    // เลื่อน index
+    current = (current + 1) % slides.length;
+
+    // แสดงสไลด์ใหม่
+    slides[current].classList.remove('opacity-0', 'pointer-events-none');
+  }, 5000); // 120000ms = 2 นาที
+</script>

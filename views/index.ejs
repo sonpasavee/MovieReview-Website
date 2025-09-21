@@ -1,100 +1,26 @@
 <!DOCTYPE html>
-<html lang="th">
-
+<html lang="th" :class="isDark ? 'dark' : 'light'" x-data="{ isDark: false }">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เว็บรีวิวหนัง</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>เว็บรีวิวหนัง</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
+<body class="font-sans text-sm bg-gray-100 dark:bg-zinc-900">
+  <!-- HEADER อยู่บนสุด -->
+  <%- include('partials/header') %>
 
-<body class="bg-gray-100 min-h-screen font-sans">
+  <div class="flex min-h-screen max-w-7xl mx-auto border-x border-gray-200 dark:border-zinc-800">
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 px-4 sm:px-8 py-8">
 
-    <!-- Header -->
-    <header
-        class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-6 shadow-md flex justify-between items-center">
-        <h1 class="text-2xl font-extrabold tracking-wide">🎬 เว็บรีวิวหนัง</h1>
+      <!-- HERO / FEATURED -->
+     <%- include('partials/hero', { recommendMovies: recommendMovies }) %>
 
-        <% if (loggedIn) { %>
-            <div>
-                <span class="mr-4">สวัสดี, <%= UserData.name %></span>
-                <a href="/logout"
-                    class="bg-white text-indigo-600 px-4 py-2 rounded-lg hover:bg-gray-100 transition shadow">
-                    ออกจากระบบ
-                </a>
-            </div>
-            <% } else { %>
-                <a href="/login"
-                    class="bg-white text-indigo-600 px-4 py-2 rounded-lg hover:bg-gray-100 transition shadow">
-                    เข้าสู่ระบบ
-                </a>
-                <% } %>
-    </header>
-
-    <!-- Main Content -->
-    <main class="p-8 flex flex-col items-center space-y-10">
-
-        <!-- Highlight Movie -->
-        <div class="bg-white rounded-2xl shadow-lg w-full max-w-4xl overflow-hidden">
-            <img src="<%= recommendMovie.poster_path %>" class="w-full h-64 object-cover"
-                alt="<%= recommendMovie.title %> Banner">
-            <div class="p-6">
-                <h2 class="text-2xl font-bold mb-2">✨ หนังแนะนำวันนี้</h2>
-                <h3 class="text-xl font-semibold mb-2">
-                    <%= recommendMovie.title %>
-                </h3>
-                <p class="text-gray-600 mb-4">
-                    <%= recommendMovie.overview.length> 200 ? recommendMovie.overview.substring(0,200) + "..." :
-                        recommendMovie.overview %>
-                </p>
-                <a href="/movie/<%= recommendMovie.movieId %>"
-                    class="inline-block bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition shadow">
-                    ดูรายละเอียด
-                </a>
-            </div>
-        </div>
-
-
-        <!-- Movie Reviews -->
-        <section id="movies" class="w-full max-w-5xl">
-            <h2 class="text-2xl font-semibold mb-6 text-center">📌 รีวิวหนังล่าสุด</h2>
-
-            <!-- Movie List (dynamic from movies API) -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <% movies.forEach(movie=> { %>
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                        <img src="<%= movie.poster_path %>" class="w-full h-48 object-cover"
-                            alt="<%= movie.title %> Poster">
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold">
-                                <%= movie.title %>
-                            </h3>
-                            <p class="text-gray-500 text-sm mb-3">
-                                <%= movie.overview.length> 100 ? movie.overview.substring(0, 100) + "..." :
-                                    movie.overview %>
-                            </p>
-                            <p class="text-gray-400 text-xs mb-2">Release Date: <%= movie.release_date %>
-                            </p>
-                            <a href="/movie/detail/<%= movie.movieId %>"
-                                class="text-indigo-600 font-medium hover:underline">อ่านต่อ</a>
-                        </div>
-                    </div>
-                    <% }) %>
-            </div>
-        </section>
-
-        <!-- Admin Section -->
-        <div class="bg-white p-6 rounded-2xl shadow-md w-full max-w-md text-center">
-            <h2 class="text-xl font-semibold mb-4">📊 จัดการรีวิวหนัง</h2>
-            <p class="text-gray-500 mb-4">เข้าสู่ระบบแอดมินเพื่อเพิ่ม ลบ หรือจัดการข้อมูลหนัง</p>
-            <a href="/admin/dashboard"
-                class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition shadow">
-                ไปยัง Dashboard แอดมิน
-            </a>
-        </div>
-
+      <!-- SIMILAR / LATEST MOVIES -->
+      <%- include('partials/similar-movies', { movies: movies }) %>
     </main>
-
+  </div>
 </body>
-
 </html>

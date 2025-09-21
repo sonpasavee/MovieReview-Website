@@ -29,10 +29,12 @@ module.exports = async (req, res) => {
             poster_path: `https://image.tmdb.org/t/p/w500${movie.poster_path}`
         }))
 
-        const recommendMovie = movies[0]
+        // เลือกหนังมาแนะนำ 3 เรื่องแรก
+        const recommendMovies = movies.slice(0, 3)
 
-        // render หน้า index ครั้งเดียว พร้อม user + movies
-        res.render('index', { movies, UserData, recommendMovie })
+        // render หน้า index
+        res.render('index', { movies, UserData, recommendMovies })
+
 
     } catch (err) {
         console.error(err)
