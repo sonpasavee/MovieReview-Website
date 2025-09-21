@@ -38,19 +38,15 @@
                     </p>
                     <% } %>
 
-                        <!-- Favorite / Review Buttons -->
-                        <% if(loggedIn){ %>
-                            <form action="/movie/<%= movieDetail.id %>/review" method="POST" class="mb-4">
-                                <textarea name="comment" required placeholder="เขียนรีวิวของคุณ..."
-                                    class="w-full border rounded p-2 mb-2"></textarea>
-                                <input type="number" name="rating" min="1" max="10" placeholder="ให้คะแนน (1-10)"
-                                    class="w-24 border rounded p-1 mb-2">
-                                <button type="submit"
-                                    class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">ส่งรีวิว</button>
-                            </form>
-                            <% } else { %>
-                                <p class="text-gray-500">เข้าสู่ระบบเพื่อเขียนรีวิว</p>
-                                <% } %>
+                        <!-- ปุ่มเชื่อมไปหน้ารีวิว -->
+                        <a href="/review/form/<%= movieDetail.movieId %>"
+                            class="inline-block bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition mb-4">
+                            ✏️ เขียนรีวิว
+                        </a>
+
+
+
+
 
             </div>
         </div>

@@ -13,7 +13,7 @@ const MovieSchema = new Schema({
     } ,
     overview: String ,
     posterPath: String ,
-    releaseDate: Stirng , 
+    releaseDate: String , 
     genres: [String] ,
     cachedAt: {
         type: Date ,

@@ -1,0 +1,23 @@
+const Movie = require('../models/Movie')
+const axios = require('axios')
+
+module.exports = async (req, res) => {
+    let movie = await Movie.findOne({ movieId: req.params.movieId })
+
+    if (!movie) {
+        const apiKey = process.env.TMDB_KEY
+        const response = await axios.get(`https://api.themoviedb.org/3/movie/${req.params.movieId}?api_key=${apiKey}&language=th-TH`)
+        const data = response.data
+
+        movie = {
+            movieId: data.id,
+            title: data.title,
+            overview: data.overview,
+            posterPath: data.poster_path,
+            releaseDate: data.release_date,
+            genres: data.genres
+        }
+    }
+
+    res.render('reviewPage', { movie })
+}
