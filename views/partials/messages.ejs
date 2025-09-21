@@ -1,0 +1,28 @@
+<% const toArray = (val) => Array.isArray(val) ? val : (val ? [val] : []); %>
+<% const errs = toArray(messages?.error); %>
+<% const oks  = toArray(messages?.success); %>
+<% const infos = toArray(messages?.info); %>
+
+<% if (errs.length) { %>
+  <div class="mb-4 rounded-lg bg-red-600 text-white shadow">
+    <div class="px-4 py-3 space-y-1">
+      <% errs.forEach(m => { %><p>⚠️ <%= m %></p><% }) %>
+    </div>
+  </div>
+<% } %>
+
+<% if (oks.length) { %>
+  <div class="mb-4 rounded-lg bg-green-600 text-white shadow">
+    <div class="px-4 py-3 space-y-1">
+      <% oks.forEach(m => { %><p>✅ <%= m %></p><% }) %>
+    </div>
+  </div>
+<% } %>
+
+<% if (infos.length) { %>
+  <div class="mb-4 rounded-lg bg-blue-600 text-white shadow">
+    <div class="px-4 py-3 space-y-1">
+      <% infos.forEach(m => { %><p>ℹ️ <%= m %></p><% }) %>
+    </div>
+  </div>
+<% } %>
