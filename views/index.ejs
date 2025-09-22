@@ -1,26 +1,35 @@
 <!DOCTYPE html>
-<html lang="th" :class="isDark ? 'dark' : 'light'" x-data="{ isDark: false }">
+<html lang="th" :class="{ 'dark': isDark }" x-data="{ isDark: true }">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>เว็บรีวิวหนัง</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // เปิด dark mode โดย default
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="font-sans text-sm bg-gray-100 dark:bg-zinc-900">
+
+<body class="font-sans text-sm bg-gray-100 dark:bg-black text-gray-900 dark:text-gray-100">
   <!-- HEADER อยู่บนสุด -->
   <%- include('partials/header') %>
 
-  <div class="flex min-h-screen max-w-7xl mx-auto border-x border-gray-200 dark:border-zinc-800">
-    <!-- MAIN CONTENT -->
-    <main class="flex-1 px-4 sm:px-8 py-8">
+    <div class="flex min-h-screen max-w-7xl mx-auto border-x border-gray-200 dark:border-zinc-800">
+      <!-- MAIN CONTENT -->
+      <main class="flex-1 px-4 sm:px-8 py-8">
 
-      <!-- HERO / FEATURED -->
-     <%- include('partials/hero', { recommendMovies: recommendMovies }) %>
-      
-      <!-- SIMILAR / LATEST MOVIES -->
-      <%- include('partials/similar-movies', { movies: movies }) %>
-    </main>
-  </div>
+        <!-- HERO / FEATURED -->
+        <%- include('partials/hero', { recommendMovies: recommendMovies }) %>
+
+          <!-- SIMILAR / LATEST MOVIES -->
+          <%- include('partials/similar-movies', { movies: movies }) %>
+      </main>
+    </div>
 </body>
+
 </html>
