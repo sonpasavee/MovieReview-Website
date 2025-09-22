@@ -1,37 +1,18 @@
 <header class="bg-black text-white shadow">
   <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
     <!-- Logo / Title -->
-    <h1 class="text-xl sm:text-2xl font-extrabold tracking-wide">🎬 เว็บรีวิวหนัง</h1>
-
-    <!-- Search bar -->
-    <div class="relative mx-4 flex-1 max-w-xs">
-      <span class="text-gray-400 absolute left-3 top-1/2 -translate-y-1/2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-      </span>
-      <form action="/searchResults" method="GET" class="relative">
-        <button type="submit" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" aria-label="Search">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-        </button>
-        <input type="text" name="q" required autocomplete="off" class="text-xs ring-1 bg-white dark:bg-transparent ring-gray-200 dark:ring-zinc-600
-                  pl-9 pr-3 py-3 rounded-full w-full outline-none
-                  text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-300"
-          placeholder="Search ..." />
-      </form>
-    </div>
+    <h1 class="flex items-center text-xl sm:text-2xl font-extrabold tracking-wide">
+      R-MOVIE
+      <img src="/images/logo.jpg" alt="Logo" class="ml-1 w-8 h-8">
+    </h1>
 
     <!-- Menu + User -->
     <div class="flex items-center gap-6">
       <!-- เมนูหลัก -->
       <nav class="hidden sm:flex gap-4 font-medium">
         <a href="/" class="hover:text-red-500 transition">หน้าแรก</a>
+        <a href="/searchResults" class="hover:text-red-500 transition">ค้นหา</a>
         <a href="/collection" class="hover:text-red-500 transition">คอลเล็กชัน</a>
-        <a href="/about" class="hover:text-red-500 transition">เกี่ยวกับเรา</a>
       </nav>
 
       <!-- User -->

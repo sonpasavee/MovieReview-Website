@@ -3,18 +3,24 @@
     <span class="font-semibold text-gray-800 dark:text-white">รีวิวหนังล่าสุด</span>
   </div>
 
-  <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-    <% movies.forEach(movie => { %>
-      <div class="flex flex-col rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800">
+  <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
+    <% movies.slice(0, 18).forEach(movie=> { %>
+      <a href="/movie/detail/<%= movie.movieId %>" class="group flex flex-col rounded-xl overflow-hidden 
+          border border-gray-200 dark:border-zinc-700 
+          bg-white dark:bg-zinc-800 
+          hover:shadow-lg hover:border-white dark:hover:border-white transition" title="<%= movie.title %>">
+
+
         <img src="<%= movie.poster_path %>" class="h-56 object-cover w-full" alt="<%= movie.title %>">
-        <div class="px-3 py-3 flex items-center justify-between border-t-2 border-t-red-600">
-          <div class="min-w-0">
-            <div class="capitalize font-medium truncate text-gray-900 dark:text-white"><%= movie.title %></div>
-            <div class="text-xs text-gray-500"><%= movie.release_date %></div>
+        <div class="px-3 py-3 flex flex-col gap-1">
+          <div class="capitalize font-medium truncate text-gray-900 dark:text-white group-hover:whitespace-normal">
+            <%= movie.title %>
           </div>
-          <a href="/movie/detail/<%= movie.movieId %>" class="text-xs text-red-600 hover:underline shrink-0">รายละเอียด</a>
+          <div class="text-xs text-gray-500">
+            <%= movie.release_date %>
+          </div>
         </div>
-      </div>
-    <% }) %>
+      </a>
+      <% }) %>
   </div>
 </section>
