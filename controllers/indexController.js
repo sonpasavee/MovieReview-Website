@@ -28,9 +28,15 @@ module.exports = async (req, res) => {
             release_date: movie.release_date,
             poster_path: `https://image.tmdb.org/t/p/w500${movie.poster_path}`
         }))
+        
+        const recommendMovies = movies.slice(0, 3).map((m, index) => ({
+            ...m,
+            customPoster: index === 0 ? "/images/demon.png" :
+                index === 1 ? "/images/war.jpeg" :
+                    index === 2 ? "/images/conjur.jpg" :
+                        null
+        }))
 
-        // เลือกหนังมาแนะนำ 3 เรื่องแรก
-        const recommendMovies = movies.slice(0, 3)
 
         // render หน้า index
         res.render('index', { movies, UserData, recommendMovies })
