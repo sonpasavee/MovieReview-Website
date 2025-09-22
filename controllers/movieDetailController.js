@@ -7,7 +7,7 @@ const TMDB_BASE_URL = "https://api.themoviedb.org/3"
 
 module.exports = async (req, res) => {
     const movieId = Number(req.params.id) // แปลง param เป็น Number
-
+    
     try {
         // ดึงข้อมูลจากapi
         const response = await axios.get(`${TMDB_BASE_URL}/movie/${movieId}`, {
@@ -25,6 +25,7 @@ module.exports = async (req, res) => {
         })
 
         const movie = response.data
+        
 
         // ดึงรีวิวจาก DB
         const reviews = await Review.find({ movieId: movieId })
@@ -58,9 +59,9 @@ module.exports = async (req, res) => {
         ]);
         const avgRating = avgRatingResult.length > 0 ? avgRatingResult[0].avg : null
         await Movie.updateOne({ movieId } , { avgRating })
+        const m = await Movie.findOne({ movieId })
 
-
-        res.render('movieDetail', { movieDetail, loggedIn: req.session.userId, avgRating , trailerKey: trailer ? trailer.key : null})
+        res.render('movieDetail', { movieDetail, loggedIn: req.session.userId, avgRating , trailerKey: trailer ? trailer.key : null , m})
 
     } catch (err) {
         console.log(err)

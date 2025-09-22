@@ -18,8 +18,8 @@
 
   <!-- Alpine.js -->
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-</head>
 
+</head>
 
 <body class="font-sans text-sm text-white bg-gradient-to-b from-[#3E0703] via-black to-black">
   <!-- HEADER อยู่บนสุด -->
@@ -32,8 +32,79 @@
         <!-- HERO / FEATURED -->
         <%- include('partials/hero', { recommendMovies: recommendMovies }) %>
 
-          <!-- SIMILAR / LATEST MOVIES -->
-          <%- include('partials/similar-movies', { movies: movies }) %>
+          <!-- Popular Movies -->
+          <% if (popularMovies && popularMovies.length> 0) { %>
+            <h2 class="text-2xl font-bold text-white mt-8 mb-4">ยอดนิยม</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+              <% popularMovies.forEach(m=> { %>
+                <a href="/movie/detail/<%= m.movieId %>" class="group flex flex-col rounded-xl overflow-hidden 
+                      border border-gray-200 dark:border-zinc-700 
+                      bg-white dark:bg-zinc-800 
+                      hover:shadow-lg hover:border-white dark:hover:border-white transition">
+                  <img src="<%= m.posterPath %>" alt="<%= m.title %>" class="w-full h-60 object-cover">
+                  <div class="p-2">
+                    <h3 class="text-white text-sm font-semibold truncate">
+                      <%= m.title %>
+                    </h3>
+                    <p class="text-gray-400 text-xs">
+                      ⭐ <%= m.avgRating ? m.avgRating.toFixed(1) : 'N/A' %>
+                    </p>
+                  </div>
+                </a>
+                <% }) %>
+            </div>
+            <% } %>
+
+              <!-- Latest Movies -->
+              <% if (latestMovies && latestMovies.length> 0) { %>
+                <h2 class="text-2xl font-bold text-white mt-8 mb-4">หนังล่าสุด</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+                  <% latestMovies.forEach(m=> { %>
+                    <a href="/movie/detail/<%= m.movieId %>" class="group flex flex-col rounded-xl overflow-hidden 
+                      border border-gray-200 dark:border-zinc-700 
+                      bg-white dark:bg-zinc-800 
+                      hover:shadow-lg hover:border-white dark:hover:border-white transition">
+                      <img src="<%= m.poster_path %>" alt="<%= m.title %>" class="w-full h-60 object-cover">
+                      <div class="p-2">
+                        <h3 class="text-white text-sm font-semibold truncate">
+                          <%= m.title %>
+                        </h3>
+                        <p class="text-gray-400 text-xs">
+                          <%= m.release_date.substring(0,4) %>
+                        </p>
+                      </div>
+                    </a>
+                    <% }) %>
+                </div>
+                <% } %>
+                  <!-- pagination -->
+                  <div class="flex justify-center mt-8 space-x-2">
+                    <% if(currentPage> 1) { %>
+                      <a href="/?page=<%= currentPage-1 %>"
+                        class="px-3 py-1 bg-zinc-800 text-white rounded hover:bg-zinc-700">ก่อนหน้า</a>
+                      <% } %>
+
+                        <% const startPage=Math.max(1, currentPage-2); const endPage=Math.min(totalPages,
+                          currentPage+2); if(startPage> 1) { %>
+                          <span class="px-3 py-1">...</span>
+                          <% } %>
+
+                            <% for(let i=startPage; i<=endPage; i++) { %>
+                              <a href="/?page=<%= i %>"
+                                class="px-3 py-1 rounded <%= i===currentPage ? 'bg-red-600 text-white' : 'bg-zinc-700 text-white hover:bg-zinc-600' %>">
+                                <%= i %>
+                              </a>
+                              <% } %>
+
+                                <% if(endPage < totalPages) { %>
+                                  <span class="px-3 py-1">...</span>
+                                  <% } %>
+
+                                    <% if(currentPage < totalPages) { %>
+                                      <a href="/?page=<%= currentPage+1 %>"
+                                        class="px-3 py-1 bg-zinc-800 text-white rounded hover:bg-zinc-700">ถัดไป</a>
+                                      <% } %>
+                  </div>
       </main>
     </div>
 </body>

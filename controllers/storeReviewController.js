@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
             movie = await Movie.create({
                 movieId: movieData.id,
                 title: movieData.title,
-                posterPath: movieData.poster_path,
+                posterPath: `https://image.tmdb.org/t/p/w500${movieData.poster_path}`,
                 releaseDate: movieData.release_date,
                 genres: movieData.genres.map(g => g.name) // เติม genres จาก API
             })
