@@ -31,7 +31,7 @@ const reviewController = require('./controllers/reviewController')
 const searchController = require('./controllers/searchController')
 // Middleware Import
 const {isAuthenticated , isAdmin , isUser} = require('./middleware/authMiddleware')
-
+const userDataMiddleware = require('./middleware/userData')
 app.use(express.static('public'))
 app.use(express.json())
 app.use(express.urlencoded()) //encode form to object
@@ -42,6 +42,7 @@ app.use(expressSession({
     saveUninitialized: false,
     cookie: { maxAge: 1000 * 60 * 60 } // เก็บข้อมูล login 1 ชั่วโมง
 }))
+app.use(userDataMiddleware)
 // middleware สำหรับส่ง loggedIn ไปทุก view
 app.use((req, res, next) => {
     res.locals.messages = req.flash()
