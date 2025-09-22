@@ -28,6 +28,7 @@ const logoutController = require('./controllers/logoutController')
 const movieDetailController = require('./controllers/movieDetailController')
 const storeReviewController = require('./controllers/storeReviewController')
 const reviewController = require('./controllers/reviewController')
+const searchController = require('./controllers/searchController')
 // Middleware Import
 const {isAuthenticated , isAdmin , isUser} = require('./middleware/authMiddleware')
 
@@ -62,6 +63,7 @@ app.get('/logout' , logoutController)
 app.get('/movie/detail/:id', movieDetailController)
 app.post('/reviews' , storeReviewController)
 app.get('/review/form/:movieId' , reviewController)
+app.get('/searchResults' , searchController)
 
 
 app.listen(4000 , () => {

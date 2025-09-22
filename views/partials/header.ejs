@@ -7,12 +7,22 @@
     <div class="relative mx-4 flex-1 max-w-xs">
       <span class="text-gray-400 absolute left-3 top-1/2 -translate-y-1/2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
       </span>
-      <input type="text"
-             class="text-xs ring-1 bg-white dark:bg-transparent ring-gray-200 dark:ring-zinc-600 pl-9 pr-3 py-2 rounded-full w-full outline-none"
-             placeholder="Search ..." />
+      <form action="/searchResults" method="GET" class="relative">
+        <button type="submit" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" aria-label="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </button>
+        <input type="text" name="q" required autocomplete="off" class="text-xs ring-1 bg-white dark:bg-transparent ring-gray-200 dark:ring-zinc-600
+                  pl-9 pr-3 py-3 rounded-full w-full outline-none
+                  text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-300"
+          placeholder="Search ..." />
+      </form>
     </div>
 
     <!-- Menu + User -->
@@ -28,17 +38,15 @@
       <div class="flex items-center gap-3">
         <% if (loggedIn) { %>
           <span class="hidden sm:inline font-medium">
-            สวัสดี, <%= (typeof UserData !== 'undefined' && UserData && UserData.name) ? UserData.name : 'ผู้ใช้' %>
+            สวัสดี, <%= (typeof UserData !=='undefined' && UserData && UserData.name) ? UserData.name : 'ผู้ใช้' %>
           </span>
-          <a href="/logout"
-             class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition shadow">
+          <a href="/logout" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition shadow">
             ออกจากระบบ
           </a>
-        <% } else { %>
-          <a href="/login"
-             class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition shadow">
-            เข้าสู่ระบบ
-          </a>
-        <% } %>
+          <% } else { %>
+            <a href="/login" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition shadow">
+              เข้าสู่ระบบ
+            </a>
+            <% } %>
       </div>
 </header>
