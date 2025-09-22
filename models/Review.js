@@ -3,8 +3,7 @@ const Schema = mongoose.Schema
 
 const ReviewSchema = new Schema({
     movieId: {
-        type: mongoose.Schema.Types.ObjectId , 
-        ref: "Movie" ,
+        type: Number ,
         Required: true
     } ,
     userId: {
@@ -23,7 +22,7 @@ const ReviewSchema = new Schema({
     rating: {
         type: Number ,
         min: 1 ,
-        max: 5 ,
+        max: 10 ,
         required: true
     } ,
     createdAt: {

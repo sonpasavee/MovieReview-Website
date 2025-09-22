@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
 
         // สร้างรีวิว
         await Review.create({
-            movieId: movie._id,
+            movieId: movie.movieId,
             userId: user._id,
             name: user.name,
             rating,

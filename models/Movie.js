@@ -15,6 +15,10 @@ const MovieSchema = new Schema({
     posterPath: String ,
     releaseDate: String , 
     genres: [String] ,
+    avgRating: {
+        type: Number ,
+        default: 0
+    } ,
     cachedAt: {
         type: Date ,
         default: Date.now

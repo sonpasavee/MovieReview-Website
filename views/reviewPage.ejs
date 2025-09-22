@@ -20,7 +20,7 @@
             <!-- Movie Info & Form -->
             <div class="flex-1">
                 <h1 class="text-3xl font-bold mb-2"><%= movie.title %></h1>
-                <p class="text-gray-500 mb-2">ปี: <%= movie.releaseDate.substring(0,4) %> | เรทติ้ง TMDb: <%= movie.vote_average || 'N/A' %>/10</p>
+                <p class="text-gray-500 mb-2">ปี: <%= movie.releaseDate.substring(0,4) %> | เรทติ้ง : <%= movie.avgRating || 'N/A' %>/10</p>
                 <p class="text-gray-700 mb-4"><%= movie.overview %></p>
 
                 <% if (movie.genres && movie.genres.length > 0) { %>
@@ -51,6 +51,11 @@
                             <option value="3">3 ⭐⭐⭐</option>
                             <option value="4">4 ⭐⭐⭐⭐</option>
                             <option value="5">5 ⭐⭐⭐⭐⭐</option>
+                            <option value="6">6 ⭐⭐⭐⭐⭐⭐</option>
+                            <option value="7">7 ⭐⭐⭐⭐⭐⭐⭐</option>
+                            <option value="8">8 ⭐⭐⭐⭐⭐⭐⭐⭐</option>
+                            <option value="9">9 ⭐⭐⭐⭐⭐⭐⭐⭐⭐</option>
+                            <option value="10">10 ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐</option>
                         </select>
                     </div>
 
