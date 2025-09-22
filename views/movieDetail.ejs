@@ -21,65 +21,79 @@
   <!-- HEADER -->
   <%- include('partials/header') %>
 
-  <div class="max-w-5xl mx-auto mt-8 p-6 rounded-2xl shadow-lg bg-black border border-red-900"
-    x-data="{ tab: 'detail' }">
+    <div class="max-w-5xl mx-auto mt-8 p-6 rounded-2xl shadow-lg bg-black border border-red-900"
+      x-data="{ tab: 'detail' }">
 
-    <!-- Tab Buttons -->
-    <div class="flex border-b border-neutral-700 mb-4">
-      <button :class="tab === 'detail' ? 'border-b-2 border-red-600 text-white' : 'text-gray-400'"
-        class="px-4 py-2 font-semibold" @click="tab = 'detail'">
-        Detail
-      </button>
-      <button :class="tab === 'reviews' ? 'border-b-2 border-red-600 text-white' : 'text-gray-400'"
-        class="px-4 py-2 font-semibold" @click="tab = 'reviews'">
-        Reviews
-      </button>
-    </div>
+      <!-- Tab Buttons -->
+      <div class="flex border-b border-neutral-700 mb-4">
+        <button :class="tab === 'detail' ? 'border-b-2 border-red-600 text-white' : 'text-gray-400'"
+          class="px-4 py-2 font-semibold" @click="tab = 'detail'">
+          Detail
+        </button>
+        <button :class="tab === 'reviews' ? 'border-b-2 border-red-600 text-white' : 'text-gray-400'"
+          class="px-4 py-2 font-semibold" @click="tab = 'reviews'">
+          Reviews
+        </button>
+      </div>
 
-    <!-- Tab Content -->
-    <div>
       <!-- Detail Tab -->
-      <div x-show="tab === 'detail'" x-transition x-cloak class="flex flex-col gap-6">
-        <div class="flex flex-col lg:flex-row gap-6">
-          <!-- Poster -->
-          <img src="https://image.tmdb.org/t/p/w500<%= movieDetail.poster_path %>"
-            class="w-full lg:w-1/3 rounded-lg shadow-md">
+      <div x-show="tab === 'detail'" x-transition x-cloak class="flex flex-col lg:flex-row gap-6">
 
-          <!-- Movie Info -->
-          <div class="flex-1">
-            <h1 class="text-4xl font-bold mb-2 text-white">
-              <%= movieDetail.title %>
-            </h1>
-            <p class="text-gray-300 mb-2">
-              ปี: <%= movieDetail.release_date.substring(0,4) %> | เรทติ้ง : <%= m ? m.avgRating.toFixed(1) : 'N/A' %>/10
-            </p>
-            <p class="text-gray-200 mb-4">
-              <%= movieDetail.overview %>
-            </p>
+        <!-- Poster -->
+        <div class="lg:w-1/3">
+          <img src="https://image.tmdb.org/t/p/w500<%= movieDetail.poster_path %>" alt="<%= movieDetail.title %>"
+            class="rounded-lg shadow-lg">
+        </div>
 
-            <% if(movieDetail.genres) { %>
-            <p class="text-gray-400 mb-4">
+        <!-- Movie Info -->
+        <div class="lg:w-2/3 flex flex-col gap-4">
+          <h1 class="text-4xl font-bold text-white">
+            <%= movieDetail.title %>
+          </h1>
+          <p class="text-gray-300">
+            ปี: <%= movieDetail.release_date ? movieDetail.release_date.substring(0,4) : 'N/A' %> |
+              เรตติ้ง: <%= m ? m.avgRating.toFixed(1) : 'N/A' %>/10
+          </p>
+          <p class="text-gray-200">
+            <%= movieDetail.overview %>
+          </p>
+
+          <% if(movieDetail.genres && movieDetail.genres.length>0) { %>
+            <p class="text-gray-400">
               ประเภท:
-              <% movieDetail.genres.forEach(g => { %>
-              <span class="inline-block bg-neutral-700 px-2 py-1 rounded-full text-sm mr-2">
-                <%= g.name %>
-              </span>
-              <% }) %>
+              <% movieDetail.genres.forEach(g=> { %>
+                <span class="inline-block bg-neutral-700 px-2 py-1 rounded-full text-sm mr-2">
+                  <%= g.name %>
+                </span>
+                <% }) %>
             </p>
             <% } %>
-          </div>
-        </div>
 
-        <!-- Trailer at the bottom of Detail tab -->
-        <% if(trailerKey) { %>
-        <div class="mt-6">
-          <div class="aspect-w-16 aspect-h-9 bg-black rounded-lg overflow-hidden">
-            <iframe class="w-full h-64 lg:h-96 rounded-lg" src="https://www.youtube.com/embed/<%= trailerKey %>"
-              title="Movie Trailer" frameborder="0" allowfullscreen>
-            </iframe>
-          </div>
+              <!-- Director / Cast / Duration -->
+              <div class="text-gray-300">
+                <p>Director: <%= movieDetail.director || 'N/A' %>
+                </p>
+                <p>Cast: <%= movieDetail.cast && movieDetail.cast.length>0 ? movieDetail.cast.join(', ') : 'N/A' %></p>
+                <p>Duration: <%= movieDetail.duration || 'N/A' %> min</p>
+              </div>
+
+              <!-- Buttons -->
+              <div class="flex gap-4 mt-4">
+                <button class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-500">Add to Favorites</button>
+                <a href="https://www.youtube.com/embed/<%= trailerKey %>" class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600">Watch Trailer</a>
+              </div>
+
+              <!-- Trailer -->
+              <% if(trailerKey) { %>
+                <div class="mt-6">
+                  <div class="aspect-w-16 aspect-h-9 bg-black rounded-lg overflow-hidden">
+                    <iframe class="w-full h-64 lg:h-96 rounded-lg" src="https://www.youtube.com/embed/<%= trailerKey %>"
+                      title="Movie Trailer" frameborder="0" allowfullscreen></iframe>
+                  </div>
+                </div>
+                <% } %>
+
         </div>
-        <% } %>
       </div>
 
       <!-- Reviews Tab -->
@@ -87,32 +101,32 @@
 
         <!-- ปุ่มเขียนรีวิว ชิดขวา -->
         <div class="flex justify-end mb-4">
-          <a href="/review/form/<%= movieDetail.movieId %>"
-            class="inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">
-            + เขียนรีวิว
-          </a>
+          <a href="/review/form/<%= movieDetail.id %>"
+            class="inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">+ เขียนรีวิว</a>
         </div>
 
-        <% if(movieDetail.reviews && movieDetail.reviews.length > 0) { %>
-          <% 
-            // จัดเรียงรีวิวใหม่ล่าสุด
-            const sortedReviews = movieDetail.reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-          %>
-          <% sortedReviews.forEach(r => { %>
-            <div class="border-b border-neutral-700 py-2">
-              <p class="text-gray-200"><strong><%= r.userName %></strong> ให้คะแนน: <%= r.rating %>/10</p>
-              <p class="text-gray-400"><%= r.comment %></p>
-              <p class="text-gray-500 text-sm"><%= new Date(r.createdAt).toDateString() %></p>
-            </div>
-          <% }) %>
-        <% } else { %>
-          <p class="text-gray-400">ยังไม่มีรีวิว</p>
-        <% } %>
+        <% if(movieDetail.reviews && movieDetail.reviews.length>0) { %>
+          <% const sortedReviews=movieDetail.reviews.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt)); %>
+            <% sortedReviews.forEach(r=> { %>
+              <div class="border-b border-neutral-700 py-2">
+                <p class="text-gray-200"><strong>
+                    <%= r.userName %>
+                  </strong> ให้คะแนน: <%= r.rating %>/10</p>
+                <p class="text-gray-400">
+                  <%= r.comment %>
+                </p>
+                <p class="text-gray-500 text-sm">
+                  <%= new Date(r.createdAt).toDateString() %>
+                </p>
+              </div>
+              <% }) %>
+                <% } else { %>
+                  <p class="text-gray-400">ยังไม่มีรีวิว</p>
+                  <% } %>
 
       </div>
 
     </div>
-  </div>
 
 </body>
 

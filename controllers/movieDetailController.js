@@ -7,7 +7,7 @@ const TMDB_BASE_URL = "https://api.themoviedb.org/3"
 
 module.exports = async (req, res) => {
     const movieId = Number(req.params.id) // แปลง param เป็น Number
-    
+
     try {
         // ดึงข้อมูลจากapi
         const response = await axios.get(`${TMDB_BASE_URL}/movie/${movieId}`, {
@@ -16,8 +16,21 @@ module.exports = async (req, res) => {
                 language: "en-US"
             }
         })
+        // credit crew
+        const creditsRes = await axios.get(`${TMDB_BASE_URL}/movie/${movieId}/credits`, {
+            params: {
+                api_key: process.env.TMDB_KEY
+            }
+        })
+        const credits = creditsRes.data
+        // director data
+        const directorObj = credits.crew.find(member => member.job === 'Director')
+        const director = directorObj ? directorObj.name : 'N/A'
+        // cast data 
+        const cast = credits.cast ? credits.cast.slice(0 , 5).map(c => c.name) : 'N/A'
+
         // ดึงtrailerจากapi
-        const videoRes = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/videos` , {
+        const videoRes = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/videos`, {
             params: {
                 api_key: process.env.TMDB_KEY,
                 language: "en-US"
@@ -25,7 +38,7 @@ module.exports = async (req, res) => {
         })
 
         const movie = response.data
-        
+
 
         // ดึงรีวิวจาก DB
         const reviews = await Review.find({ movieId: movieId })
@@ -39,8 +52,11 @@ module.exports = async (req, res) => {
             poster_path: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
             genres: movie.genres,
             vote_average: movie.vote_average,
+            duration: movie.runtime ,
+            cast: cast ,
+            director: director ,
             reviews: reviews.map(r => ({
-                userName: r.name, 
+                userName: r.name,
                 rating: r.rating,
                 comment: r.comment,
                 createdAt: r.createdAt
@@ -58,10 +74,10 @@ module.exports = async (req, res) => {
             { $group: { _id: "$movieId", avg: { $avg: "$rating" } } }
         ]);
         const avgRating = avgRatingResult.length > 0 ? avgRatingResult[0].avg : null
-        await Movie.updateOne({ movieId } , { avgRating })
+        await Movie.updateOne({ movieId }, { avgRating })
         const m = await Movie.findOne({ movieId })
 
-        res.render('movieDetail', { movieDetail, loggedIn: req.session.userId, avgRating , trailerKey: trailer ? trailer.key : null , m})
+        res.render('movieDetail', { movieDetail, loggedIn: req.session.userId, avgRating, trailerKey: trailer ? trailer.key : null, m })
 
     } catch (err) {
         console.log(err)
