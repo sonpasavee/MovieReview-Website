@@ -10,140 +10,181 @@
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Kanit','Roboto','ui-sans-serif','system-ui'] }
+        }
+      }
+    }
+  </script>
 
-  <!-- Alpine.js -->
+  <!-- Alpine / Preline (accordion/overlay) -->
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-  <!-- Preline (for hs-accordion / hs-overlay) -->
   <script defer src="https://cdn.jsdelivr.net/npm/preline@2.4.1/dist/preline.min.js"></script>
+
+  <!-- ถ้ามี config แยกของโปรเจกต์ -->
+  <script src="/js/tailwind-config.js"></script>
 </head>
 
-<body class="font-[Kanit,Roboto,sans-serif] bg-gray-50 dark:bg-neutral-900">
+<body class="font-sans text-neutral-200 bg-[#0b0b0b]">
+  <!-- เลเยอร์พื้นหลัง (gradient เดียวทั้งหน้า) -->
+  <div class="fixed inset-0 -z-10 bg-gradient-to-b from-[#3E0703]/85 via-[#120606]/45 to-black"></div>
 
-  <!-- ========== TOP BAR ========== -->
-  <div class="sticky top-0 inset-x-0 z-20 bg-white border-y border-gray-200 px-4 sm:px-6 lg:px-8 lg:hidden dark:bg-neutral-800 dark:border-neutral-700">
-    <div class="flex items-center justify-between py-2">
-      <!-- Toggle -->
+  <!-- ======= Mobile Top Bar ======= -->
+  <div class="sticky top-0 inset-x-0 z-20 bg-black/70 backdrop-blur border-b border-white/10 px-4 sm:px-6 lg:px-8 lg:hidden">
+    <div class="flex items-center justify-between py-3">
       <button type="button"
-        class="size-8 flex justify-center items-center gap-x-2 border border-gray-200 text-gray-800 hover:text-gray-500 rounded-lg dark:border-neutral-700 dark:text-neutral-200 dark:hover:text-neutral-500"
+        class="size-9 flex items-center justify-center rounded-lg border border-white/10 text-neutral-200"
         aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-application-sidebar"
         data-hs-overlay="#hs-application-sidebar">
         <span class="sr-only">Toggle Navigation</span>
-        <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/><path d="m8 9 3 3-3 3"/></svg>
+        <svg class="size-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/><path d="m8 9 3 3-3 3"/></svg>
       </button>
 
-      <!-- Breadcrumb -->
-      <ol class="ms-3 flex items-center whitespace-nowrap">
-        <li class="flex items-center text-sm text-gray-800 dark:text-neutral-400">
-          Application Layout
-          <svg class="shrink-0 mx-3 size-2.5 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 1L10.7 7.2a.5.5 0 0 1 0 .6L5 14"/></svg>
-        </li>
-        <li class="text-sm font-semibold text-gray-800 truncate dark:text-neutral-200">Dashboard</li>
-      </ol>
-
-      <!-- Mini user -->
-      <div class="text-sm text-gray-600 dark:text-neutral-300">
+      <div class="text-sm">
         สวัสดี, <span class="font-semibold"><%= user?.name || 'ผู้ใช้' %></span>
       </div>
     </div>
   </div>
-  <!-- ========== END TOP BAR ========== -->
 
-  <!-- ========== SIDEBAR ========== -->
+  <!-- ======= Sidebar ======= -->
   <aside id="hs-application-sidebar"
-    class="hs-overlay [--auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform w-72 h-full hidden fixed inset-y-0 start-0 z-60 bg-white border-e border-gray-200 lg:block lg:translate-x-0 dark:bg-neutral-800 dark:border-neutral-700"
-    role="dialog" tabindex="-1" aria-label="Sidebar">
+    class="hs-overlay [--auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform
+           w-72 h-full hidden fixed inset-y-0 start-0 z-60
+           lg:block lg:translate-x-0
+           bg-black/60 backdrop-blur border-r border-white/10">
 
-    <div class="relative flex flex-col h-full max-h-full">
-      <!-- Logo / Profile -->
-      <div class="px-6 pt-4 pb-4">
-        <div class="flex items-center justify-between mb-3">
-          <a href="/" class="text-xl font-semibold text-blue-600 dark:text-white">MovieReview</a>
-          <span class="hidden lg:inline text-xs text-gray-500 dark:text-neutral-400">v1.0</span>
-        </div>
-
-            <!-- User profile box -->
-        <div class="flex flex-col items-center p-6">
-        <div class="relative mb-3">
-            <img src="<%= user?.avatar || '/img/avatar-default.png' %>" 
-            alt="avatar"
-            class="size-24 rounded-full object-cover ring-2 ring-white/70 dark:ring-neutral-700"
-            onerror="this.onerror=null;this.src='/img/avatar-default.png';" />
-            <span class="absolute bottom-2 right-2 block size-3 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-neutral-800"></span>
-        </div>
-        <div class="text-center">
-            <p class="font-semibold text-gray-900 dark:text-neutral-100"><%= user?.name || 'ผู้ใช้' %></p>
-            <p class="text-sm text-gray-500 dark:text-neutral-400"><%= user?.email %></p>
-        </div>
-        </div>
-
-
-      <!-- Sidebar Menu -->
-      <div class="h-full overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
-        <nav class="hs-accordion-group p-3 flex flex-col" data-hs-accordion-always-open>
-          <ul class="flex flex-col space-y-1">
-            <li>
-              <a href="/user/dashboard" class="flex items-center gap-x-3.5 py-2 px-2.5 bg-gray-100 text-sm text-gray-800 rounded-lg dark:bg-neutral-700 dark:text-white">
-                <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                Dashboard
-              </a>
-            </li>
-
-            <!-- Account Menu -->
-            <li class="hs-accordion" id="account-accordion">
-              <button type="button" class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg hover:bg-gray-100 dark:bg-neutral-800 dark:text-neutral-200">
-                <svg class="shrink-0 mt-0.5 size-4" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="15" r="3"/><circle cx="9" cy="7" r="4"/><path d="M10 15H6a4 4 0 0 0-4 4v2"/></svg>
-                Account
-              </button>
-              <div id="account-accordion-child" class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden">
-                <ul class="ps-8 pt-1 space-y-1">
-                  <li><a href="/profile" class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg hover:bg-gray-100 dark:text-neutral-200">Profile</a></li>
-                  <li><a href="/settings" class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg hover:bg-gray-100 dark:text-neutral-200">Settings</a></li>
-                  <li><a href="/logout" class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg hover:bg-gray-100 dark:text-neutral-200">Logout</a></li>
-                </ul>
-              </div>
-            </li>
-          </ul>
-        </nav>
+    <div class="flex flex-col h-full">
+      <!-- Brand -->
+      <div class="px-6 pt-5 pb-3 flex items-center justify-between">
+        <a href="/" class="text-xl font-bold tracking-wide">
+          <span class="text-white">R-MOVIE</span><span class="text-red-500"> ●</span>
+        </a>
+        <span class="text-xs text-neutral-400">v1.0</span>
       </div>
+
+      <!-- Profile Card -->
+      <div class="px-6">
+        <div class="rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-transparent p-6">
+          <div class="flex flex-col items-center">
+            <div class="relative mb-3">
+              <img
+                src="<%= user?.avatar || '/img/avatar-default.png' %>"
+                alt="avatar"
+                class="size-24 rounded-full object-cover ring-2 ring-red-600/70"
+                onerror="this.src='/img/avatar-default.png'; this.onerror=null;" />
+              <span class="absolute bottom-1.5 right-1.5 block size-3 rounded-full bg-emerald-500 ring-2 ring-black"></span>
+            </div>
+            <div class="text-center">
+              <p class="font-semibold text-white"><%= user?.name || 'ผู้ใช้' %></p>
+              <p class="text-xs text-neutral-400"><%= user?.email %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+   
+    <!-- Nav -->
+    <nav class="px-6 pt-6 t-4 flex-1 overflow-y-auto">
+    <ul class="space-y-2">
+        <!-- Dashboard Link -->
+        <li>
+        <a href="/user/dashboard"
+            class="flex items-center gap-3 px-3 py-2 rounded-lg bg-red-600/15 border border-red-600/25 text-white">
+            <svg class="size-4" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            Dashboard
+        </a>
+        </li>
+
+        <!-- Account Menu -->
+        <li class="flex items-center gap-3 px-3 py-2 rounded-lg bg-red-600/15 border border-red-600/25 text-white">
+        <svg class="size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+        <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+         Account
+        </li>
+
+
+
+        <!-- Profile Link with Logo -->
+          <li class="flex items-center gap-3 px-3 py-2 rounded-lg bg-red-600/15 border border-red-600/25 text-white">
+           <svg class="size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+           <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+           </svg>
+            Profile
+            </li>
+
+
+        <!-- Settings Link with Logo -->
+         <li class="flex items-center gap-3 px-3 py-2 rounded-lg bg-red-600/15 border border-red-600/25 text-white">
+        <svg class="size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+        </svg>
+        Settings
+        </li>
+
+        <!-- Logout Link with Logo -->
+        <li class="flex items-center gap-3 px-3 py-2 rounded-lg bg-red-600/15 border border-red-600/25 text-white">
+        <svg class="size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+        </svg>
+
+        Logout
+        </li>
+
+    </ul>
+    </nav>
     </div>
   </aside>
-  <!-- ========== END SIDEBAR ========== -->
 
-  <!-- ========== MAIN CONTENT ========== -->
+  <!-- ======= Main ======= -->
   <main class="w-full pt-6 px-4 sm:px-6 md:px-8 lg:ps-80">
-    <!-- Flash messages -->
-    <% if (messages && Object.keys(messages).length) { %>
-      <div class="mb-4">
-        <% Object.keys(messages).forEach(function(type){ messages[type].forEach(function(msg){ %>
-          <p class="rounded-md px-4 py-2 text-sm <%= type === 'error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700' %>">
-            <%= msg %>
-          </p>
-        <% }) }) %>
-      </div>
-    <% } %>
+    <div class="max-w-7xl mx-auto">
+      <!-- Flash -->
+      <% if (messages && Object.keys(messages).length) { %>
+        <div class="mb-4 space-y-2">
+          <% Object.keys(messages).forEach(function(type){ messages[type].forEach(function(msg){ %>
+            <p class="rounded-md px-4 py-2 text-sm
+                      <%= type === 'error'
+                          ? 'bg-red-500/15 text-red-200 border border-red-500/20'
+                          : 'bg-emerald-500/15 text-emerald-200 border border-emerald-500/20' %>">
+              <%= msg %>
+            </p>
+          <% }) }) %>
+        </div>
+      <% } %>
 
-    <!-- Welcome -->
-    <h1 class="text-2xl font-bold text-gray-800 dark:text-neutral-100">ยินดีต้อนรับ, <%= user?.name || 'ผู้ใช้' %> 👋</h1>
-    <p class="mt-2 text-gray-600 dark:text-neutral-300">อีเมล: <%= user?.email %></p>
 
-    <!-- Example Cards -->
-    <section class="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-      <div class="rounded-2xl bg-white p-6 shadow-sm border border-gray-100 dark:bg-neutral-800 dark:border-neutral-700">
-        <h2 class="font-semibold text-gray-800 dark:text-neutral-100 mb-2">สรุปรีวิวของฉัน</h2>
-        <p class="text-sm text-gray-600 dark:text-neutral-300">ใส่ข้อมูลสรุปจำนวนรีวิว คะแนนเฉลี่ย ฯลฯ</p>
-      </div>
-      <div class="rounded-2xl bg-white p-6 shadow-sm border border-gray-100 dark:bg-neutral-800 dark:border-neutral-700">
-        <h2 class="font-semibold text-gray-800 dark:text-neutral-100 mb-2">กิจกรรมล่าสุด</h2>
-        <p class="text-sm text-gray-600 dark:text-neutral-300">รายการกิจกรรมล่าสุดของผู้ใช้</p>
-      </div>
-      <div class="rounded-2xl bg-white p-6 shadow-sm border border-gray-100 dark:bg-neutral-800 dark:border-neutral-700">
-        <h2 class="font-semibold text-gray-800 dark:text-neutral-100 mb-2">ตั้งค่าโปรไฟล์</h2>
-        <a href="/profile" class="text-sm text-indigo-600 hover:underline">แก้ไขโปรไฟล์</a>
-      </div>
-    </section>
+      <!-- Cards -->
+      <section class="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div class="rounded-2xl p-6 border border-white/10 bg-gradient-to-b from-white/5 to-transparent">
+          <h2 class="font-semibold text-white mb-2">สรุปรีวิวของฉัน</h2>
+          <p class="text-sm text-neutral-400">ใส่ข้อมูลสรุปจำนวนรีวิว คะแนนเฉลี่ย ฯลฯ</p>
+        </div>
+
+        <div class="rounded-2xl p-6 border border-white/10 bg-gradient-to-b from-white/5 to-transparent">
+          <h2 class="font-semibold text-white mb-2">กิจกรรมล่าสุด</h2>
+          <p class="text-sm text-neutral-400">รายการกิจกรรมล่าสุดของผู้ใช้</p>
+        </div>
+
+        <div class="rounded-2xl p-6 border border-white/10 bg-gradient-to-b from-white/5 to-transparent">
+          <h2 class="font-semibold text-white mb-2">ตั้งค่าโปรไฟล์</h2>
+          <a href="/profile" class="inline-flex items-center gap-2 mt-2 px-3 py-2 rounded-lg
+                                   bg-red-600 text-white hover:bg-red-500 transition">
+            แก้ไขโปรไฟล์
+          </a>
+        </div>
+      </section>
+    </div>
   </main>
-  <!-- ========== END MAIN CONTENT ========== -->
-
 </body>
 </html>
