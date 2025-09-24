@@ -2,27 +2,38 @@ const User = require('../models/User')
 
 module.exports = async (req, res) => {
   try {
-    // ต้องมีการตั้งค่า req.session.userId ตอน login แล้ว
+    // ตรวจสอบว่า userId อยู่ใน session หรือไม่
     const userId = req.session.userId
     if (!userId) {
       req.flash('error', 'กรุณาเข้าสู่ระบบ')
       return res.redirect('/login')
     }
 
-    // ดึงข้อมูลผู้ใช้ (ใช้ .lean() ให้เร็วขึ้นและส่งเข้า view ง่าย)
+    // ดึงข้อมูลผู้ใช้จากฐานข้อมูล
     const user = await User.findById(userId).lean()
     if (!user) {
-      // เซสชันค้าง/ผู้ใช้ถูกลบ
+      // หากไม่พบผู้ใช้ (session หมดอายุหรือถูกลบ) ให้ลบ session และให้เข้าสู่ระบบใหม่
       req.session.destroy(() => {})
       req.flash('error', 'เซสชันหมดอายุ กรุณาเข้าสู่ระบบใหม่')
       return res.redirect('/login')
     }
 
-    // ส่งข้อมูลไปยัง view
+    // เตรียมข้อมูลโปรไฟล์
+    const profileData = {
+      avatarUrl: user.avatarUrl || "",  // ถ้าไม่มี avatarUrl ให้เป็นค่าว่าง
+      bio: user.bio || "",             // ถ้าไม่มี bio ให้เป็นค่าว่าง
+      socialLinks: {
+        facebook: user.socialLinks?.facebook || "",
+        twitter: user.socialLinks?.twitter || "",
+        instagram: user.socialLinks?.instagram || ""
+      }
+    }
+
+    // ส่งข้อมูลไปยังหน้าแดชบอร์ด
     return res.render('userDashboard', {
       title: 'แดชบอร์ดผู้ใช้',
-      user,                 // ใช้ใน EJS: <%= user.name %> เป็นต้น
-      messages: req.flash() // แสดง flash message ในหน้าได้
+      user: { ...user, profileData },  // รวมข้อมูลผู้ใช้กับข้อมูลโปรไฟล์
+      messages: req.flash()            // แสดงข้อความแจ้งเตือน
     })
   } catch (err) {
     console.error('userDashboardController error:', err)
@@ -30,4 +41,3 @@ module.exports = async (req, res) => {
     return res.redirect('/')
   }
 }
-
