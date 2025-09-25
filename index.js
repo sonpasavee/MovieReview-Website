@@ -31,11 +31,11 @@ const movieDetailController = require('./controllers/movieDetailController')
 const storeReviewController = require('./controllers/storeReviewController')
 const reviewController = require('./controllers/reviewController')
 const searchController = require('./controllers/searchController')
-const UpdateProfileController = require('./controllers/updateProfileController')
+const updateProfileController = require('./controllers/updateProfileController')
+const addCollectionController = require('./controllers/addCollectionController')
 // Middleware Import
 const {isAuthenticated , isAdmin , isUser} = require('./middleware/authMiddleware')
 const userDataMiddleware = require('./middleware/userData')
-const updateProfileController = require('./controllers/updateProfileController')
 app.use(express.static('public'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -70,7 +70,7 @@ app.post('/reviews' , storeReviewController)
 app.get('/review/form/:movieId' , reviewController)
 app.get('/searchResults' , searchController)
 app.post('/profile/update'  ,upload.single('avatar') , updateProfileController)
-
+app.post('/add/collection/:movieId' , addCollectionController)
 
 app.listen(4000 , () => {
     console.log("App listening on port 4000")

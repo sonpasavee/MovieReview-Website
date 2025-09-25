@@ -25,8 +25,6 @@ module.exports = (req, res) => {
                     }else {
                         res.redirect('/')
                     }
-                    
-
 
                 } else {
                     req.flash('error', 'รหัสผ่านไม่ถูกต้อง')

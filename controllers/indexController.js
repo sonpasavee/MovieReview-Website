@@ -9,10 +9,8 @@ const TMDB_BASE_URL = "https://api.themoviedb.org/3"
 module.exports = async (req, res) => {
     try {
         // ดึงข้อมูล user
-        let UserData = null
-        if (req.session.userId) {
-            UserData = await User.findById(req.session.userId)
-        }
+        const UserData = res.locals.UserData
+
 
         // pagination
         const page = parseInt(req.query.page) || 1

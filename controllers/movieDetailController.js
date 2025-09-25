@@ -1,13 +1,21 @@
 const axios = require('axios')
 const Review = require('../models/Review')
 const Movie = require('../models/Movie')
+const Collection = require('../models/Collection')
 require("dotenv").config()
 
 const TMDB_BASE_URL = "https://api.themoviedb.org/3"
 
 module.exports = async (req, res) => {
     const movieId = Number(req.params.id) // แปลง param เป็น Number
+    const user = res.locals.UserData
 
+    let userCollections = []
+    if(user) {
+        userCollections = await Collection.find({ userId: user._id })
+    }
+
+    
     try {
         // ดึงข้อมูลจากapi
         const response = await axios.get(`${TMDB_BASE_URL}/movie/${movieId}`, {
@@ -77,7 +85,7 @@ module.exports = async (req, res) => {
         await Movie.updateOne({ movieId }, { avgRating })
         const m = await Movie.findOne({ movieId })
 
-        res.render('movieDetail', { movieDetail, loggedIn: req.session.userId, avgRating, trailerKey: trailer ? trailer.key : null, m })
+        res.render('movieDetail', { movieDetail, loggedIn: req.session.userId, avgRating, trailerKey: trailer ? trailer.key : null, m , userCollections})
 
     } catch (err) {
         console.log(err)
