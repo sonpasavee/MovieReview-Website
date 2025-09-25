@@ -30,13 +30,14 @@
 
     <!-- Login Form -->
     <form action="/user/login" method="POST" class="space-y-6">
-      <% if (messages.error) { %>
-        <% messages.error.forEach(function(msg){ %>
-          <p class="bg-red-600 text-white px-4 py-3 rounded text-sm" role="alert">
+      <% if (error && error.length> 0) { %>
+        <% error.forEach(msg=> { %>
+          <p class="bg-red-600 text-white px-4 py-3 rounded">
             <%= msg %>
           </p>
           <% }) %>
             <% } %>
+
 
               <!-- Email -->
               <div>

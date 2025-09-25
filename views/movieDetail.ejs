@@ -30,7 +30,21 @@
         <button :class="tab === 'reviews' ? 'border-b-2 border-red-600 text-white' : 'text-gray-400'"
           class="px-4 py-2 font-semibold" @click="tab = 'reviews'">Reviews</button>
       </div>
+      <% if (success && success.length> 0) { %>
+        <% success.forEach(msg=> { %>
+          <p class="bg-green-600 text-white px-4 py-3 rounded text-sm my-3">
+            <%= msg %>
+          </p>
+          <% }) %>
+            <% } %>
 
+              <% if (error && error.length> 0) { %>
+                <% error.forEach(msg=> { %>
+                  <p class="bg-red-600 text-white px-4 py-3 rounded text-sm my-3">
+                    <%= msg %>
+                  </p>
+                  <% }) %>
+                    <% } %>
       <!-- Detail Tab -->
       <div x-show="tab === 'detail'" x-transition x-cloak class="flex flex-col lg:flex-row gap-6">
         <!-- Poster -->
@@ -129,16 +143,15 @@
                   </div>
                 </div>
                 <% } %>
-                  <!-- Trailer -->
-                  <% if(trailerKey) { %>
-                    <div class="mt-6">
-                      <div class="aspect-w-16 aspect-h-9 bg-black rounded-lg overflow-hidden">
-                        <iframe class="w-full h-64 lg:h-96 rounded-lg"
-                          src="https://www.youtube.com/embed/<%= trailerKey %>" title="Movie Trailer" frameborder="0"
-                          allowfullscreen></iframe>
-                      </div>
-                    </div>
-                    <% } %>
+                <!-- Trailer -->
+              <% if(trailerKey) { %>
+                <div class="mt-6">
+                  <div class="aspect-w-16 aspect-h-9 bg-black rounded-lg overflow-hidden">
+                    <iframe class="w-full h-64 lg:h-96 rounded-lg" src="https://www.youtube.com/embed/<%= trailerKey %>"
+                      title="Movie Trailer" frameborder="0" allowfullscreen></iframe>
+                  </div>
+                </div>
+                <% } %>
         </div>
       </div>
 

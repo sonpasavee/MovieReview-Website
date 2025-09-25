@@ -27,12 +27,12 @@ module.exports = async (req, res) => {
             { new: true, upsert: true }
         )
 
-        req.flash('success', 'Profile updated!')
-        return res.redirect('/user/dashboard')
+        req.flash('success', 'Update Profile')
+        res.redirect('/user/dashboard')
 
     } catch (err) {
         console.error(err)
-        req.flash('error', 'เกิดข้อผิดพลาด กรุณาลองใหม่')
-        return res.redirect('/user/dashboard')
+        req.flash('error', 'Cannot Update')
+        res.redirect('/user/dashboard')
     }
 }

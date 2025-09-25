@@ -5,7 +5,8 @@ module.exports = async (req, res) => {
     try {
         const user = res.locals.UserData
         if (!user) {
-            return res.status(401).json({ message: "Please login first" })
+            req.flash('error', 'Please login first')
+            return res.redirect('/login')
         }
 
         const userId = user._id
@@ -13,40 +14,43 @@ module.exports = async (req, res) => {
         const { name, collectionId } = req.body
 
         if (collectionId) {
-            // ใช้ ObjectId ในกรณี schema เป็น ObjectId
             const collection = await Collection.findOne({ _id: collectionId, userId: userId })
-            
+
             if (collection) {
                 if (!collection.movies.includes(movieId)) {
                     collection.movies.push(movieId)
                     await collection.save()
+                    req.flash('success', `Added to collection "${collection.name}"`)
+                } else {
+                    req.flash('error', 'Movie already in this collection')
                 }
             } else {
-                return res.status(404).json({ message: "Collection not found" })
+                req.flash('error', 'Collection not found')
             }
 
         } else if (name) {
-            // เช็คชื่อ collection ซ้ำ
             const existCollection = await Collection.findOne({ userId: userId, name })
             if (existCollection) {
-                return res.status(400).json({ message: "Collection name already exists" })
+                req.flash('error', 'Collection name already exists')
             } else {
                 await Collection.create({
                     userId: userId,
                     name,
                     movies: [movieId]
-                });
+                })
+                req.flash('success', `Created new collection "${name}" and added movie`)
             }
 
         } else {
-            return res.status(400).json({ message: "No collection specified" })
+            req.flash('error', 'No collection specified')
         }
 
-        // redirect กลับไปหน้า movie detail
+        // redirect กลับไปหน้า movie detail พร้อม flash
         return res.redirect(`/movie/detail/${movieId}`)
 
     } catch (err) {
         console.error(err)
-        res.status(500).send('Server error')
+        req.flash('error', 'Server error')
+        res.redirect(`/movie/detail/${req.params.movieId}`)
     }
 }

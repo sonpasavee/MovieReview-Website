@@ -43,87 +43,96 @@
   <main class="ml-72 p-6">
     <div class="max-w-7xl mx-auto space-y-6">
 
-      <!-- Flash Messages -->
-      <!-- Flash Messages -->
-      <% if (messages && Object.keys(messages).length) { %>
-        <% Object.keys(messages).forEach(function(type) { messages[type].forEach(function(msg) { %>
-          <p class="<%= type === 'error' ? 'bg-red-600' : 'bg-emerald-600' %> 
-              text-white px-4 py-3 rounded text-sm mb-2" role="alert">
+      <% if (success && success.length> 0) { %>
+        <% success.forEach(msg=> { %>
+          <p class="bg-green-600 text-white px-4 py-3 rounded text-sm">
             <%= msg %>
           </p>
-          <% }) }) %>
+          <% }) %>
             <% } %>
 
+              <% if (error && error.length> 0) { %>
+                <% error.forEach(msg=> { %>
+                  <p class="bg-red-600 text-white px-4 py-3 rounded text-sm">
+                    <%= msg %>
+                  </p>
+                  <% }) %>
+                    <% } %>
 
-              <!-- Profile Edit -->
-              <section class="bg-gradient-to-b from-white/5 to-transparent p-6 rounded-2xl border border-white/10">
-                <h2 class="font-semibold text-white mb-4">แก้ไขโปรไฟล์</h2>
-                <form class="space-y-4" action="/profile/update" method="POST" enctype="multipart/form-data">
-                  <div class="flex items-center gap-4">
-                    <img src="<%= profile?.avatarUrl || user?.avatarUrl || '/img/avatar-default.png' %>" alt="avatar"
-                      class="w-16 h-16 rounded-full object-cover ring-2 ring-red-600/70" />
-                    <!-- เปลี่ยนชื่อ input ให้ตรงกับ controller -->
-                    <input type="file" name="avatar" class="text-sm text-neutral-400" />
-                  </div>
-                  <input type="text" name="name" value="<%= user?.name || '' %>" placeholder="ชื่อ"
-                    class="w-full p-2 rounded-lg bg-black/50 border border-white/20 text-white" />
-                  <input type="email" name="email" value="<%= user?.email || '' %>" placeholder="อีเมล"
-                    class="w-full p-2 rounded-lg bg-black/50 border border-white/20 text-white" />
-                  <textarea name="bio" placeholder="Bio"
-                    class="w-full p-2 rounded-lg bg-black/50 border border-white/20 text-white"><%= profile?.bio || '' %></textarea>
-                  <div class="flex gap-2">
-                    <input type="url" name="facebook" placeholder="Facebook URL"
-                      value="<%= profile?.socialLinks?.facebook || '' %>"
-                      class="w-1/3 p-2 rounded-lg bg-black/50 border border-white/20 text-white" />
-                    <input type="url" name="twitter" placeholder="Twitter URL"
-                      value="<%= profile?.socialLinks?.twitter || '' %>"
-                      class="w-1/3 p-2 rounded-lg bg-black/50 border border-white/20 text-white" />
-                    <input type="url" name="instagram" placeholder="Instagram URL"
-                      value="<%= profile?.socialLinks?.instagram || '' %>"
-                      class="w-1/3 p-2 rounded-lg bg-black/50 border border-white/20 text-white" />
-                  </div>
-                  <button type="submit"
-                    class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition">บันทึก</button>
-                </form>
-              </section>
 
-              <!-- Collection Placeholder -->
-              <section class="bg-gradient-to-b from-white/5 to-transparent p-6 rounded-2xl border border-white/10">
-                <h2 class="font-semibold text-white mb-4">My Collection (Placeholder)</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                  <div
-                    class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
-                    Movie 1</div>
-                  <div
-                    class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
-                    Movie 2</div>
-                  <div
-                    class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
-                    Movie 3</div>
-                  <div
-                    class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
-                    Movie 4</div>
-                </div>
-              </section>
 
-              <!-- Favorites Placeholder -->
-              <section class="bg-gradient-to-b from-white/5 to-transparent p-6 rounded-2xl border border-white/10">
-                <h2 class="font-semibold text-white mb-4">Favorite Movies (Placeholder)</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                  <div
-                    class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
-                    Favorite 1</div>
-                  <div
-                    class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
-                    Favorite 2</div>
-                  <div
-                    class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
-                    Favorite 3</div>
-                  <div
-                    class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
-                    Favorite 4</div>
-                </div>
-              </section>
+                      <!-- Profile Edit -->
+                      <section
+                        class="bg-gradient-to-b from-white/5 to-transparent p-6 rounded-2xl border border-white/10">
+                        <h2 class="font-semibold text-white mb-4">แก้ไขโปรไฟล์</h2>
+                        <form class="space-y-4" action="/profile/update" method="POST" enctype="multipart/form-data">
+                          <div class="flex items-center gap-4">
+                            <img src="<%= profile?.avatarUrl || user?.avatarUrl || '/img/avatar-default.png' %>"
+                              alt="avatar" class="w-16 h-16 rounded-full object-cover ring-2 ring-red-600/70" />
+                            <!-- เปลี่ยนชื่อ input ให้ตรงกับ controller -->
+                            <input type="file" name="avatar" class="text-sm text-neutral-400" />
+                          </div>
+                          <input type="text" name="name" value="<%= user?.name || '' %>" placeholder="ชื่อ"
+                            class="w-full p-2 rounded-lg bg-black/50 border border-white/20 text-white" />
+                          <input type="email" name="email" value="<%= user?.email || '' %>" placeholder="อีเมล"
+                            class="w-full p-2 rounded-lg bg-black/50 border border-white/20 text-white" />
+                          <textarea name="bio" placeholder="Bio"
+                            class="w-full p-2 rounded-lg bg-black/50 border border-white/20 text-white"><%= profile?.bio || '' %></textarea>
+                          <div class="flex gap-2">
+                            <input type="url" name="facebook" placeholder="Facebook URL"
+                              value="<%= profile?.socialLinks?.facebook || '' %>"
+                              class="w-1/3 p-2 rounded-lg bg-black/50 border border-white/20 text-white" />
+                            <input type="url" name="twitter" placeholder="Twitter URL"
+                              value="<%= profile?.socialLinks?.twitter || '' %>"
+                              class="w-1/3 p-2 rounded-lg bg-black/50 border border-white/20 text-white" />
+                            <input type="url" name="instagram" placeholder="Instagram URL"
+                              value="<%= profile?.socialLinks?.instagram || '' %>"
+                              class="w-1/3 p-2 rounded-lg bg-black/50 border border-white/20 text-white" />
+                          </div>
+                          <button type="submit"
+                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition">บันทึก</button>
+                        </form>
+                      </section>
+
+                      <!-- Collection Placeholder -->
+                      <section
+                        class="bg-gradient-to-b from-white/5 to-transparent p-6 rounded-2xl border border-white/10">
+                        <h2 class="font-semibold text-white mb-4">My Collection (Placeholder)</h2>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                          <div
+                            class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
+                            Movie 1</div>
+                          <div
+                            class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
+                            Movie 2</div>
+                          <div
+                            class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
+                            Movie 3</div>
+                          <div
+                            class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
+                            Movie 4</div>
+                        </div>
+                      </section>
+
+                      <!-- Favorites Placeholder -->
+                      <section
+                        class="bg-gradient-to-b from-white/5 to-transparent p-6 rounded-2xl border border-white/10">
+                        <h2 class="font-semibold text-white mb-4">Favorite Movies (Placeholder)</h2>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                          <div
+                            class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
+                            Favorite 1</div>
+                          <div
+                            class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
+                            Favorite 2</div>
+                          <div
+                            class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
+                            Favorite 3</div>
+                          <div
+                            class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
+                            Favorite 4</div>
+                        </div>
+                      </section>
 
     </div>
   </main>

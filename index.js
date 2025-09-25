@@ -14,8 +14,8 @@ mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
-.then(() => console.log("MongoDB connected"))
-.catch(err => console.log("MongoDB connection error:", err))
+    .then(() => console.log("MongoDB connected"))
+    .catch(err => console.log("MongoDB connection error:", err))
 
 
 // Controllers import
@@ -34,7 +34,7 @@ const searchController = require('./controllers/searchController')
 const updateProfileController = require('./controllers/updateProfileController')
 const addCollectionController = require('./controllers/addCollectionController')
 // Middleware Import
-const {isAuthenticated , isAdmin , isUser} = require('./middleware/authMiddleware')
+const { isAuthenticated, isAdmin, isUser } = require('./middleware/authMiddleware')
 const userDataMiddleware = require('./middleware/userData')
 app.use(express.static('public'))
 app.use(express.json())
@@ -49,29 +49,30 @@ app.use(flash())
 app.use(userDataMiddleware)
 // middleware สำหรับส่ง loggedIn ไปทุก view
 app.use((req, res, next) => {
-    res.locals.messages = req.flash()
+    res.locals.success = req.flash('success')
+    res.locals.error = req.flash('error')
     res.locals.loggedIn = req.session.userId || null
     next()
 })
 
-app.set('view engine' , 'ejs')
+app.set('view engine', 'ejs')
 
 // get controlelr
-app.get('/' , indexController)
-app.get('/login' , loginController)
-app.get('/register' , registerController)
-app.get('/admin/dashboard' , isAuthenticated , isAdmin , adminDashboardController)
-app.get('/user/dashboard' , isAuthenticated , isUser , userDashboardController)
-app.post('/user/register' , storeController)
-app.post('/user/login' , loginUserController)
-app.get('/logout' , logoutController)
+app.get('/', indexController)
+app.get('/login', loginController)
+app.get('/register', registerController)
+app.get('/admin/dashboard', isAuthenticated, isAdmin, adminDashboardController)
+app.get('/user/dashboard', isAuthenticated, isUser, userDashboardController)
+app.post('/user/register', storeController)
+app.post('/user/login', loginUserController)
+app.get('/logout', logoutController)
 app.get('/movie/detail/:id', movieDetailController)
-app.post('/reviews' , storeReviewController)
-app.get('/review/form/:movieId' , reviewController)
-app.get('/searchResults' , searchController)
-app.post('/profile/update'  ,upload.single('avatar') , updateProfileController)
-app.post('/add/collection/:movieId' , addCollectionController)
+app.post('/reviews', storeReviewController)
+app.get('/review/form/:movieId', reviewController)
+app.get('/searchResults', searchController)
+app.post('/profile/update', upload.single('avatar'), updateProfileController)
+app.post('/add/collection/:movieId', addCollectionController)
 
-app.listen(4000 , () => {
+app.listen(4000, () => {
     console.log("App listening on port 4000")
 })
