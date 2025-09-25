@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
         // สร้างprofileให้user
         const profile = new Profile({
             userId: user._id,
-            avatarUrl: "",
+            avatarUrl: req.body.avatarUrl || undefined , 
             bio: "",
             socialLinks: {
                 facebook: "",

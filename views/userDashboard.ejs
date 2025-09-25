@@ -1,174 +1,132 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>User Dashboard</title>
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
-
-  <!-- Tailwind -->
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: { sans: ['Kanit','Roboto','ui-sans-serif','system-ui'] }
-        }
-      }
-    }
-  </script>
-
-  <!-- Alpine / Preline (accordion/overlay) -->
-  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/preline@2.4.1/dist/preline.min.js"></script>
-
-  <!-- ถ้ามี config แยกของโปรเจกต์ -->
-  <script src="/js/tailwind-config.js"></script>
 </head>
 
 <body class="font-sans text-neutral-200 bg-[#0b0b0b]">
-  <!-- เลเยอร์พื้นหลัง (gradient เดียวทั้งหน้า) -->
-  <div class="fixed inset-0 -z-10 bg-gradient-to-b from-[#3E0703]/85 via-[#120606]/45 to-black"></div>
 
-  <!-- ======= Mobile Top Bar ======= -->
-  <div class="sticky top-0 inset-x-0 z-20 bg-black/70 backdrop-blur border-b border-white/10 px-4 sm:px-6 lg:px-8 lg:hidden">
-    <div class="flex items-center justify-between py-3">
-      <button type="button"
-        class="size-9 flex items-center justify-center rounded-lg border border-white/10 text-neutral-200"
-        aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-application-sidebar"
-        data-hs-overlay="#hs-application-sidebar">
-        <span class="sr-only">Toggle Navigation</span>
-        <svg class="size-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/><path d="m8 9 3 3-3 3"/></svg>
-      </button>
-
-      <div class="text-sm">
-        สวัสดี, <span class="font-semibold"><%= user?.name || 'ผู้ใช้' %></span>
-      </div>
+  <!-- Sidebar -->
+  <aside class="fixed inset-y-0 start-0 w-72 z-50 bg-black/60 backdrop-blur border-r border-white/10 p-6 flex flex-col">
+    <div class="mb-6">
+      <a href="/" class="text-xl font-bold text-white">R-MOVIE<span class="text-red-500"> ●</span></a>
     </div>
-  </div>
-
-  <!-- ======= Sidebar ======= -->
-  <aside id="hs-application-sidebar"
-    class="hs-overlay [--auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform
-           w-72 h-full hidden fixed inset-y-0 start-0 z-60
-           lg:block lg:translate-x-0
-           bg-black/60 backdrop-blur border-r border-white/10">
-
-    <div class="flex flex-col h-full">
-      <!-- Brand -->
-      <div class="px-6 pt-5 pb-3 flex items-center justify-between">
-        <a href="/" class="text-xl font-bold tracking-wide">
-          <span class="text-white">R-MOVIE</span><span class="text-red-500"> ●</span>
-        </a>
-        <span class="text-xs text-neutral-400">v1.0</span>
-      </div>
-
-      <!-- Profile Card -->
-      <div class="px-6">
-        <div class="rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-transparent p-6">
-          <div class="flex flex-col items-center">
-            <div class="relative mb-3">
-              <img
-                src="<%= user?.avatarUrl || '/img/avatar-default.png' %>"
-                alt="avatar"
-                class="size-24 rounded-full object-cover ring-2 ring-red-600/70"
-                onerror="this.src='/img/avatar-default.png'; this.onerror=null;" />
-              <span class="absolute bottom-1.5 right-1.5 block size-3 rounded-full bg-emerald-500 ring-2 ring-black"></span>
-            </div>
-            <div class="text-center">
-              <p class="font-semibold text-white"><%= user?.name || 'ผู้ใช้' %></p>
-              <p class="text-xs text-neutral-400"><%= user?.email || 'ไม่ระบุ' %></p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Nav -->
-      <nav class="px-6 pt-6 t-4 flex-1 overflow-y-auto">
-        <ul class="space-y-2">
-          <!-- Dashboard Link -->
-          <li>
-            <a href="/user/dashboard"
-                class="flex items-center gap-3 px-3 py-2 rounded-lg bg-red-600/15 border border-red-600/25 text-white">
-                <svg class="size-4" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                <polyline points="9 22 9 12 15 12 15 22"/>
-                </svg>
-                Dashboard
-            </a>
-          </li>
-
-          <!-- Account Menu -->
-          <li>
-            <a href="/user/account"
-            class="flex items-center gap-3 px-3 py-2 rounded-lg bg-red-600/15 border border-red-600/25 text-white">
-            <svg class="size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-            <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-            Account
-            </a>
-          </li>
-
-          <!-- Logout Link with Logo -->
-          <li>
-            <a href="/user/account"
-            class="flex items-center gap-3 px-3 py-2 rounded-lg bg-red-600/15 border border-red-600/25 text-white">
-            <svg class="size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
-            </svg>
-            Logout
-             </a>
-          </li>
-        </ul>
-      </nav>
+    <div class="mb-6 bg-gradient-to-b from-white/5 to-transparent p-4 rounded-2xl border border-white/10 text-center">
+      <img src="<%= profile?.avatarUrl || user?.avatarUrl || '/img/avatar-default.png' %>" alt="avatar"
+        class="mx-auto w-20 h-20 rounded-full object-cover ring-2 ring-red-600/70 mb-2" />
+      <p class="font-semibold text-white">
+        <%= user?.name || 'ผู้ใช้' %>
+      </p>
+      <p class="text-xs text-neutral-400">
+        <%= user?.email || '-' %>
+      </p>
     </div>
+    <nav class="flex-1">
+      <ul class="space-y-2">
+        <li><a href="#"
+            class="block px-3 py-2 rounded-lg bg-red-600/15 border border-red-600/25 text-white">Dashboard</a></li>
+        <li><a href="#" class="block px-3 py-2 rounded-lg bg-red-600/15 border border-red-600/25 text-white">Account</a>
+        </li>
+        <li><a href="/logout"
+            class="block px-3 py-2 rounded-lg bg-red-600/15 border border-red-600/25 text-white">Logout</a></li>
+      </ul>
+    </nav>
   </aside>
 
-  <!-- ======= Main ======= -->
-  <main class="w-full pt-6 px-4 sm:px-6 md:px-8 lg:ps-80">
-    <div class="max-w-7xl mx-auto">
+  <!-- Main -->
+  <main class="ml-72 p-6">
+    <div class="max-w-7xl mx-auto space-y-6">
+
+      <!-- Flash Messages -->
       <!-- Flash Messages -->
       <% if (messages && Object.keys(messages).length) { %>
-        <div class="mb-4 space-y-2">
-          <% Object.keys(messages).forEach(function(type){ messages[type].forEach(function(msg){ %>
-            <p class="rounded-md px-4 py-2 text-sm
-                      <%= type === 'error'
-                          ? 'bg-red-500/15 text-red-200 border border-red-500/20'
-                          : 'bg-emerald-500/15 text-emerald-200 border border-emerald-500/20' %>">
-              <%= msg %>
-            </p>
+        <% Object.keys(messages).forEach(function(type) { messages[type].forEach(function(msg) { %>
+          <p class="<%= type === 'error' ? 'bg-red-600' : 'bg-emerald-600' %> 
+              text-white px-4 py-3 rounded text-sm mb-2" role="alert">
+            <%= msg %>
+          </p>
           <% }) }) %>
-        </div>
-      <% } %>
+            <% } %>
 
-      <!-- Profile Overview -->
-      <section class="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        <div class="rounded-2xl p-6 border border-white/10 bg-gradient-to-b from-white/5 to-transparent">
-          <h2 class="font-semibold text-white mb-2">ข้อมูลโปรไฟล์</h2>
-          <div class="flex items-center gap-4">
-            <img src="<%= user?.avatarUrl || '/img/avatar-default.png' %>" alt="avatar" class="w-12 h-12 rounded-full object-cover" />
-            <div>
-              <p class="text-sm text-neutral-400">ชื่อ: <%= user?.name || 'ไม่ระบุ' %></p>
-              <p class="text-sm text-neutral-400">อีเมล: <%= user?.email || 'ไม่ระบุ' %></p>
-            </div>
-          </div>
-        </div>
 
-        <div class="rounded-2xl p-6 border border-white/10 bg-gradient-to-b from-white/5 to-transparent">
-          <h2 class="font-semibold text-white mb-2">สรุปรีวิวของฉัน</h2>
-          <p class="text-sm text-neutral-400">ใส่ข้อมูลสรุปจำนวนรีวิว คะแนนเฉลี่ย ฯลฯ</p>
-        </div>
+              <!-- Profile Edit -->
+              <section class="bg-gradient-to-b from-white/5 to-transparent p-6 rounded-2xl border border-white/10">
+                <h2 class="font-semibold text-white mb-4">แก้ไขโปรไฟล์</h2>
+                <form class="space-y-4" action="/profile/update" method="POST" enctype="multipart/form-data">
+                  <div class="flex items-center gap-4">
+                    <img src="<%= profile?.avatarUrl || user?.avatarUrl || '/img/avatar-default.png' %>" alt="avatar"
+                      class="w-16 h-16 rounded-full object-cover ring-2 ring-red-600/70" />
+                    <!-- เปลี่ยนชื่อ input ให้ตรงกับ controller -->
+                    <input type="file" name="avatar" class="text-sm text-neutral-400" />
+                  </div>
+                  <input type="text" name="name" value="<%= user?.name || '' %>" placeholder="ชื่อ"
+                    class="w-full p-2 rounded-lg bg-black/50 border border-white/20 text-white" />
+                  <input type="email" name="email" value="<%= user?.email || '' %>" placeholder="อีเมล"
+                    class="w-full p-2 rounded-lg bg-black/50 border border-white/20 text-white" />
+                  <textarea name="bio" placeholder="Bio"
+                    class="w-full p-2 rounded-lg bg-black/50 border border-white/20 text-white"><%= profile?.bio || '' %></textarea>
+                  <div class="flex gap-2">
+                    <input type="url" name="facebook" placeholder="Facebook URL"
+                      value="<%= profile?.socialLinks?.facebook || '' %>"
+                      class="w-1/3 p-2 rounded-lg bg-black/50 border border-white/20 text-white" />
+                    <input type="url" name="twitter" placeholder="Twitter URL"
+                      value="<%= profile?.socialLinks?.twitter || '' %>"
+                      class="w-1/3 p-2 rounded-lg bg-black/50 border border-white/20 text-white" />
+                    <input type="url" name="instagram" placeholder="Instagram URL"
+                      value="<%= profile?.socialLinks?.instagram || '' %>"
+                      class="w-1/3 p-2 rounded-lg bg-black/50 border border-white/20 text-white" />
+                  </div>
+                  <button type="submit"
+                    class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition">บันทึก</button>
+                </form>
+              </section>
 
-        <div class="rounded-2xl p-6 border border-white/10 bg-gradient-to-b from-white/5 to-transparent">
-          <h2 class="font-semibold text-white mb-2">กิจกรรมล่าสุด</h2>
-          <p class="text-sm text-neutral-400">รายการกิจกรรมล่าสุดของผู้ใช้</p>
-        </div>
-      </section>
+              <!-- Collection Placeholder -->
+              <section class="bg-gradient-to-b from-white/5 to-transparent p-6 rounded-2xl border border-white/10">
+                <h2 class="font-semibold text-white mb-4">My Collection (Placeholder)</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                  <div
+                    class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
+                    Movie 1</div>
+                  <div
+                    class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
+                    Movie 2</div>
+                  <div
+                    class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
+                    Movie 3</div>
+                  <div
+                    class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
+                    Movie 4</div>
+                </div>
+              </section>
+
+              <!-- Favorites Placeholder -->
+              <section class="bg-gradient-to-b from-white/5 to-transparent p-6 rounded-2xl border border-white/10">
+                <h2 class="font-semibold text-white mb-4">Favorite Movies (Placeholder)</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                  <div
+                    class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
+                    Favorite 1</div>
+                  <div
+                    class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
+                    Favorite 2</div>
+                  <div
+                    class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
+                    Favorite 3</div>
+                  <div
+                    class="bg-black/50 p-2 rounded-lg border border-white/10 h-60 flex items-center justify-center text-neutral-400">
+                    Favorite 4</div>
+                </div>
+              </section>
+
     </div>
   </main>
 </body>
+
 </html>

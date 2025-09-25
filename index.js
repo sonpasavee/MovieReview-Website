@@ -5,6 +5,8 @@ const mongoose = require('mongoose')
 const expressSession = require('express-session')
 const flash = require('connect-flash')
 const dotenv = require('dotenv')
+const multer = require('multer')
+const upload = multer({ dest: 'public/uploads/' })
 dotenv.config()
 
 // MongoDB Connnection
@@ -29,19 +31,21 @@ const movieDetailController = require('./controllers/movieDetailController')
 const storeReviewController = require('./controllers/storeReviewController')
 const reviewController = require('./controllers/reviewController')
 const searchController = require('./controllers/searchController')
+const UpdateProfileController = require('./controllers/updateProfileController')
 // Middleware Import
 const {isAuthenticated , isAdmin , isUser} = require('./middleware/authMiddleware')
 const userDataMiddleware = require('./middleware/userData')
+const updateProfileController = require('./controllers/updateProfileController')
 app.use(express.static('public'))
 app.use(express.json())
-app.use(express.urlencoded()) //encode form to object
-app.use(flash())
+app.use(express.urlencoded({ extended: true }))
 app.use(expressSession({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 1000 * 60 * 60 } // เก็บข้อมูล login 1 ชั่วโมง
 }))
+app.use(flash())
 app.use(userDataMiddleware)
 // middleware สำหรับส่ง loggedIn ไปทุก view
 app.use((req, res, next) => {
@@ -65,6 +69,7 @@ app.get('/movie/detail/:id', movieDetailController)
 app.post('/reviews' , storeReviewController)
 app.get('/review/form/:movieId' , reviewController)
 app.get('/searchResults' , searchController)
+app.post('/profile/update'  ,upload.single('avatar') , updateProfileController)
 
 
 app.listen(4000 , () => {

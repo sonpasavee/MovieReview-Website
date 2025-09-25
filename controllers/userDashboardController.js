@@ -1,9 +1,11 @@
 const User = require('../models/User')
+const Profile = require('../models/Profile')
 
 module.exports = async (req, res) => {
   try {
     // ตรวจสอบว่า userId อยู่ใน session หรือไม่
-    const userId = req.session.userId
+    const users = res.locals.UserData
+    const userId = users._id
     if (!userId) {
       req.flash('error', 'กรุณาเข้าสู่ระบบ')
       return res.redirect('/login')
@@ -18,23 +20,11 @@ module.exports = async (req, res) => {
       return res.redirect('/login')
     }
 
-    // เตรียมข้อมูลโปรไฟล์
-    const profileData = {
-      avatarUrl: user.avatarUrl || "",  // ถ้าไม่มี avatarUrl ให้เป็นค่าว่าง
-      bio: user.bio || "",             // ถ้าไม่มี bio ให้เป็นค่าว่าง
-      socialLinks: {
-        facebook: user.socialLinks?.facebook || "",
-        twitter: user.socialLinks?.twitter || "",
-        instagram: user.socialLinks?.instagram || ""
-      }
-    }
+    // ดึงข้อมูล profile ของผู้ใช้จาก collection Profile
+    const profile = await Profile.findOne({ userId: user._id }).populate("userId")
 
     // ส่งข้อมูลไปยังหน้าแดชบอร์ด
-    return res.render('userDashboard', {
-      title: 'แดชบอร์ดผู้ใช้',
-      user: { ...user, profileData },  // รวมข้อมูลผู้ใช้กับข้อมูลโปรไฟล์
-      messages: req.flash()            // แสดงข้อความแจ้งเตือน
-    })
+    return res.render('userDashboard', { title: 'แดชบอร์ดผู้ใช้', user , profile , messages: req.flash() })
   } catch (err) {
     console.error('userDashboardController error:', err)
     req.flash('error', 'เกิดข้อผิดพลาด กรุณาลองใหม่')
