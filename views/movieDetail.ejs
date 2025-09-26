@@ -59,7 +59,7 @@
           </h1>
           <p class="text-gray-300">
             ปี: <%= movieDetail.release_date ? movieDetail.release_date.substring(0, 4) : 'N/A' %> |
-              เรตติ้ง: <%= m ? m.avgRating.toFixed(1) : 'N/A' %>/10
+              เรตติ้ง: <%= (m && m.avgRating !== null) ? m.avgRating.toFixed(1) : 'N/A' %>/10
           </p>
           <p class="text-gray-200">
             <%= movieDetail.overview %>
