@@ -28,6 +28,11 @@ const logoutController = require('./controllers/logoutController')
 const movieDetailController = require('./controllers/movieDetailController')
 const storeReviewController = require('./controllers/storeReviewController')
 const reviewController = require('./controllers/reviewController')
+const searchController = require('./controllers/searchController')
+const updateProfileController = require('./controllers/updateProfileController')
+const addCollectionController = require('./controllers/addCollectionController')
+const collectionContrller = require('./controllers/collectionController')
+
 // Middleware Import
 const {isAuthenticated , isAdmin , isUser} = require('./middleware/authMiddleware')
 
@@ -62,6 +67,15 @@ app.get('/logout' , logoutController)
 app.get('/movie/detail/:id', movieDetailController)
 app.post('/reviews' , storeReviewController)
 app.get('/review/form/:movieId' , reviewController)
+app.post('/reviews', storeReviewController)
+app.get('/review/form/:movieId', reviewController)
+app.get('/searchResults', searchController)
+app.post('/profile/update', upload.single('avatar'), updateProfileController)
+app.post('/add/collection/:movieId', addCollectionController)
+app.get('/collection', collectionContrller)
+app.post('/collection/remove/:collectionId/:movieId', collectionContrller.removeMovie)
+app.post('/collection/delete/:collectionId', collectionContrller.deleteCollection)
+app.post('/collection/rename/:collectionId', collectionContrller.renameCollection)
 
 
 app.listen(4000 , () => {
