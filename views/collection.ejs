@@ -28,58 +28,62 @@
                     <% } else { %>
                         <% collections.forEach(c=> { %>
                             <section class="mb-10 relative">
-                                
-                                <div class="flex justify-between items-center mb-4">
-                                    <h2 id="collection-name-<%= c._id %>"
-                                        class="text-xl sm:text-2xl font-semibold text-white">
-                                        <%= c.name %>
-                                    </h2>
+                                <<<<<<< HEAD=======>>>>>>> 02706dc (add colletion)
+                                    <div class="flex justify-between items-center mb-4">
+                                        <h2 id="collection-name-<%= c._id %>"
+                                            class="text-xl sm:text-2xl font-semibold text-white">
+                                            <%= c.name %>
+                                        </h2>
 
-                                    <div class="relative inline-block text-left">
-                                        <button type="button" class="text-gray-400 hover:text-white font-bold text-lg"
-                                            id="menu-button-<%= c._id %>">⋮</button>
+                                        <div class="relative inline-block text-left">
+                                            <button type="button"
+                                                class="text-gray-400 hover:text-white font-bold text-lg"
+                                                id="menu-button-<%= c._id %>">⋮</button>
 
-                                        <div class="hidden absolute right-0 mt-2 w-36 origin-top-right bg-gray-900 border border-gray-700 rounded-md shadow-lg z-10"
-                                            id="dropdown-<%= c._id %>">
-                                            <div class="py-1">
-                                                <button onclick="openRenameModal('<%= c._id %>', '<%= c.name %>')"
-                                                    class="w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-700">Rename</button>
-                                                <form action="/collection/delete/<%= c._id %>" method="POST">
-                                                    <button type="submit"
-                                                        class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-700">Delete</button>
-                                                </form>
+                                            <div class="hidden absolute right-0 mt-2 w-36 origin-top-right bg-gray-900 border border-gray-700 rounded-md shadow-lg z-10"
+                                                id="dropdown-<%= c._id %>">
+                                                <div class="py-1">
+                                                    <button onclick="openRenameModal('<%= c._id %>', '<%= c.name %>')"
+                                                        class="w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-700">Rename</button>
+                                                    <form action="/collection/delete/<%= c._id %>" method="POST">
+                                                        <button type="submit"
+                                                            class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-700">Delete</button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <% if (!c.movies || c.movies.length===0) { %>
-                                    <p class="text-gray-400 mb-4">ไม่มีหนังใน Collection นี้</p>
-                                    <% } else { %>
-                                        <div
-                                            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
-                                            <% c.movies.forEach(movie=> { %>
-                                                <div class="relative">
-                                                    <a href="/movie/detail/<%= movie.movieId %>"
-                                                        class="block rounded-xl overflow-hidden">
-                                                        <img src="<%= movie.posterPath ? 'https://image.tmdb.org/t/p/w500' + movie.posterPath : '/images/no-poster.png' %>"
-                                                            class="h-56 object-cover w-full" alt="<%= movie.title %>">
-                                                    </a>
+                                    <% if (!c.movies || c.movies.length===0) { %>
+                                        <p class="text-gray-400 mb-4">ไม่มีหนังใน Collection นี้</p>
+                                        <% } else { %>
+                                            <div
+                                                class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
+                                                <% c.movies.forEach(movie=> { %>
+                                                    <div class="relative">
+                                                        <a href="/movie/detail/<%= movie.movieId %>"
+                                                            class="block rounded-xl overflow-hidden">
+                                                            <img src="<%= movie.posterPath ? 'https://image.tmdb.org/t/p/w500' + movie.posterPath : '/images/no-poster.png' %>"
+                                                                class="h-56 object-cover w-full"
+                                                                alt="<%= movie.title %>">
+                                                        </a>
 
-                                                    <!-- ปุ่มลบหนังจาก collection -->
-                                                    <form action="/collection/<%= c._id %>/remove/<%= movie.movieId %>"
-                                                        method="POST" class="absolute top-2 right-2">
-                                                        <button type="submit"
-                                                            class="rounded-full px-2 py-1 text-red-600 hover:text-red-400 font-bold text-lg">&times;</button>
-                                                    </form>
+                                                        <!-- ปุ่มลบหนังจาก collection -->
+                                                        <form
+                                                            action="/collection/<%= c._id %>/remove/<%= movie.movieId %>"
+                                                            method="POST" class="absolute top-2 right-2">
+                                                            <button type="submit"
+                                                                class="rounded-full px-2 py-1 text-red-600 hover:text-red-400 font-bold text-lg">&times;</button>
+                                                        </form>
 
-                                                    <p class="mt-2 text-sm font-medium text-center text-white truncate">
-                                                        <%= movie.title %>
-                                                    </p>
-                                                </div>
-                                                <% }) %>
-                                        </div>
-                                        <% } %>
+                                                        <p
+                                                            class="mt-2 text-sm font-medium text-center text-white truncate">
+                                                            <%= movie.title %>
+                                                        </p>
+                                                    </div>
+                                                    <% }) %>
+                                            </div>
+                                            <% } %>
                             </section>
                             <% }) %>
                                 <% } %>
@@ -146,4 +150,5 @@
             }
         </script>
 </body>
+
 </html>

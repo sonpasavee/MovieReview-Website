@@ -35,6 +35,8 @@ const updateProfileController = require('./controllers/updateProfileController')
 const addCollectionController = require('./controllers/addCollectionController')
 const collectionController = require('./controllers/controllerCollection')
 
+
+
 // Middleware Import
 const { isAuthenticated, isAdmin, isUser } = require('./middleware/authMiddleware')
 const userDataMiddleware = require('./middleware/userData')
@@ -69,6 +71,7 @@ app.post('/user/register', storeController)
 app.post('/user/login', loginUserController)
 app.get('/logout', logoutController)
 app.get('/movie/detail/:id', movieDetailController)
+
 app.post('/reviews', storeReviewController)
 app.get('/review/form/:movieId', reviewController)
 app.get('/searchResults', searchController)
