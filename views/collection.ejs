@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>My Collections</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&family=Roboto:wght@400;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/js/tailwind-config.js"></script>
+</head>
+
+<body class="font-sans text-sm text-white bg-gradient-to-b from-[#1F1F1F] via-[#121212] to-[#000000]">
+
+    <%- include('partials/header') %>
+
+        <div class="flex min-h-screen w-full">
+            <main class="flex-1 py-8 px-4 sm:px-8">
+
+                <h1 class="text-2xl sm:text-3xl font-bold mb-6">My Collections</h1>
+
+                <% if (!collections || collections.length===0) { %>
+                    <div class="mt-6 rounded-xl border border-dashed border-gray-600 bg-black p-10 text-center">
+                        <p class="text-white font-medium">คุณยังไม่มี Collection</p>
+                        <p class="text-xs text-gray-400 mt-1">ลองสร้าง Collection ใหม่เพื่อเก็บหนังที่คุณชอบ</p>
+                    </div>
+                    <% } else { %>
+                        <% collections.forEach(c=> { %>
+                            <section class="mb-10 relative">
+                                
+                                <div class="flex justify-between items-center mb-4">
+                                    <h2 id="collection-name-<%= c._id %>"
+                                        class="text-xl sm:text-2xl font-semibold text-white">
+                                        <%= c.name %>
+                                    </h2>
+
+                                    <div class="relative inline-block text-left">
+                                        <button type="button" class="text-gray-400 hover:text-white font-bold text-lg"
+                                            id="menu-button-<%= c._id %>">⋮</button>
+
+                                        <div class="hidden absolute right-0 mt-2 w-36 origin-top-right bg-gray-900 border border-gray-700 rounded-md shadow-lg z-10"
+                                            id="dropdown-<%= c._id %>">
+                                            <div class="py-1">
+                                                <button onclick="openRenameModal('<%= c._id %>', '<%= c.name %>')"
+                                                    class="w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-700">Rename</button>
+                                                <form action="/collection/delete/<%= c._id %>" method="POST">
+                                                    <button type="submit"
+                                                        class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-700">Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <% if (!c.movies || c.movies.length===0) { %>
+                                    <p class="text-gray-400 mb-4">ไม่มีหนังใน Collection นี้</p>
+                                    <% } else { %>
+                                        <div
+                                            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
+                                            <% c.movies.forEach(movie=> { %>
+                                                <div class="relative">
+                                                    <a href="/movie/detail/<%= movie.movieId %>"
+                                                        class="block rounded-xl overflow-hidden">
+                                                        <img src="<%= movie.posterPath ? 'https://image.tmdb.org/t/p/w500' + movie.posterPath : '/images/no-poster.png' %>"
+                                                            class="h-56 object-cover w-full" alt="<%= movie.title %>">
+                                                    </a>
+
+                                                    <!-- ปุ่มลบหนังจาก collection -->
+                                                    <form action="/collection/<%= c._id %>/remove/<%= movie.movieId %>"
+                                                        method="POST" class="absolute top-2 right-2">
+                                                        <button type="submit"
+                                                            class="rounded-full px-2 py-1 text-red-600 hover:text-red-400 font-bold text-lg">&times;</button>
+                                                    </form>
+
+                                                    <p class="mt-2 text-sm font-medium text-center text-white truncate">
+                                                        <%= movie.title %>
+                                                    </p>
+                                                </div>
+                                                <% }) %>
+                                        </div>
+                                        <% } %>
+                            </section>
+                            <% }) %>
+                                <% } %>
+
+            </main>
+        </div>
+        <div id="renameModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+            <div class="bg-gray-900 rounded-lg p-6 w-80">
+                <h3 class="text-lg font-semibold text-white mb-4">Rename Collection</h3>
+                <input id="renameInput" type="text"
+                    class="w-full px-3 py-2 rounded bg-gray-800 text-white placeholder-gray-400 focus:outline-none" />
+
+                <div class="mt-4 flex justify-end gap-2">
+                    <button onclick="closeRenameModal()"
+                        class="px-4 py-2 bg-gray-700 rounded text-white hover:bg-gray-600">Cancel</button>
+                    <button onclick="submitRename()"
+                        class="px-4 py-2 bg-green-600 rounded text-white hover:bg-green-500">Save</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('click', function (e) {
+                document.querySelectorAll('[id^="dropdown-"]').forEach(dropdown => {
+                    const menuButton = document.getElementById('menu-button-' + dropdown.id.split('-')[1]);
+                    if (menuButton && menuButton.contains(e.target)) {
+                        dropdown.classList.toggle('hidden');
+                    } else if (!dropdown.contains(e.target)) {
+                        dropdown.classList.add('hidden');
+                    }
+                });
+            });
+
+            let currentCollectionId = null;
+
+            function openRenameModal(collectionId, collectionName) {
+                currentCollectionId = collectionId;
+                document.getElementById('renameInput').value = '';
+                document.getElementById('renameInput').placeholder = collectionName;
+                document.getElementById('renameModal').classList.remove('hidden');
+            }
+
+            function closeRenameModal() {
+                document.getElementById('renameModal').classList.add('hidden');
+            }
+
+            function submitRename() {
+                const newName = document.getElementById('renameInput').value.trim();
+                if (!newName) return;
+
+                fetch('/collection/rename/' + currentCollectionId, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: newName })
+                })
+                    .then(res => {
+                        if (res.ok) {
+                            document.querySelector(`#collection-name-${currentCollectionId}`).textContent = newName;
+                            closeRenameModal();
+                        } else {
+                            alert('เกิดข้อผิดพลาด');
+                        }
+                    });
+            }
+        </script>
+</body>
+</html>
