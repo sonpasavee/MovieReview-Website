@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
         req.session.userId = user._id
 
         // กลับไปหน้า home
-        res.redirect('/')
+        res.redirect('/login')
     } catch (error) {
         console.log(error)
         if (error.errors) {
