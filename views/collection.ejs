@@ -164,6 +164,49 @@
             </div>
         </div>
     </div>
+<script>
+            document.addEventListener('click', function (e) {
+                document.querySelectorAll('[id^="dropdown-"]').forEach(dropdown => {
+                    const menuButton = document.getElementById('menu-button-' + dropdown.id.split('-')[1]);
+                    if (menuButton && menuButton.contains(e.target)) {
+                        dropdown.classList.toggle('hidden');
+                    } else if (!dropdown.contains(e.target)) {
+                        dropdown.classList.add('hidden');
+                    }
+                });
+            });
 
+            let currentCollectionId = null;
+
+            function openRenameModal(collectionId, collectionName) {
+                currentCollectionId = collectionId;
+                document.getElementById('renameInput').value = '';
+                document.getElementById('renameInput').placeholder = collectionName;
+                document.getElementById('renameModal').classList.remove('hidden');
+            }
+
+            function closeRenameModal() {
+                document.getElementById('renameModal').classList.add('hidden');
+            }
+
+            function submitRename() {
+                const newName = document.getElementById('renameInput').value.trim();
+                if (!newName) return;
+
+                fetch('/collection/rename/' + currentCollectionId, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: newName })
+                })
+                    .then(res => {
+                        if (res.ok) {
+                            document.querySelector(`#collection-name-${currentCollectionId}`).textContent = newName;
+                            closeRenameModal();
+                        } else {
+                            alert('เกิดข้อผิดพลาด');
+                        }
+                    });
+            }
+        </script>
 </body>
 </html>
