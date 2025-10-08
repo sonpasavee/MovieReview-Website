@@ -4,19 +4,13 @@ const ejs = require('ejs')
 const mongoose = require('mongoose')
 const expressSession = require('express-session')
 const flash = require('connect-flash')
+const path = require('path')
 const dotenv = require('dotenv')
-
+// const multer = require('multer')
+// const upload = multer({ dest: 'public/uploads/' })
 const multer = require('multer')
-let upload;
-if (process.env.VERCEL) {
-    // บน Vercel ใช้ memoryStorage
-    const storage = multer.memoryStorage();
-    upload = multer({ storage: storage });
-} else {
-    // รัน localhost ใช้ diskStorage
-    upload = multer({ dest: 'public/uploads/' });
-}
-
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
 dotenv.config()
 
 // MongoDB Connnection
@@ -67,7 +61,8 @@ app.use((req, res, next) => {
     next()
 })
 
-app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
 // get controlelr
 app.get('/', indexController)
