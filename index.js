@@ -7,8 +7,9 @@ const flash = require('connect-flash')
 const dotenv = require('dotenv')
 // const multer = require('multer')
 // const upload = multer({ dest: 'public/uploads/' })
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const multer = require('multer')
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
 dotenv.config()
 
 // MongoDB Connnection
