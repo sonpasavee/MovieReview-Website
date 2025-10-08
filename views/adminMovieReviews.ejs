@@ -6,114 +6,60 @@
   <title><%= movie?.title || 'Admin • Reviews' %></title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-black text-white min-h-screen flex flex-col">
-  <!-- Top bar -->
-  <div class="w-full h-12 bg-gradient-to-r from-blue-700/70 via-indigo-700/70 to-purple-700/70"></div>
+<body class="min-h-screen bg-gradient-to-b from-[#1a0000] via-[#0b0b0b] to-black text-zinc-100 flex flex-col">
+  <div class="w-full bg-black/80 border-b border-red-900/40">
+    <div class="max-w-6xl mx-auto px-4 py-3">
+      <div class="text-lg font-semibold tracking-wide">R-MOVIE • Admin</div>
+    </div>
+  </div>
 
-  <main class="flex-1 max-w-6xl mx-auto px-4 py-6">
-    <!-- Movie hero -->
-    <section class="bg-zinc-900/40 ring-1 ring-zinc-800 rounded-2xl p-4 md:p-6">
-      <div class="grid grid-cols-1 md:grid-cols-[220px,1fr] gap-6">
-        <div>
-          <img
-            src="<%= movie?.poster_path || movie?.posterPath || '/image/login.png' %>"
-            alt="<%= movie?.title %>"
-            class="w-[220px] h-auto rounded-xl ring-1 ring-zinc-700 object-cover mx-auto md:mx-0"
-          />
+  <main class="flex-1 w-full">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+      <div class="rounded-2xl border border-red-900/40 bg-black/70 shadow-xl overflow-hidden">
+
+        <!-- ปุ่มสลับ -->
+        <div class="px-4 pt-4">
+          <div class="inline-flex rounded-md border border-red-900/60 bg-black/40 p-1">
+            <a href="/admin/movie/<%= movie?.movieId || movie?.id %>/detail"
+               class="px-4 py-2 text-sm rounded-md hover:bg-white/5 transition">Detail</a>
+            <a href="/admin/movie/<%= movie?.movieId || movie?.id %>/reviews"
+               class="px-4 py-2 text-sm rounded-md bg-red-900/30 ring-1 ring-red-800/60">Reviews</a>
+          </div>
         </div>
 
-        <div>
-          <h1 class="text-3xl font-semibold"><%= movie?.title || '—' %></h1>
-
-          <div class="mt-2 text-sm text-zinc-400 flex flex-wrap items-center gap-3">
-            <% if (movie?.release_date) { %>
-              <span>ปี: <%= new Date(movie.release_date).getFullYear() %></span>
-            <% } %>
-            <% if (movie?.runtime) { %>
-              <span>ความยาว: <%= movie.runtime %> นาที</span>
-            <% } %>
-            <% if (movie?.vote_average != null) { %>
-              <span>คะแนน TMDb: <%= movie.vote_average %>/10</span>
-            <% } %>
-          </div>
-
-          <% if (movie?.genres && movie.genres.length) { %>
-            <div class="mt-3 flex flex-wrap gap-2">
-              <% movie.genres.forEach(g => { %>
-                <span class="text-xs px-2 py-1 rounded-full bg-zinc-800 ring-1 ring-zinc-700"><%= g %></span>
+        <!-- รายการรีวิว -->
+        <div class="p-4 md:p-6 space-y-6">
+          <% if (Array.isArray(reviews) && reviews.length) { %>
+            <div class="divide-y divide-zinc-800/80 border-y border-zinc-800/80">
+              <% reviews.forEach(r => { %>
+                <article class="py-4">
+                  <div class="flex items-start justify-between gap-4">
+                    <div class="min-w-0">
+                      <div class="text-sm font-semibold"><%= r.name || 'user' %> ให้คะแนน: <%= r.rating %>/10</div>
+                      <% if (r.comment) { %>
+                        <div class="mt-1 text-sm text-zinc-300 break-words"><%= r.comment %></div>
+                      <% } %>
+                      <div class="mt-2 text-xs text-zinc-500">
+                        <%= new Date(r.createdAt || Date.now()).toDateString() %>
+                      </div>
+                    </div>
+                    <form method="POST" action="/admin/reviews/<%= r._id %>/delete"
+                          onsubmit="return confirm('ต้องการลบรีวิวนี้หรือไม่?');" class="shrink-0">
+                      <input type="hidden" name="movieId" value="<%= movie?.movieId || movie?.id %>">
+                      <button type="submit" class="px-3 py-1 text-xs font-medium rounded-md bg-red-700 hover:bg-red-600 border border-red-500">ลบ</button>
+                    </form>
+                  </div>
+                </article>
               <% }) %>
             </div>
+          <% } else { %>
+            <div class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 text-center text-zinc-300">
+              ยังไม่มีรีวิวสำหรับเรื่องนี้
+            </div>
           <% } %>
-
-          <p class="mt-4 text-zinc-300 leading-7"><%= movie?.overview || '—' %></p>
         </div>
       </div>
-
-      <% if (movie?.trailer_embed) { %>
-        <div class="mt-6">
-          <h3 class="mb-2 text-lg text-zinc-200">ตัวอย่างหนัง</h3>
-          <div class="aspect-video w-full rounded-xl overflow-hidden ring-1 ring-zinc-800 bg-black">
-            <iframe
-              src="<%= movie.trailer_embed %>"
-              title="Trailer"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              class="w-full h-full">
-            </iframe>
-          </div>
-        </div>
-      <% } %>
-    </section>
-
-    <!-- Reviews -->
-    <section class="mt-8">
-      <h2 class="text-xl font-semibold mb-4">รีวิวผู้ใช้</h2>
-
-      <% if (Array.isArray(reviews) && reviews.length) { %>
-        <div class="space-y-4">
-          <% reviews.forEach(r => { %>
-            <article class="bg-white text-zinc-900 rounded-xl shadow ring-1 ring-zinc-200 p-4">
-              <div class="flex items-start justify-between gap-3">
-                <div class="flex items-center gap-3">
-                  <div class="h-10 w-10 rounded-full bg-zinc-200 grid place-items-center text-zinc-600 font-semibold">
-                    <%= (r.name || 'U')[0].toUpperCase() %>
-                  </div>
-                  <div class="leading-tight">
-                    <div class="font-medium"><%= r.name || 'ผู้ใช้' %></div>
-                    <div class="text-xs text-zinc-500">
-                      <%= new Date(r.createdAt || Date.now()).toLocaleDateString('th-TH', { year:'numeric', month:'long', day:'numeric' }) %>
-                    </div>
-                  </div>
-                </div>
-                <div class="flex items-center gap-2 text-indigo-700">
-                  <span class="text-sm text-zinc-600"><%= r.rating %></span>
-                  <span>★</span>
-                </div>
-              </div>
-
-              <p class="mt-3 text-sm leading-6 text-zinc-800 whitespace-pre-line"><%= r.comment || '' %></p>
-
-              <form method="POST"
-                    action="/admin/reviews/<%= r._id %>/delete"
-                    class="mt-3"
-                    onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าจะลบรีวิวนี้?');">
-                <input type="hidden" name="movieId" value="<%= movie?.movieId || movie?.id %>">
-                <button type="submit"
-                        class="px-3 py-1 rounded-full text-white bg-rose-600 hover:bg-rose-500 text-sm">
-                  ลบรีวิวนี้
-                </button>
-              </form>
-            </article>
-          <% }) %>
-        </div>
-      <% } else { %>
-        <div class="rounded-xl ring-1 ring-zinc-800 bg-zinc-900/60 p-6 text-center text-zinc-300">
-          ยังไม่มีรีวิวสำหรับเรื่องนี้
-        </div>
-      <% } %>
-    </section>
+    </div>
   </main>
-
-  <%- include('partials/footer') %>
 </body>
 </html>
