@@ -5,7 +5,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>เข้าสู่ระบบ - เว็บรีวิวหนัง</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- เรียกใช้ config แยก -->
+  <script src="/js/tailwind-config.js"></script>
+
+  <!-- Alpine.js -->
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
 <body class="flex items-center justify-center min-h-screen bg-cover bg-center font-sans"
@@ -18,35 +30,36 @@
 
     <!-- Login Form -->
     <form action="/user/login" method="POST" class="space-y-6">
-      <% if (messages.error) { %>
-        <% messages.error.forEach(function(msg){ %>
-          <p class="bg-red-600 text-white px-4 py-3 rounded text-sm" role="alert">
+      <% if (error && error.length> 0) { %>
+        <% error.forEach(msg=> { %>
+          <p class="bg-red-600 text-white px-4 py-3 rounded">
             <%= msg %>
           </p>
-        <% }) %>
-      <% } %>
+          <% }) %>
+            <% } %>
 
-      <!-- Email -->
-      <div>
-        <input type="email" id="email" name="email" required placeholder="อีเมล"
-          class="w-full px-5 py-4 bg-white/5 text-white border border-white/40 rounded-sm focus:outline-none focus:ring-2 focus:ring-red-600 placeholder-gray-300 text-lg">
-      </div>
 
-      <!-- Password -->
-      <div>
-        <input type="password" id="password" name="password" required placeholder="รหัสผ่าน"
-          class="w-full px-5 py-4 bg-white/5 text-white border border-white/40 rounded-sm focus:outline-none focus:ring-2 focus:ring-red-600 placeholder-gray-300 text-lg">
-      </div>
+              <!-- Email -->
+              <div>
+                <input type="email" id="email" name="email" required placeholder="อีเมล"
+                  class="w-full px-5 py-4 bg-white/5 text-white border border-white/40 rounded-sm focus:outline-none focus:ring-2 focus:ring-red-600 placeholder-gray-300 text-lg font-sans">
+              </div>
 
-      <!-- Button -->
-      <button type="submit"
-        class="w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-lg font-semibold text-lg transition">
-        เข้าสู่ระบบ
-      </button>
+              <!-- Password -->
+              <div>
+                <input type="password" id="password" name="password" required placeholder="รหัสผ่าน"
+                  class="w-full px-5 py-4 bg-white/5 text-white border border-white/40 rounded-sm focus:outline-none focus:ring-2 focus:ring-red-600 placeholder-gray-300 text-lg font-sans">
+              </div>
+
+              <!-- Button -->
+              <button type="submit"
+                class="w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-lg font-semibold text-lg transition font-sans">
+                เข้าสู่ระบบ
+              </button>
     </form>
 
     <!-- Register -->
-    <p class="text-gray-400 text-center mt-8 text-base">
+    <p class="text-gray-400 text-center mt-8 text-base font-sans">
       ยังไม่มีบัญชี?
       <a href="/register" class="text-white font-medium hover:underline">สมัครสมาชิก</a>
     </p>

@@ -8,7 +8,7 @@ module.exports = (req, res) => {
         console.log(user)
 
         if (user) {
-            let compare = bcrypt.compare(password, user.password).then((match) => {
+            bcrypt.compare(password, user.password).then((match) => {
                 if (match) {
                     req.session.userId = user._id
                     req.session.user = {
@@ -22,11 +22,9 @@ module.exports = (req, res) => {
                         res.redirect('/admin/dashboard')
                     } else if (user.role === 'user') {
                         res.redirect('/user/dashboard')
-                    }else {
+                    } else {
                         res.redirect('/')
                     }
-                    
-
 
                 } else {
                     req.flash('error', 'รหัสผ่านไม่ถูกต้อง')

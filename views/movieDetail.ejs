@@ -2,91 +2,189 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Detail</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Detail</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet">
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/js/tailwind-config.js"></script>
+  <!-- Alpine.js -->
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body class="bg-gray-900 min-h-screen">
-    <div class="max-w-5xl mx-auto mt-8 p-6 rounded-2xl shadow-lg bg-white">
-        <div class="flex flex-col lg:flex-row gap-6">
+<body class="font-sans text-sm text-white bg-gradient-to-b from-[#3E0703] via-black to-black">
 
-            <!-- Poster -->
-            <img src="https://image.tmdb.org/t/p/w500<%= movieDetail.poster_path %>" class="w-full lg:w-1/3 rounded-lg">
+  <!-- HEADER -->
+  <%- include('partials/header') %>
 
-            <!-- Movie Info -->
-            <div class="flex-1">
-                <h1 class="text-4xl font-bold mb-2">
-                    <%= movieDetail.title %>
-                </h1>
-                <p class="text-gray-500 mb-2">ปี: <%= movieDetail.release_date.substring(0,4) %> | เรทติ้ง : <%=
-                            avgRating ? avgRating.toFixed(1) : "ยังไม่มี" %>/10
-                </p>
-                <p class="text-gray-700 mb-4">
-                    <%= movieDetail.overview %>
-                </p>
+    <div class="max-w-5xl mx-auto mt-8 p-6 rounded-2xl shadow-lg bg-black border border-red-900"
+      x-data="{ tab: 'detail' }">
 
-                <!-- Genres -->
-                <% if(movieDetail.genres) { %>
-                    <p class="text-gray-500 mb-4">
-                        ประเภท:
-                        <% movieDetail.genres.forEach(g=> { %>
-                            <span class="inline-block bg-gray-200 px-2 py-1 rounded-full text-sm mr-2">
-                                <%= g.name %>
-                            </span>
-                            <% }) %>
-                    </p>
-                    <% } %>
-
-                        <!-- ปุ่มเชื่อมไปหน้ารีวิว -->
-                        <a href="/review/form/<%= movieDetail.movieId %>"
-                            class="inline-block bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition mb-4">
-                            ✏️ เขียนรีวิว
-                        </a>
-
-
-
-
-
-            </div>
-        </div>
-        <!-- Trailer -->
-        <% if(trailerKey) { %>
-            <div class="mt-8">
-                <h2 class="text-2xl font-bold mb-2">ตัวอย่างหนัง</h2>
-                <div class="aspect-w-16 aspect-h-9">
-                    <iframe class="w-full h-64 lg:h-96 rounded-lg" src="https://www.youtube.com/embed/<%= trailerKey %>"
-                        title="Movie Trailer" frameborder="0" allowfullscreen>
-                    </iframe>
-                </div>
-            </div>
+      <!-- Tab Buttons -->
+      <div class="flex border-b border-neutral-700 mb-4">
+        <button :class="tab === 'detail' ? 'border-b-2 border-red-600 text-white' : 'text-gray-400'"
+          class="px-4 py-2 font-semibold" @click="tab = 'detail'">Detail</button>
+        <button :class="tab === 'reviews' ? 'border-b-2 border-red-600 text-white' : 'text-gray-400'"
+          class="px-4 py-2 font-semibold" @click="tab = 'reviews'">Reviews</button>
+      </div>
+      <% if (success && success.length> 0) { %>
+        <% success.forEach(msg=> { %>
+          <p class="bg-green-600 text-white px-4 py-3 rounded text-sm my-3">
+            <%= msg %>
+          </p>
+          <% }) %>
             <% } %>
-                <!-- User Reviews -->
-                <div class="mt-8">
-                    <h2 class="text-2xl font-bold mb-4">รีวิวจากผู้ใช้</h2>
-                    <% if(movieDetail.reviews && movieDetail.reviews.length> 0){ %>
-                        <% movieDetail.reviews.forEach(r=> { %>
-                            <div class="border-b py-2">
-                                <p class="text-gray-700"><strong>
-                                        <%= r.userName %>
-                                    </strong> ให้คะแนน: <%= r.rating %>/10</p>
-                                <p class="text-gray-600">
-                                    <%= r.comment %>
-                                </p>
-                                <p class="text-gray-400 text-sm">
-                                    <%= r.createdAt.toDateString() %>
-                                </p>
-                            </div>
-                            <% }) %>
-                                <% } else { %>
-                                    <p class="text-gray-500">ยังไม่มีรีวิว</p>
-                                    <% } %>
-                </div>
 
-                <a href="/" class="inline-block mt-6 text-indigo-600 hover:underline">🔙 กลับหน้าหลัก</a>
+              <% if (error && error.length> 0) { %>
+                <% error.forEach(msg=> { %>
+                  <p class="bg-red-600 text-white px-4 py-3 rounded text-sm my-3">
+                    <%= msg %>
+                  </p>
+                  <% }) %>
+                    <% } %>
+      <!-- Detail Tab -->
+      <div x-show="tab === 'detail'" x-transition x-cloak class="flex flex-col lg:flex-row gap-6">
+        <!-- Poster -->
+        <div class="lg:w-1/3">
+          <img src="<%= movieDetail.poster_path %>" alt="<%= movieDetail.title %>" class="rounded-lg shadow-lg">
+        </div>
+
+        <!-- Movie Info -->
+        <div class="lg:w-2/3 flex flex-col gap-4">
+          <h1 class="text-4xl font-bold text-white">
+            <%= movieDetail.title %>
+          </h1>
+          <p class="text-gray-300">
+            ปี: <%= movieDetail.release_date ? movieDetail.release_date.substring(0, 4) : 'N/A' %> |
+              เรตติ้ง: <%= (m && m.avgRating !== null) ? m.avgRating.toFixed(1) : 'N/A' %>/10
+          </p>
+          <p class="text-gray-200">
+            <%= movieDetail.overview %>
+          </p>
+
+          <% if (movieDetail.genres && movieDetail.genres.length> 0) { %>
+            <p class="text-gray-400">
+              ประเภท:
+              <% movieDetail.genres.forEach(g=> { %>
+                <span class="inline-block bg-neutral-700 px-2 py-1 rounded-full text-sm mr-2">
+                  <%= g.name %>
+                </span>
+                <% }) %>
+            </p>
+            <% } %>
+
+              <div class="text-gray-300">
+                <p>Director: <%= movieDetail.director || 'N/A' %>
+                </p>
+                <p>Cast: <%= movieDetail.cast && movieDetail.cast.length> 0 ? movieDetail.cast.join(', ') : 'N/A' %></p>
+                <p>Duration: <%= movieDetail.duration || 'N/A' %> min</p>
+              </div>
+
+              <!-- Buttons -->
+              <div class="flex gap-4 mt-4">
+                <% if (loggedIn) { %>
+                  <button data-modal-target="add-collection-modal" data-modal-toggle="add-collection-modal"
+                    class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-500 font-semibold">
+                    Add to My Collection
+                  </button>
+                  <% } else { %>
+                    <a href="/login" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-500 font-semibold">
+                      Add to My Collection
+                    </a>
+                    <% } %>
+                      <% if (trailerKey) { %>
+                        <a href="https://www.youtube.com/embed/<%= trailerKey %>"
+                          class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600">Watch Trailer</a>
+                        <% } %>
+              </div>
+
+              <!-- Add Collection Modal -->
+              <% if (loggedIn) { %>
+                <div id="add-collection-modal" tabindex="-1" aria-hidden="true"
+                  class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-full">
+                  <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+                    <div class="relative bg-gray-800 rounded-lg shadow dark:bg-gray-700">
+                      <div class="flex items-center justify-between p-5 border-b border-gray-600">
+                        <h3 class="text-xl font-semibold text-white">Add Movie to Collection</h3>
+                        <button type="button"
+                          class="text-gray-400 bg-transparent hover:bg-gray-600 hover:text-white rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                          data-modal-toggle="add-collection-modal">&times;</button>
+                      </div>
+
+                      <div class="p-6">
+                        <form action="/add/collection/<%= movieDetail.movieId %>" method="POST">
+                          <!-- เลือก Collection ที่มี -->
+                          <label class="block mb-2 text-gray-300 font-medium">Select Collection:</label>
+                          <select name="collectionId"
+                            class="w-full mb-4 p-2 rounded bg-gray-700 text-white border border-gray-600">
+                            <option value="">-- Choose Collection --</option>
+                            <% userCollections.forEach(c=> { %>
+                              <option value="<%= c._id %>">
+                                <%= c.name %>
+                              </option>
+                              <% }) %>
+                          </select>
+
+                          <!-- หรือสร้าง Collection ใหม่ -->
+                          <label class="block mb-2 text-gray-300 font-medium">Or create new Collection:</label>
+                          <input type="text" name="name" placeholder="New collection name"
+                            class="w-full mb-4 p-2 rounded bg-gray-700 text-white border border-gray-600">
+
+                          <button type="submit"
+                            class="w-full bg-red-600 hover:bg-red-500 text-white p-2 rounded font-semibold">
+                            Add Movie
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <% } %>
+                <!-- Trailer -->
+              <% if(trailerKey) { %>
+                <div class="mt-6">
+                  <div class="aspect-w-16 aspect-h-9 bg-black rounded-lg overflow-hidden">
+                    <iframe class="w-full h-64 lg:h-96 rounded-lg" src="https://www.youtube.com/embed/<%= trailerKey %>"
+                      title="Movie Trailer" frameborder="0" allowfullscreen></iframe>
+                  </div>
+                </div>
+                <% } %>
+        </div>
+      </div>
+
+      <!-- Reviews Tab -->
+      <div x-show="tab === 'reviews'" x-transition x-cloak class="mt-4 min-h-[calc(100vh-4rem)] overflow-auto">
+        <div class="flex justify-end mb-4">
+          <a href="/review/form/<%= movieDetail.movieId %>"
+            class="inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">+ เขียนรีวิว</a>
+        </div>
+
+        <% if (movieDetail.reviews && movieDetail.reviews.length> 0) { %>
+          <% const sortedReviews=movieDetail.reviews.sort((a, b)=> new Date(b.createdAt) - new Date(a.createdAt)); %>
+            <% sortedReviews.forEach(r=> { %>
+              <div class="border-b border-neutral-700 py-2">
+                <p class="text-gray-200"><strong>
+                    <%= r.userName %>
+                  </strong> ให้คะแนน: <%= r.rating %>/10</p>
+                <p class="text-gray-400">
+                  <%= r.comment %>
+                </p>
+                <p class="text-gray-500 text-sm">
+                  <%= new Date(r.createdAt).toDateString() %>
+                </p>
+              </div>
+              <% }) %>
+                <% } else { %>
+                  <p class="text-gray-400">ยังไม่มีรีวิว</p>
+                  <% } %>
+      </div>
+
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 </body>
 
 </html>

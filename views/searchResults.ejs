@@ -5,86 +5,84 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <title>ผลการค้นหา - เว็บรีวิวหนัง</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&family=Roboto:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- เรียกใช้ config แยก -->
+    <script src="/js/tailwind-config.js"></script>
+
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body class="font-sans text-sm bg-gray-100 dark:bg-zinc-900">
-    <div class="flex min-h-screen w-full">
+<body class="font-sans text-sm text-white bg-gradient-to-b from-[#1F1F1F] via-[#121212] to-[#000000]">
 
+    <!-- HEADER -->
+    <%- include('partials/header') %>
+
+        <div class="flex min-h-screen w-full">
             <main class="flex-1 py-8 px-4 sm:px-8">
 
-                    <!-- ค้นหาซ้ำ -->
-                    <form action="/searchResults" method="GET" class="mt-4 max-w-lg relative">
-                        <button type="submit" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                            aria-label="Search">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                        </button>
-                        <input type="text" name="q" value="<%= query %>" required autocomplete="off" class="text-xs ring-1 bg-white dark:bg-transparent ring-gray-200 dark:ring-zinc-600
-                 pl-9 pr-3 py-3 rounded-full w-full outline-none
-                 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-300"
-                            placeholder="ค้นหาหนัง..." />
-                    </form>
+                <!-- ค้นหาซ้ำ -->
+                <form action="/searchResults" method="GET" class="mt-4 max-w-lg relative">
+                    <button type="submit" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                        aria-label="Search">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
+                    <input type="text" name="q" value="<%= query %>" required autocomplete="off" class="text-xs ring-1 ring-gray-400 bg-black pl-9 pr-3 py-3 rounded-full w-full outline-none
+                 text-white placeholder-gray-500" placeholder="ค้นหาหนัง..." />
+                </form>
 
-                    <!-- หัวเรื่อง -->
-                    <section class="mt-4">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">ผลการค้นหา</h2>
-                                <span
-                                    class="px-3 py-1 rounded-full text-xs bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-100">
-                                    "<%= query %>"
-                                </span>
-                                <span class="text-xs text-gray-600 dark:text-gray-300">(<%= results?.length || 0 %>
-                                        รายการ)</span>
-                            </div>
-                            <a href="/"
-                                class="text-xs px-3 py-2 rounded-lg bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-100 hover:opacity-90">
-                                กลับหน้าแรก
-                            </a>
-                        </div>
-                    </section>
+                <!-- หัวเรื่อง -->
+                <section class="mt-4">
+                    <div class="flex items-center gap-3">
+                        <h2 class="text-lg sm:text-xl font-bold text-white">ผลการค้นหา</h2>
+                        <span class="px-3 py-1 rounded-full text-xs bg-gray-700 text-white">
+                            "<%= query %>"
+                        </span>
+                        <span class="text-xs text-gray-400">(<%= results?.length || 0 %> รายการ)</span>
+                    </div>
+                </section>
 
-                    <!-- ผลลัพธ์ -->
-                    <% if (results && results.length) { %>
-                        <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-                            <% results.forEach(movie=> { %>
-                                <div
-                                    class="flex flex-col rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800">
-                                    <img src="<%= movie.poster_path || '/images/no-poster.png' %>"
-                                        class="h-56 object-cover w-full" alt="<%= movie.title %>">
+                <!-- ผลลัพธ์ -->
+                <% if (results && results.length) { %>
+                    <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
+                        <% results.forEach(movie=> { %>
+                            <a href="/movie/detail/<%= movie.movieId %>" class="flex flex-col rounded-xl overflow-hidden border border-gray-600 bg-gray
+          hover:shadow-lg hover:border-white transition">
+                                <img src="<%= movie.poster_path || '/images/no-poster.png' %>"
+                                    class="h-56 object-cover w-full" alt="<%= movie.title %>">
+                                <div class="px-3 py-3 flex flex-col gap-1">
                                     <div
-                                        class="px-3 py-3 flex items-center justify-between border-t-2 border-t-red-600">
-                                        <div class="min-w-0">
-                                            <div class="capitalize font-medium truncate text-gray-900 dark:text-white">
-                                                <%= movie.title %>
-                                            </div>
-                                            <div class="text-xs text-gray-500">
-                                                <%= movie.release_date || '-' %>
-                                            </div>
-                                        </div>
-                                        <a href="/movie/detail/<%= movie.movieId %>"
-                                            class="text-xs text-red-600 hover:underline shrink-0">รายละเอียด</a>
+                                        class="capitalize font-medium truncate group-hover:whitespace-normal text-white transition-all duration-300">
+                                        <%= movie.title %>
+                                    </div>
+                                    <div class="text-xs text-gray-400">
+                                        <%= movie.release_date || '-' %>
                                     </div>
                                 </div>
-                                <% }) %>
-                        </div>
-                        <% } else { %>
-                            <div
-                                class="mt-6 rounded-xl border border-dashed border-zinc-300 dark:border-zinc-700 bg-white/60 dark:bg-zinc-800/60 p-10 text-center">
-                                <div class="text-2xl mb-2">😵‍💫</div>
-                                <p class="text-gray-700 dark:text-gray-200 font-medium">ไม่พบผลลัพธ์สำหรับ "<%= query %>
-                                        "</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">ลองใช้คำค้นหาอื่น
-                                    หรือค้นหาภาษาอังกฤษ/ไทย</p>
-                            </div>
-                            <% } %>
-            </main>
+                            </a>
+                            <% }) %>
+                    </div>
+                    <% } else { %>
+                        <div class="mt-6 rounded-xl border border-dashed border-gray-600 bg-black p-10 text-center">
 
-    </div>
+                            <p class="text-white font-medium">ไม่พบผลลัพธ์สำหรับ "<%= query %>"</p>
+                            <p class="text-xs text-gray-400 mt-1">ลองใช้คำค้นหาอื่น หรือค้นหาภาษาอังกฤษ/ไทย</p>
+                        </div>
+                        <% } %>
+
+            </main>
+        </div>
+
 </body>
 
 </html>
