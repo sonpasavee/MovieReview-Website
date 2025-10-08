@@ -79,6 +79,9 @@ app.post('/collection/rename/:collectionId', collectionController.renameCollecti
 app.post('/collection/delete/:collectionId', collectionController.deleteCollection)
 app.post('/collection/:collectionId/remove/:movieId', collectionController.removeMovie)
 
-app.listen(4000, () => {
-    console.log("App listening on port 4000")
-})
+// ถ้าต้องการรันlocalhostเพื่อทดสอบเอาคอมเม้นนี้ออก
+// app.listen(4000, () => {
+//     console.log("App listening on port 4000")
+// })
+
+module.exports = app;
