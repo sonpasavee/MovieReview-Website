@@ -29,10 +29,12 @@ const movieDetailController = require('./controllers/movieDetailController')
 const storeReviewController = require('./controllers/storeReviewController')
 const reviewController = require('./controllers/reviewController')
 const searchController = require('./controllers/searchController')
+const adminSearchController = require('./controllers/adminSearchController'); //adminSearchController
+const adminReviewController = require('./controllers/adminReviewController'); //adminReviewController
 // Middleware Import
 const {isAuthenticated , isAdmin , isUser} = require('./middleware/authMiddleware')
 
-app.use(express.static('public'))
+app.use(express.static('public')) 
 app.use(express.json())
 app.use(express.urlencoded()) //encode form to object
 app.use(flash())
@@ -64,6 +66,10 @@ app.get('/movie/detail/:id', movieDetailController)
 app.post('/reviews' , storeReviewController)
 app.get('/review/form/:movieId' , reviewController)
 app.get('/searchResults' , searchController)
+app.get('/admin/search', isAuthenticated, isAdmin, adminSearchController); //adminSearch
+app.get('/admin/movie/:movieId/reviews',isAuthenticated,isAdmin,adminReviewController.showReviews);// หน้า รีวิวแอดมินแบบมีรายละเอียด + ลบรีวิว
+
+app.post('/admin/reviews/:id/delete',isAuthenticated,isAdmin,adminReviewController.deleteReview);// ลบรีวิวผู้ใช้
 
 
 app.listen(4000 , () => {
