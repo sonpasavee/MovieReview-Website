@@ -38,7 +38,9 @@ const searchController = require('./controllers/searchController')
 const updateProfileController = require('./controllers/updateProfileController')
 const addCollectionController = require('./controllers/addCollectionController')
 const collectionController = require('./controllers/controllerCollection')
-
+const adminSearchController = require('./controllers/adminSearchController'); //+
+const adminMovieDetailController = require('./controllers/adminMovieDetailController');//+
+const adminReviewController = require('./controllers/adminReviewController');//+
 // Middleware Import
 const { isAuthenticated, isAdmin, isUser } = require('./middleware/authMiddleware')
 const userDataMiddleware = require('./middleware/userData')
@@ -83,6 +85,10 @@ app.get('/collection', isAuthenticated, collectionController)
 app.post('/collection/rename/:collectionId', collectionController.renameCollection)
 app.post('/collection/delete/:collectionId', collectionController.deleteCollection)
 app.post('/collection/:collectionId/remove/:movieId', collectionController.removeMovie)
+app.get('/admin/search', isAuthenticated, isAdmin, adminSearchController); //+
+app.get('/admin/movie/:movieId/detail',  isAuthenticated, isAdmin, adminMovieDetailController);
+app.get('/admin/movie/:movieId/reviews', isAuthenticated, isAdmin, adminReviewController.showReviews);
+app.post('/admin/reviews/:id/delete',     isAuthenticated, isAdmin, adminReviewController.deleteReview);
 
  app.listen(4000, () => {
     console.log("App listening on port 4000")
