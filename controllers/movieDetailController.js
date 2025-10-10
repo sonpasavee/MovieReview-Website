@@ -49,7 +49,7 @@ module.exports = async (req, res) => {
 
 
         // ดึงรีวิวจาก DB
-        const reviews = await Review.find({ movieId: movieId })
+        const reviews = await Review.find({ movieId: movieId , status: 'approved' }).sort({ createdAt: -1 }).lean()
 
         // map รีวิวสำหรับส่งไป view
         const movieDetail = {
@@ -78,7 +78,7 @@ module.exports = async (req, res) => {
 
         // คำนวณค่าเฉลี่ย rating
         const avgRatingResult = await Review.aggregate([
-            { $match: { movieId } },
+            { $match: { movieId , status: 'approved' } },
             { $group: { _id: "$movieId", avg: { $avg: "$rating" } } }
         ]);
         const avgRating = avgRatingResult.length > 0 ? avgRatingResult[0].avg : null

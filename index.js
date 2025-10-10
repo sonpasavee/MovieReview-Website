@@ -38,9 +38,7 @@ const searchController = require('./controllers/searchController')
 const updateProfileController = require('./controllers/updateProfileController')
 const addCollectionController = require('./controllers/addCollectionController')
 const collectionController = require('./controllers/controllerCollection')
-const adminSearchController = require('./controllers/adminSearchController'); //+
-const adminMovieDetailController = require('./controllers/adminMovieDetailController');//+
-const adminReviewController = require('./controllers/adminReviewController');//+
+
 // Middleware Import
 const { isAuthenticated, isAdmin, isUser } = require('./middleware/authMiddleware')
 const userDataMiddleware = require('./middleware/userData')
@@ -70,7 +68,7 @@ app.set('view engine', 'ejs');
 app.get('/', indexController)
 app.get('/login', loginController)
 app.get('/register', registerController)
-app.get('/admin/dashboard', isAuthenticated, isAdmin, adminDashboardController)
+app.get('/admin/dashboard', isAuthenticated, isAdmin, adminDashboardController.fetchInfoAdminDashboard)
 app.get('/user/dashboard', isAuthenticated, isUser, userDashboardController)
 app.post('/user/register', storeController)
 app.post('/user/login', loginUserController)
@@ -85,11 +83,11 @@ app.get('/collection', isAuthenticated, collectionController)
 app.post('/collection/rename/:collectionId', collectionController.renameCollection)
 app.post('/collection/delete/:collectionId', collectionController.deleteCollection)
 app.post('/collection/:collectionId/remove/:movieId', collectionController.removeMovie)
-app.get('/admin/search', isAuthenticated, isAdmin, adminSearchController); //+
-app.get('/admin/movie/:movieId/detail',  isAuthenticated, isAdmin, adminMovieDetailController);
-app.get('/admin/movie/:movieId/reviews', isAuthenticated, isAdmin, adminReviewController.showReviews);
-app.post('/admin/reviews/:id/delete',     isAuthenticated, isAdmin, adminReviewController.deleteReview);
 
+app.post('/admin/reviews/:id/delete',     isAuthenticated, isAdmin, adminDashboardController.deleteReview)
+app.post('/admin/reviews/:id/approve',    isAuthenticated, isAdmin, adminDashboardController.approveReview)
+app.post('/admin/reviews/:id/reject',     isAuthenticated, isAdmin, adminDashboardController.rejectReview)
+app.get('/admin/users/:userId/reviews',   isAuthenticated, isAdmin, adminDashboardController.userReviews)
  app.listen(4000, () => {
     console.log("App listening on port 4000")
 })

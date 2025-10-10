@@ -32,13 +32,14 @@ module.exports = async (req, res) => {
             })
         }
 
-        // สร้างรีวิว
+        // สร้างรีวิว **รออนุมัติ**
         await Review.create({
             movieId: movie.movieId,
             userId: user._id,
             name: user.name,
             rating,
-            comment
+            comment ,
+            status: 'pending' // สถานะเริ่มต้นเป็น pending
         })
 
         res.redirect(`/movie/detail/${movie.movieId}`)

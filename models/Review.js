@@ -25,6 +25,11 @@ const ReviewSchema = new Schema({
         max: 10 ,
         required: true
     } ,
+    status: {
+    type: String,
+    enum: ['pending', 'approved', 'rejected'],
+    default: 'pending', // ค่าเริ่มต้นคือรออนุมัติ
+    },
     createdAt: {
         type: Date ,
         default: Date.now
