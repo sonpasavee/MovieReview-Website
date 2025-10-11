@@ -129,20 +129,28 @@
           📝 รีวิวทั้งหมดของผู้ใช้
         </h2>
         <div class="flex space-x-3">
-          <select id="reviewFilter"
-            class="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-red-500">
-            <option value="all">ทั้งหมด</option>
-            <option value="approved">อนุมัติแล้ว</option>
-            <option value="pending">รอการอนุมัติ</option>
-          </select>
-          <select id="sortReviews"
-            class="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-red-500">
-            <option value="newest">ใหม่ล่าสุด</option>
-            <option value="oldest">เก่าสุด</option>
-            <option value="highest">คะแนนสูงสุด</option>
-            <option value="lowest">คะแนนต่ำสุด</option>
-          </select>
-        </div>
+  <form method="GET" id="filterForm" class="flex space-x-3">
+    <input type="hidden" name="sort" value="<%= sort %>" />
+    <select name="filter"
+      class="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-red-500"
+      onchange="document.getElementById('filterForm').submit()">
+      <option value="all" <%= filter==='all' ? 'selected' : '' %>>ทั้งหมด</option>
+      <option value="approved" <%= filter==='approved' ? 'selected' : '' %>>อนุมัติแล้ว</option>
+      <option value="pending" <%= filter==='pending' ? 'selected' : '' %>>รอการอนุมัติ</option>
+      <option value="rejected" <%= filter==='rejected' ? 'selected' : '' %>>ถูกปฏิเสธ</option>
+    </select>
+
+    <select name="sort"
+      class="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-red-500"
+      onchange="document.getElementById('filterForm').submit()">
+      <option value="newest" <%= sort==='newest' ? 'selected' : '' %>>ใหม่ล่าสุด</option>
+      <option value="oldest" <%= sort==='oldest' ? 'selected' : '' %>>เก่าสุด</option>
+      <option value="highest" <%= sort==='highest' ? 'selected' : '' %>>คะแนนสูงสุด</option>
+      <option value="lowest" <%= sort==='lowest' ? 'selected' : '' %>>คะแนนต่ำสุด</option>
+    </select>
+  </form>
+</div>
+
       </div>
 
       <div id="reviewsList">

@@ -117,10 +117,19 @@ exports.approveAllReviews = async (req, res) => {
 exports.userReviews = async (req, res) => {
   try {
     const userId = req.params.userId;
+    const filter = req.query.filter || "all"; // filter: all, approved, pending, rejected
+    const sort = req.query.sort || "newest"; // sort: newest, oldest, highest, lowest
+
     const user = await User.findById(userId).lean();
     const profile = await Profile.findOne({ userId: user._id }).lean();
-    const reviews = await Review.aggregate([
-      { $match: { userId: user._id } },
+
+    let matchStage = { userId: user._id };
+    if (filter !== "all") {
+      matchStage.status = filter;
+    }
+
+    let reviews = await Review.aggregate([
+      { $match: matchStage },
       {
         $lookup: {
           from: "movies",
@@ -132,27 +141,49 @@ exports.userReviews = async (req, res) => {
       { $unwind: "$movie" },
     ]);
 
+    // ✅ Sort logic
+    switch (sort) {
+      case "oldest":
+        reviews.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        break;
+      case "highest":
+        reviews.sort((a, b) => b.rating - a.rating);
+        break;
+      case "lowest":
+        reviews.sort((a, b) => a.rating - b.rating);
+        break;
+      default: // newest
+        reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+
+    // ✅ Stats
     const totalReviews = reviews.length;
     const avgRating = (
       reviews.reduce((sum, r) => sum + r.rating, 0) /
       (totalReviews > 0 ? totalReviews : 1)
     ).toFixed(1);
-    const approvedReviews = reviews.filter(
+
+    const allUserReviews = await Review.find({ userId: user._id }).lean(); // รวมทั้งหมดเพื่อคำนวณสถิติ
+
+    const approvedReviews = allUserReviews.filter(
       (r) => r.status === "approved"
     ).length;
-    const rejectedReviews = reviews.filter(
+    const rejectedReviews = allUserReviews.filter(
       (r) => r.status === "rejected"
     ).length;
-    const pendingReviews = reviews.filter((r) => r.status === "pending").length;
+    const pendingReviews = allUserReviews.filter(
+      (r) => r.status === "pending"
+    ).length;
+
     const latestReviewDate =
       totalReviews > 0
-        ? new Date(reviews[0].createdAt).toLocaleDateString()
+        ? new Date(reviews[0].createdAt).toLocaleDateString("th-TH")
         : "-";
 
     res.render("adminUserReviews", {
       user,
       reviews,
-      profile ,
+      profile,
       stats: {
         totalReviews,
         avgRating,
@@ -161,12 +192,15 @@ exports.userReviews = async (req, res) => {
         latestReviewDate,
         pendingReviews,
       },
+      filter, // ส่งค่าปัจจุบันไปให้ dropdown
+      sort,
     });
   } catch (err) {
     console.error(err);
     res.status(500).send("เกิดข้อผิดพลาดในระบบ");
   }
 };
+
 
 // ban user
 exports.banUser = async (req, res) => {
