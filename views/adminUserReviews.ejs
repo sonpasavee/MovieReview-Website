@@ -47,8 +47,9 @@
         <div class="flex items-center">
           <div class="w-20 h-20 rounded-full overflow-hidden mr-6">
             <% if (profile.avatarUrl && profile.avatarUrl.data) { %>
-              <img src="data:<%= profile.avatarUrl.contentType %>;base64,<%= profile.avatarUrl.data.toString('base64') %>" alt="Avatar"
-                class="w-full h-full object-cover" />
+              <img
+                src="data:<%= profile.avatarUrl.contentType %>;base64,<%= profile.avatarUrl.data.toString('base64') %>"
+                alt="Avatar" class="w-full h-full object-cover" />
               <% } else { %>
                 <div class="flex items-center justify-center w-full h-full bg-red-600 text-3xl font-bold text-white">
                   <%= user.name ? user.name.charAt(0).toUpperCase() : "?" %>
@@ -129,27 +130,27 @@
           📝 รีวิวทั้งหมดของผู้ใช้
         </h2>
         <div class="flex space-x-3">
-  <form method="GET" id="filterForm" class="flex space-x-3">
-    <input type="hidden" name="sort" value="<%= sort %>" />
-    <select name="filter"
-      class="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-red-500"
-      onchange="document.getElementById('filterForm').submit()">
-      <option value="all" <%= filter==='all' ? 'selected' : '' %>>ทั้งหมด</option>
-      <option value="approved" <%= filter==='approved' ? 'selected' : '' %>>อนุมัติแล้ว</option>
-      <option value="pending" <%= filter==='pending' ? 'selected' : '' %>>รอการอนุมัติ</option>
-      <option value="rejected" <%= filter==='rejected' ? 'selected' : '' %>>ถูกปฏิเสธ</option>
-    </select>
+          <form method="GET" id="filterForm" class="flex space-x-3">
+            <input type="hidden" name="sort" value="<%= sort %>" />
+            <select name="filter"
+              class="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-red-500"
+              onchange="document.getElementById('filterForm').submit()">
+              <option value="all" <%=filter==='all' ? 'selected' : '' %>>ทั้งหมด</option>
+              <option value="approved" <%=filter==='approved' ? 'selected' : '' %>>อนุมัติแล้ว</option>
+              <option value="pending" <%=filter==='pending' ? 'selected' : '' %>>รอการอนุมัติ</option>
+              <option value="rejected" <%=filter==='rejected' ? 'selected' : '' %>>ถูกปฏิเสธ</option>
+            </select>
 
-    <select name="sort"
-      class="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-red-500"
-      onchange="document.getElementById('filterForm').submit()">
-      <option value="newest" <%= sort==='newest' ? 'selected' : '' %>>ใหม่ล่าสุด</option>
-      <option value="oldest" <%= sort==='oldest' ? 'selected' : '' %>>เก่าสุด</option>
-      <option value="highest" <%= sort==='highest' ? 'selected' : '' %>>คะแนนสูงสุด</option>
-      <option value="lowest" <%= sort==='lowest' ? 'selected' : '' %>>คะแนนต่ำสุด</option>
-    </select>
-  </form>
-</div>
+            <select name="sort"
+              class="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-red-500"
+              onchange="document.getElementById('filterForm').submit()">
+              <option value="newest" <%=sort==='newest' ? 'selected' : '' %>>ใหม่ล่าสุด</option>
+              <option value="oldest" <%=sort==='oldest' ? 'selected' : '' %>>เก่าสุด</option>
+              <option value="highest" <%=sort==='highest' ? 'selected' : '' %>>คะแนนสูงสุด</option>
+              <option value="lowest" <%=sort==='lowest' ? 'selected' : '' %>>คะแนนต่ำสุด</option>
+            </select>
+          </form>
+        </div>
 
       </div>
 
