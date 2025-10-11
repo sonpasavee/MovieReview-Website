@@ -62,7 +62,7 @@
                                                 <div class="relative group">
                                                     <a href="/movie/detail/<%= movie.movieId %>"
                                                         class="block rounded-xl overflow-hidden transform transition duration-300 ease-out group-hover:scale-105 group-hover:shadow-xl">
-                                                        <img src="<%= movie.posterPath ? 'https://image.tmdb.org/t/p/w500' + movie.posterPath : '/images/no-poster.png' %>"
+                                                        <img src="<%= movie.poster_path ? 'https://image.tmdb.org/t/p/w500' + movie.poster_path : '/images/no-poster.png' %>"
                                                             class="h-56 object-cover w-full" alt="<%= movie.title %>">
                                                     </a>
 
