@@ -1,38 +1,74 @@
-<header class="bg-black text-white shadow">
-  <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-    <!-- Logo / Title -->
-    <h1 class="flex items-center text-xl sm:text-2xl font-extrabold tracking-wide">
-      R-MOVIE
-      <img src="/images/logo.jpg" alt="Logo" class="ml-1 w-8 h-8">
-    </h1>
-
-    <!-- Menu + User -->
-    <div class="flex items-center gap-6">
-      <!-- เมนูหลัก -->
-      <nav class="hidden sm:flex gap-4 font-medium">
-        <a href="/" class="hover:text-red-500 transition">หน้าแรก</a>
-        <a href="/searchResults" class="hover:text-red-500 transition">ค้นหา</a>
-        <% if(loggedIn && UserData.role === 'user') { %>
-          <a href="/user/dashboard" class="hover:text-red-500 transition">แดชบอร์ด</a>
-        <% } else if(loggedIn && UserData.role === 'admin') { %>
-          <a href="/admin/dashboard" class="hover:text-red-500 transition">แดชบอร์ดผู้ดูแล</a>
-        <% } %>
-      </nav>
-      
-
-      <!-- User -->
-      <div class="flex items-center gap-3">
-        <% if (loggedIn) { %>
-          <span class="hidden sm:inline font-medium">
-            สวัสดี, <%= (typeof UserData !=='undefined' && UserData && UserData.name) ? UserData.name : 'ผู้ใช้' %>
-          </span>
-          <a href="/logout" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition shadow">
-            ออกจากระบบ
-          </a>
-          <% } else { %>
-            <a href="/login" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition shadow">
-              เข้าสู่ระบบ
-            </a>
-            <% } %>
+<header class="bg-black/80 backdrop-blur-md border-b border-gray-800 sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <!-- Logo & Brand -->
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-red-700 rounded-xl flex items-center justify-center animate-float">
+        <span class="text-2xl">🎬</span>
       </div>
+      <div>
+        <h1 class="text-2xl font-bold text-white">
+          R-MOVIE
+        </h1>
+        <p class="text-xs text-gray-400">รีวิวหนังออนไลน์</p>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="flex items-center gap-8">
+      <div class="hidden md:flex items-center gap-6">
+        <a href="/" 
+          class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium">
+          หน้าแรก
+        </a>
+        <a href="/searchResults" 
+          class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium">
+          ค้นหา
+        </a>
+        <a href="/collection" 
+          class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium">
+          คอลเลกชัน
+        </a>
+
+        <% if(typeof loggedIn !=='undefined' && loggedIn && UserData?.role==='user' ) { %>
+          <a href="/user/Dashboard" class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium">
+            โปรไฟล์
+          </a>
+        <% } else if(typeof loggedIn !=='undefined' && loggedIn && UserData?.role==='admin' ) { %>
+          <a href="/admin/dashboard" class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium">
+            แดชบอร์ดผู้ดูแล
+          </a>
+        <% } else { %>
+          <!-- ปุ่มเข้าสู่ระบบ สำหรับผู้ใช้ที่ยังไม่ login -->
+          <a href="/login" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition shadow">
+            เข้าสู่ระบบ
+          </a>
+        <% } %>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button class="md:hidden p-2 bg-black/80 backdrop-blur-md rounded-xl border border-gray-700 hover:bg-black/70 transition-colors">
+        <span class="text-xl">☰</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <div class="md:hidden mt-4 pt-4 border-t border-gray-700">
+    <div class="grid grid-cols-2 gap-4">
+      <a href="/movies" class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium p-2">
+        <span>🎭</span> หนังทั้งหมด
+      </a>
+      <a href="/reviews" class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium p-2">
+        รีวิวล่าสุด
+      </a>
+      <a href="/collections" class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium p-2">
+        คอลเลกชัน
+      </a>
+      <% if(typeof loggedIn === 'undefined' || !loggedIn) { %>
+        <a href="/login" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition shadow text-center">
+          เข้าสู่ระบบ
+        </a>
+      <% } %>
+    </div>
+  </div>
 </header>
