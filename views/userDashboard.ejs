@@ -11,89 +11,99 @@
     />
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      body { box-sizing: border-box; font-family: "Kanit", sans-serif; }
-      .gradient-bg { background: linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%); }
-      .card-hover { transition: all 0.3s ease; }
-      .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(239,68,68,0.2); }
-      .glass-effect { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-      .profile-glow { box-shadow: 0 0 30px rgba(239,68,68,0.3); }
-      .input-focus:focus { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.1); }
-      .animate-float { animation: float 6s ease-in-out infinite; }
-      @keyframes float { 0%,100%{transform:translateY(0px);} 50%{transform:translateY(-10px);} }
-      .social-icon { transition: all 0.3s ease; }
-      .social-icon:hover { transform: scale(1.1); }
-    </style>
+<style>
+  body { box-sizing: border-box; font-family: "Kanit", sans-serif; background-color: #0f0f0f; color: #e5e5e5; }
+  .gradient-bg { background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #2b2b2b 100%);}
+  .glass-effect { background: rgba(30, 30, 30, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px); transition: all 0.3s ease;}
+  .glass-effect:hover { border-color: #ef4444; box-shadow: 0 0 25px rgba(239, 68, 68, 0.2);}
+  .profile-glow { box-shadow: 0 0 25px rgba(239, 68, 68, 0.4);}
+  .btn-red { background-color: #ef4444; color: white; font-weight: 600; transition: all 0.3s ease;}
+  .btn-red:hover { background-color: #dc2626; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);}
+  .input-dark { background-color: #1e1e1e; border: 1px solid #333; color: #f3f4f6; transition: border-color 0.3s, box-shadow 0.3s;}
+  .input-dark:focus { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2); outline: none;}
+  .social-icon {color: #ef4444; transition: transform 0.3s ease, color 0.3s; }
+  .social-icon:hover {color: #f87171; transform: scale(1.15);}
+  .animate-float { animation: float 6s ease-in-out infinite;}
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+</style>
   </head>
 
   <body class="gradient-bg min-h-full text-gray-100">
     <div class="min-h-full">
       <!-- Navigation Bar -->
       <nav class="glass-effect border-b border-gray-700/50 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4">
-          <div class="flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
             <!-- Logo & Brand -->
             <div class="flex items-center gap-4">
-              <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-red-700 rounded-xl flex items-center justify-center animate-float">
-                <span class="text-2xl">🎬</span>
-              </div>
-              <div>
-                <h1 class="text-2xl font-bold bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent">
-                  MovieReview
-                </h1>
-                <p class="text-xs text-gray-400">รีวิวหนังออนไลน์</p>
-              </div>
-            </div>
-
-            <!-- Navigation Links -->
-            <div class="hidden md:flex items-center gap-6">
-              <a href="/" class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium">
-                <span>🎭</span> หนังทั้งหมด
-              </a>
-              <a href="/collection" class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium">
-                <span>📁</span> คอลเลกชัน
-              </a>
-            </div>
-
-            <!-- User Menu -->
-            <div class="flex items-center gap-4">
-              <!-- User Profile Dropdown -->
-              <div class="relative group">
-                <button class="flex items-center gap-3 bg-gray-800/50 rounded-xl px-4 py-2 border border-gray-600/50 hover:bg-gray-700/50 transition-colors">
-                  <% if (profile?.avatarUrl?.data) { %>
-                    <img src="data:<%= profile.avatarUrl.contentType %>;base64,<%= profile.avatarUrl.data.toString('base64') %>" alt="avatar" class="w-8 h-8 rounded-full object-cover" />
-                  <% } else { %>
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center text-sm font-bold text-white">
-                      <%= user.name.charAt(0).toUpperCase() %>
-                    </div>
-                  <% } %>
-                  <span class="text-gray-300 font-medium hidden sm:block"><%= user.name %></span>
-                  <span class="text-gray-400">▼</span>
-                </button>
-
-                <!-- Dropdown Menu -->
-                <div class="absolute right-0 top-full mt-2 w-64 glass-effect rounded-2xl border border-gray-600/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                  <div class="p-4 border-b border-gray-600/50">
-                    <p class="font-semibold text-white"><%= user.name %></p>
-                    <p class="text-sm text-gray-400"><%= user.email %></p>
-                  </div>
-                  <div class="p-2">
-                    <a href="/user/dashboard" class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-xl transition-colors">
-                      <span>👤</span> โปรไฟล์ของฉัน
-                    </a>
-                    <a href="/collection" class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-xl transition-colors">
-                      <span>📁</span> คอลเลกชันของฉัน
-                    </a>
-                    <div class="border-t border-gray-600/50 mt-2 pt-2">
-                      <form action="/logout" method="get" class="w-full">
-                        <button type="submit" class="flex items-center gap-3 px-4 py-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-colors w-full text-left">
-                          <span>🚪</span> ออกจากระบบ
-                        </button>
-                      </form>
-                    </div>
-                  </div>
+                <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-red-700 rounded-xl flex items-center justify-center animate-float">
+                    <span class="text-2xl">🎬</span>
                 </div>
-              </div>
+                <div>
+                    <h1 class="text-2xl font-bold bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent">
+                        R-MOVIE
+                    </h1>
+                    <p class="text-xs text-gray-400">รีวิวหนังออนไลน์</p>
+                </div>
+            </div>
+
+            <!-- Navigation Links & User Menu -->
+            <div class="flex items-center gap-8">
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="/" class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium">
+                        หนังทั้งหมด
+                    </a>
+                    <a href="/searchResults" class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium">
+                        ค้นหา
+                    </a>                    
+                    <a href="/collection" class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium">
+                        คอลเลกชัน
+                    </a>
+                </div>
+
+                <!-- User Menu (ส่วนที่เทียบเท่ากับภาพตัวอย่าง) -->
+                <div class="relative group">
+                    <button class="flex items-center gap-3 bg-gray-800/50 rounded-full px-3 py-2 border border-gray-600/30 hover:bg-gray-700/50 transition-colors">
+                        <% if (profile?.avatarUrl?.data) { %>
+                        <!-- ใช้รูปโปรไฟล์ ถ้ามี -->
+                        <img src="data:<%= profile.avatarUrl.contentType %>;base64,<%= profile.avatarUrl.data.toString('base64') %>"
+                             alt="avatar" class="w-8 h-8 rounded-full object-cover" />
+                        <% } else { %>
+                        <!-- ใช้ตัวอักษรแทน ถ้าไม่มีรูป -->
+                        <div class="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center text-sm font-bold text-white">
+                            <%= user.name.charAt(0).toUpperCase() %>
+                        </div>
+                        <% } %>
+                        <span class="text-gray-300 font-medium hidden sm:block"><%= user.name %></span>
+                        <span class="text-gray-400">▼</span>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div class="absolute right-0 top-full mt-2 w-64 glass-effect rounded-2xl border border-gray-600/30 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-95 group-hover:scale-100 origin-top-right z-50">
+                        <div class="p-4 border-b border-gray-600/50">
+                            <p class="font-semibold text-white"><%= user.name %></p>
+                            <p class="text-sm text-gray-400"><%= user.email %></p>
+                        </div>
+                        <div class="p-2">
+                            <a href="/user/dashboard" class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-xl transition-colors">
+                                <span>👤</span> โปรไฟล์ของฉัน
+                            </a>
+                            <a href="/collection" class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-xl transition-colors">
+                                <span>📁</span> คอลเลกชันของฉัน
+                            </a>
+                            <div class="border-t border-gray-600/50 mt-2 pt-2">
+                                <form action="/logout" method="get" class="w-full">
+                                    <button type="submit" class="flex items-center gap-3 px-4 py-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-colors w-full text-left">
+                                        <span>🚪</span> ออกจากระบบ
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
               <!-- Mobile Menu Button -->
               <button class="md:hidden p-2 bg-gray-800/50 rounded-xl border border-gray-600/50 hover:bg-gray-700/50 transition-colors">
