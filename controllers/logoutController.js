@@ -1,4 +1,5 @@
 // controllers/logoutController.js
+// ควบคุมการlogoutของuser
 module.exports = (req, res) => {
     if (req.session) {
         req.session.destroy(err => {

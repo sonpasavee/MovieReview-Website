@@ -1,3 +1,4 @@
+// ควบคุมหน้า movie detail
 const axios = require("axios");
 const Review = require("../models/Review");
 const Movie = require("../models/Movie");

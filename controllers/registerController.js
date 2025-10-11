@@ -1,3 +1,4 @@
+// บันทึกการregisterของuser
 module.exports = (req , res) => {
 
     let name = ""

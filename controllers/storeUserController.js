@@ -1,3 +1,4 @@
+// เก็บข้อมูล user ที่register
 const User = require('../models/User')
 const Profile = require('../models/Profile')
 

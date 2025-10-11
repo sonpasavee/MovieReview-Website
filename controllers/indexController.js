@@ -1,3 +1,4 @@
+// ควบคุมหน้าhome
 const User = require("../models/User");
 const axios = require("axios");
 const Movie = require("../models/Movie");

@@ -1,3 +1,4 @@
+// ประกาศuser dataให้ทุกviewใช้ได้
 const User = require('../models/User')
 
 module.exports = async (req, res, next) => {

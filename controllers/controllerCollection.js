@@ -1,3 +1,4 @@
+// ดึงข้อมูล collection ของ user มาแสดง
 const Collection = require('../models/Collection')
 const axios = require('axios')
 const dotenv = require('dotenv')

@@ -1,3 +1,4 @@
+// ใช้สำหรับตั้งค่า server, route, middleware ต่างๆ
 const express = require('express')
 const app = express()
 const ejs = require('ejs')
@@ -54,6 +55,7 @@ app.use(expressSession({
 }))
 app.use(flash())
 app.use(userDataMiddleware)
+
 // middleware สำหรับส่ง loggedIn ไปทุก view
 app.use((req, res, next) => {
     res.locals.success = req.flash('success')
@@ -65,7 +67,7 @@ app.use((req, res, next) => {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// get controlelr
+// controller ควบคุมการทำงานของ route ต่างๆ
 app.get('/', indexController)
 app.get('/login', loginController)
 app.get('/register', registerController)

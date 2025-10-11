@@ -1,3 +1,4 @@
+// เก็บรีวิวที่ผู้ใช้ส่งมา
 const Review = require("../models/Review");
 const Movie = require("../models/Movie");
 const User = require("../models/User");
