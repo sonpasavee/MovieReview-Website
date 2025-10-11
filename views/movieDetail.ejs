@@ -221,38 +221,78 @@
       </div>
 
       <!-- Reviews Tab -->
-      <div
-        x-show="tab === 'reviews'"
-        x-transition
-        x-cloak
-        class="mt-4 min-h-[calc(100vh-4rem)] overflow-auto"
-      >
-        <div class="flex justify-end mb-4">
-          <a
-            href="/review/form/<%= movieDetail.movieId %>"
-            class="inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
-            >+ เขียนรีวิว</a
-          >
-        </div>
+<div
+  x-show="tab === 'reviews'"
+  x-transition
+  x-cloak
+  class="mt-6 min-h-[calc(100vh-4rem)] overflow-auto"
+>
+  <div class="flex justify-end mb-6">
+    <a
+      href="/review/form/<%= movieDetail.movieId %>"
+      class="inline-flex items-center bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-lg font-medium shadow-md transition duration-200"
+    >
+      <span class="mr-2 text-lg">✍️</span> เขียนรีวิว
+    </a>
+  </div>
 
-        <% if (movieDetail.reviews && movieDetail.reviews.length> 0) { %> <%
-        const sortedReviews=movieDetail.reviews.sort((a, b)=> new
-        Date(b.createdAt) - new Date(a.createdAt)); %> <%
-        sortedReviews.forEach(r=> { %>
-        <div class="border-b border-neutral-700 py-2">
-          <p class="text-gray-200">
-            <strong> <%= r.userName %> </strong> ให้คะแนน: <%= r.rating %>/10
-          </p>
-          <p class="text-gray-400"><%= r.comment %></p>
-          <p class="text-gray-500 text-sm">
-            <%= new Date(r.createdAt).toDateString() %>
-          </p>
+  <% if (movieDetail.reviews && movieDetail.reviews.length > 0) { %>
+    <% const sortedReviews = movieDetail.reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); %>
+    <div class="space-y-6">
+      <% sortedReviews.forEach(r => { %>
+        <div class="bg-neutral-800/60 hover:bg-neutral-800 transition rounded-2xl p-5 shadow-md border border-neutral-700">
+          <div class="flex items-start space-x-4">
+            
+            <!-- Avatar -->
+            <% if (r.profile && r.profile.avatarUrl && r.profile.avatarUrl.data) { %>
+              <img
+                src="data:<%= r.profile.avatarUrl.contentType %>;base64,<%= r.profile.avatarUrl.data.toString('base64') %>"
+                alt="avatar"
+                class="w-14 h-14 rounded-full object-cover border border-neutral-600"
+              />
+            <% } else { %>
+              <div class="w-14 h-14 rounded-full bg-neutral-700 flex items-center justify-center text-gray-400 text-2xl font-semibold">
+                <%= r.user.name[0].toUpperCase() %>
+              </div>
+            <% } %>
+
+            <!-- Review Content -->
+            <div class="flex-1">
+              <div class="flex items-center justify-between mb-1">
+                <h4 class="text-white font-semibold text-lg">
+                  <%= r.user.name %>
+                </h4>
+                <span class="bg-yellow-500 text-black font-bold px-3 py-1 rounded-lg text-sm">
+                  ⭐ <%= r.rating %>/10
+                </span>
+              </div>
+
+              <% if (r.profile && r.profile.bio) { %>
+                <p class="text-gray-400 text-sm italic mb-2"><%= r.profile.bio %></p>
+              <% } %>
+
+              <p class="text-gray-300 leading-relaxed mb-3">
+                <%= r.comment %>
+              </p>
+
+              <p class="text-gray-500 text-xs">
+                รีวิวเมื่อ <%= new Date(r.createdAt).toLocaleDateString('th-TH', {
+                  year: 'numeric', month: 'long', day: 'numeric'
+                }) %>
+              </p>
+            </div>
+          </div>
         </div>
-        <% }) %> <% } else { %>
-        <p class="text-gray-400">ยังไม่มีรีวิว</p>
-        <% } %>
-      </div>
+      <% }) %>
     </div>
+  <% } else { %>
+    <div class="flex flex-col items-center justify-center py-16 text-gray-400">
+      <img src="/assets/empty-review.svg" alt="no reviews" class="w-32 mb-4 opacity-70" />
+      <p class="text-lg">ยังไม่มีรีวิวสำหรับหนังเรื่องนี้</p>
+    </div>
+  <% } %>
+</div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
   </body>
