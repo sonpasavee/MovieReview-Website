@@ -141,14 +141,6 @@
               <option value="rejected" <%=filter==='rejected' ? 'selected' : '' %>>ถูกปฏิเสธ</option>
             </select>
 
-            <select name="sort"
-              class="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-red-500"
-              onchange="document.getElementById('filterForm').submit()">
-              <option value="newest" <%=sort==='newest' ? 'selected' : '' %>>ใหม่ล่าสุด</option>
-              <option value="oldest" <%=sort==='oldest' ? 'selected' : '' %>>เก่าสุด</option>
-              <option value="highest" <%=sort==='highest' ? 'selected' : '' %>>คะแนนสูงสุด</option>
-              <option value="lowest" <%=sort==='lowest' ? 'selected' : '' %>>คะแนนต่ำสุด</option>
-            </select>
           </form>
         </div>
 
