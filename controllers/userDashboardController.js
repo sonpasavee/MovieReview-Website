@@ -112,3 +112,17 @@ exports.updateProfile = async (req, res) => {
   }
 };
 
+exports.deleteReview = async (req, res) => {
+  try {
+    const reviewId = req.params.id
+    const user = res.locals.UserData
+    const userId = user._id
+    await Review.findOneAndDelete({ _id: reviewId, userId })
+    req.flash("success", "Review deleted successfully")
+    res.redirect("/user/dashboard")
+  } catch (error) {
+    console.error("Error deleting review:", error)
+    req.flash("error", "An error occurred while deleting the review.")
+    res.redirect("/user/dashboard")
+  } 
+}

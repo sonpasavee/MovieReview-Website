@@ -92,6 +92,7 @@ app.post('/admin/reviews/:id/reject',     isAuthenticated, isAdmin, adminDashboa
 app.get('/admin/users/:userId/reviews',   isAuthenticated, isAdmin, adminDashboardController.userReviews)
 app.post('/admin/users/approveAll',   isAuthenticated, isAdmin, adminDashboardController.approveAllReviews)
 app.post('/user/updateProfile', isAuthenticated, isUser, upload.single('avatarFile') , userDashboardController.updateProfile)
+app.post("/review/delete/:id", userDashboardController.deleteReview)
 app.post('/admin/user/:id/ban', isAuthenticated, isAdmin, adminDashboardController.banUser)
 app.post('/admin/user/:id/unban', isAuthenticated, isAdmin, adminDashboardController.unbanUser)
 
