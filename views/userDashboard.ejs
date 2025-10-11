@@ -1,526 +1,576 @@
 <!DOCTYPE html>
 <html lang="th">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>User Dashboard</title>
-    <!-- Google Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-<style>
-  body { box-sizing: border-box; font-family: "Kanit", sans-serif; background-color: #0f0f0f; color: #e5e5e5; }
-  .gradient-bg { background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #2b2b2b 100%);}
-  .glass-effect { background: rgba(30, 30, 30, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px); transition: all 0.3s ease;}
-  .glass-effect:hover { border-color: #ef4444; box-shadow: 0 0 25px rgba(239, 68, 68, 0.2);}
-  .profile-glow { box-shadow: 0 0 25px rgba(239, 68, 68, 0.4);}
-  .btn-red { background-color: #ef4444; color: white; font-weight: 600; transition: all 0.3s ease;}
-  .btn-red:hover { background-color: #dc2626; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);}
-  .input-dark { background-color: #1e1e1e; border: 1px solid #333; color: #f3f4f6; transition: border-color 0.3s, box-shadow 0.3s;}
-  .input-dark:focus { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2); outline: none;}
-  .social-icon {color: #ef4444; transition: transform 0.3s ease, color 0.3s; }
-  .social-icon:hover {color: #f87171; transform: scale(1.15);}
-  .animate-float { animation: float 6s ease-in-out infinite;}
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-  }
-</style>
-  </head>
 
-  <body class="gradient-bg min-h-full text-gray-100">
-    <div class="min-h-full">
-      <!-- Navigation Bar -->
-      <nav class="glass-effect border-b border-gray-700/50 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 py-4">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Dashboard</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      font-family: "Kanit", sans-serif;
+      background-color: #0f0f0f;
+      color: #e5e5e5;
+    }
+
+    .gradient-bg {
+      background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #2b2b2b 100%);
+    }
+
+    .glass-effect {
+      background: rgba(30, 30, 30, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+    }
+
+    .glass-effect:hover {
+      border-color: #ef4444;
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.2);
+    }
+
+    .profile-glow {
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.4);
+    }
+
+    .btn-red {
+      background-color: #ef4444;
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-red:hover {
+      background-color: #dc2626;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+    }
+
+    .input-dark {
+      background-color: #1e1e1e;
+      border: 1px solid #333;
+      color: #f3f4f6;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .input-dark:focus {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+      outline: none;
+    }
+
+    .social-icon {
+      color: #ef4444;
+      transition: transform 0.3s ease, color 0.3s;
+    }
+
+    .social-icon:hover {
+      color: #f87171;
+      transform: scale(1.15);
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+  </style>
+</head>
+
+<body class="gradient-bg min-h-full text-gray-100">
+  <div class="min-h-full">
+    <!-- Navigation Bar -->
+    <nav class="glass-effect border-b border-gray-700/50 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-6 py-4">
         <div class="flex items-center justify-between">
-            <!-- Logo & Brand -->
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-red-700 rounded-xl flex items-center justify-center animate-float">
-                    <span class="text-2xl">🎬</span>
-                </div>
-                <div>
-                    <h1 class="text-2xl font-bold bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent">
-                        R-MOVIE
-                    </h1>
-                    <p class="text-xs text-gray-400">รีวิวหนังออนไลน์</p>
-                </div>
+          <!-- Logo & Brand -->
+          <div class="flex items-center gap-4">
+            <div
+              class="w-12 h-12 bg-gradient-to-br from-red-500 to-red-700 rounded-xl flex items-center justify-center animate-float">
+              <span class="text-2xl">🎬</span>
             </div>
-
-            <!-- Navigation Links & User Menu -->
-            <div class="flex items-center gap-8">
-                <div class="hidden md:flex items-center gap-6">
-                    <a href="/" class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium">
-                        หนังทั้งหมด
-                    </a>
-                    <a href="/searchResults" class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium">
-                        ค้นหา
-                    </a>                    
-                    <a href="/collection" class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium">
-                        คอลเลกชัน
-                    </a>
-                </div>
-
-                <!-- User Menu (ส่วนที่เทียบเท่ากับภาพตัวอย่าง) -->
-                <div class="relative group">
-                    <button class="flex items-center gap-3 bg-gray-800/50 rounded-full px-3 py-2 border border-gray-600/30 hover:bg-gray-700/50 transition-colors">
-                        <% if (profile?.avatarUrl?.data) { %>
-                        <!-- ใช้รูปโปรไฟล์ ถ้ามี -->
-                        <img src="data:<%= profile.avatarUrl.contentType %>;base64,<%= profile.avatarUrl.data.toString('base64') %>"
-                             alt="avatar" class="w-8 h-8 rounded-full object-cover" />
-                        <% } else { %>
-                        <!-- ใช้ตัวอักษรแทน ถ้าไม่มีรูป -->
-                        <div class="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center text-sm font-bold text-white">
-                            <%= user.name.charAt(0).toUpperCase() %>
-                        </div>
-                        <% } %>
-                        <span class="text-gray-300 font-medium hidden sm:block"><%= user.name %></span>
-                        <span class="text-gray-400">▼</span>
-                    </button>
-
-                    <!-- Dropdown Menu -->
-                    <div class="absolute right-0 top-full mt-2 w-64 glass-effect rounded-2xl border border-gray-600/30 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-95 group-hover:scale-100 origin-top-right z-50">
-                        <div class="p-4 border-b border-gray-600/50">
-                            <p class="font-semibold text-white"><%= user.name %></p>
-                            <p class="text-sm text-gray-400"><%= user.email %></p>
-                        </div>
-                        <div class="p-2">
-                            <a href="/user/dashboard" class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-xl transition-colors">
-                                <span>👤</span> โปรไฟล์ของฉัน
-                            </a>
-                            <a href="/collection" class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-xl transition-colors">
-                                <span>📁</span> คอลเลกชันของฉัน
-                            </a>
-                            <div class="border-t border-gray-600/50 mt-2 pt-2">
-                                <form action="/logout" method="get" class="w-full">
-                                    <button type="submit" class="flex items-center gap-3 px-4 py-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-colors w-full text-left">
-                                        <span>🚪</span> ออกจากระบบ
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-              <!-- Mobile Menu Button -->
-              <button class="md:hidden p-2 bg-gray-800/50 rounded-xl border border-gray-600/50 hover:bg-gray-700/50 transition-colors">
-                <span class="text-xl">☰</span>
-              </button>
+            <div>
+              <h1 class="text-2xl font-bold bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent">
+                R-MOVIE
+              </h1>
+              <p class="text-xs text-gray-400">รีวิวหนังออนไลน์</p>
             </div>
           </div>
 
-          <!-- Mobile Navigation -->
-          <div class="md:hidden mt-4 pt-4 border-t border-gray-600/50">
-            <div class="grid grid-cols-2 gap-4">
-              <a href="/movies" class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium p-2">
-                <span>🎭</span> หนังทั้งหมด
+          <!-- Navigation Links & User Menu -->
+          <div class="flex items-center gap-8">
+            <div class="hidden md:flex items-center gap-6">
+              <a href="/"
+                class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium">
+                หนังทั้งหมด
               </a>
-              <a href="/reviews" class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium p-2">
-                <span>⭐</span> รีวิวล่าสุด
+              <a href="/searchResults"
+                class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium">
+                ค้นหา
               </a>
-              <a href="/collections" class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium p-2">
-                <span>📁</span> คอลเลกชัน
-              </a>
-              <a href="/top-rated" class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium p-2">
-                <span>🏆</span> อันดับต้น
+              <a href="/collection"
+                class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium">
+                คอลเลกชัน
               </a>
             </div>
+
+            <!-- User Menu (ส่วนที่เทียบเท่ากับภาพตัวอย่าง) -->
+            <div class="relative group">
+              <button
+                class="flex items-center gap-3 bg-gray-800/50 rounded-full px-3 py-2 border border-gray-600/30 hover:bg-gray-700/50 transition-colors">
+                <% if (profile?.avatarUrl?.data) { %>
+                  <!-- ใช้รูปโปรไฟล์ ถ้ามี -->
+                  <img
+                    src="data:<%= profile.avatarUrl.contentType %>;base64,<%= profile.avatarUrl.data.toString('base64') %>"
+                    alt="avatar" class="w-8 h-8 rounded-full object-cover" />
+                  <% } else { %>
+                    <!-- ใช้ตัวอักษรแทน ถ้าไม่มีรูป -->
+                    <div
+                      class="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center text-sm font-bold text-white">
+                      <%= user.name.charAt(0).toUpperCase() %>
+                    </div>
+                    <% } %>
+                      <span class="text-gray-300 font-medium hidden sm:block">
+                        <%= user.name %>
+                      </span>
+                      <span class="text-gray-400">▼</span>
+              </button>
+
+              <!-- Dropdown Menu -->
+              <div
+                class="absolute right-0 top-full mt-2 w-64 glass-effect rounded-2xl border border-gray-600/30 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-95 group-hover:scale-100 origin-top-right z-50">
+                <div class="p-4 border-b border-gray-600/50">
+                  <p class="font-semibold text-white">
+                    <%= user.name %>
+                  </p>
+                  <p class="text-sm text-gray-400">
+                    <%= user.email %>
+                  </p>
+                </div>
+                <div class="p-2">
+                  <a href="/user/dashboard"
+                    class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-xl transition-colors">
+                    <span>👤</span> โปรไฟล์ของฉัน
+                  </a>
+                  <a href="/collection"
+                    class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-xl transition-colors">
+                    <span>📁</span> คอลเลกชันของฉัน
+                  </a>
+                  <div class="border-t border-gray-600/50 mt-2 pt-2">
+                    <form action="/logout" method="get" class="w-full">
+                      <button type="submit"
+                        class="flex items-center gap-3 px-4 py-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-colors w-full text-left">
+                        <span>🚪</span> ออกจากระบบ
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button
+              class="md:hidden p-2 bg-gray-800/50 rounded-xl border border-gray-600/50 hover:bg-gray-700/50 transition-colors">
+              <span class="text-xl">☰</span>
+            </button>
           </div>
         </div>
-      </nav>
 
-      <div class="max-w-7xl mx-auto p-6 space-y-8">
-        <!-- Profile Section -->
-        <div class="glass-effect rounded-3xl p-8 card-hover">
-          <div class="flex flex-col lg:flex-row items-start gap-8">
-            <!-- Avatar Section -->
-            <div class="flex flex-col items-center space-y-4">
-              <% if (profile?.avatarUrl?.data) { %>
-                <img src="data:<%= profile.avatarUrl.contentType %>;base64,<%= profile.avatarUrl.data.toString('base64') %>" alt="avatar" class="w-32 h-32 rounded-full object-cover profile-glow" />
+        <!-- Mobile Navigation -->
+        <div class="md:hidden mt-4 pt-4 border-t border-gray-600/50">
+          <div class="grid grid-cols-2 gap-4">
+            <a href="/movies"
+              class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium p-2">
+              <span>🎭</span> หนังทั้งหมด
+            </a>
+            <a href="/reviews"
+              class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium p-2">
+              <span>⭐</span> รีวิวล่าสุด
+            </a>
+            <a href="/collections"
+              class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium p-2">
+              <span>📁</span> คอลเลกชัน
+            </a>
+            <a href="/top-rated"
+              class="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors font-medium p-2">
+              <span>🏆</span> อันดับต้น
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto p-6 space-y-8">
+      <!-- Profile Section -->
+      <div class="glass-effect rounded-3xl p-8 card-hover">
+        <div class="flex flex-col lg:flex-row items-start gap-8">
+          <!-- Avatar Section -->
+          <div class="flex flex-col items-center space-y-4">
+            <% if (profile?.avatarUrl?.data) { %>
+              <img
+                src="data:<%= profile.avatarUrl.contentType %>;base64,<%= profile.avatarUrl.data.toString('base64') %>"
+                alt="avatar" class="w-32 h-32 rounded-full object-cover profile-glow" />
               <% } else { %>
-                <div class="w-32 h-32 rounded-full border-4 border-red-500 bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center text-4xl font-bold text-white profile-glow">
+                <div
+                  class="w-32 h-32 rounded-full border-4 border-red-500 bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center text-4xl font-bold text-white profile-glow">
                   <%= user.name.charAt(0).toUpperCase() %>
                 </div>
-              <% } %>
-
-              <!-- Status Badge -->
-              <div class="flex items-center gap-2 bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">
-                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                ออนไลน์
-              </div>
-            </div>
-
-            <!-- Profile Info -->
-            <div class="flex-1 space-y-4">
-              <div>
-                <h2 class="text-3xl font-bold text-white mb-2"><%= user.name %></h2>
-                <p class="text-gray-300 text-lg flex items-center gap-2">
-                  <span class="text-red-400">✉</span>
-                  <%= user.email %>
-                </p>
-              </div>
-
-              <div class="bg-gray-800/50 rounded-2xl p-4">
-                <h3 class="text-red-400 font-semibold mb-2 flex items-center gap-2">
-                  <span>📝</span> ชีวประวัติ
-                </h3>
-                <p class="text-gray-300 leading-relaxed">
-                  <%= profile?.bio ? profile.bio.replace(/\n/g,'<br>') : 'ยังไม่มีข้อมูลชีวประวัติ กรุณาเพิ่มข้อมูลเกี่ยวกับตัวคุณ' %>
-                </p>
-              </div>
-
-              <!-- Social Links -->
-              <div class="flex flex-wrap gap-4">
-                <% if (profile?.socialLinks.facebook) { %>
-                  <a href="<%= profile.socialLinks.facebook %>" target="_blank" class="social-icon flex items-center gap-2 bg-blue-600/20 text-blue-400 px-4 py-2 rounded-xl hover:bg-blue-600/30 border border-blue-500/30">
-                    <span class="text-xl">📘</span> Facebook
-                  </a>
                 <% } %>
-                <% if (profile?.socialLinks.twitter) { %>
-                  <a href="<%= profile.socialLinks.twitter %>" target="_blank" class="social-icon flex items-center gap-2 bg-sky-600/20 text-sky-400 px-4 py-2 rounded-xl hover:bg-sky-600/30 border border-sky-500/30">
-                    <span class="text-xl">🐦</span> Twitter
-                  </a>
-                <% } %>
-                <% if (profile?.socialLinks.instagram) { %>
-                  <a href="<%= profile.socialLinks.instagram %>" target="_blank" class="social-icon flex items-center gap-2 bg-pink-600/20 text-pink-400 px-4 py-2 rounded-xl hover:bg-pink-600/30 border border-pink-500/30">
-                    <span class="text-xl">📷</span> Instagram
-                  </a>
-                <% } %>
-              </div>
-            </div>
+
+                  <!-- Status Badge -->
+                  <div class="flex items-center gap-2 bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">
+                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    ออนไลน์
+                  </div>
           </div>
-        </div>
 
-        <!-- Edit Profile Form -->
-        <div class="glass-effect rounded-3xl p-8 card-hover">
-          <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-            <span class="text-red-400">⚙️</span> แก้ไขโปรไฟล์
-          </h3>
-
-          <form action="/user/updateProfile" method="POST" enctype="multipart/form-data" class="space-y-6">
-            <!-- Avatar Upload -->
-            <div class="space-y-2">
-              <label class="block text-lg font-medium text-gray-200 flex items-center gap-2">
-                <span class="text-red-400">🖼️</span> อัปโหลดรูปโปรไฟล์
-              </label>
-              <div class="relative">
-                <input type="file" name="avatarFile" accept="image/*" class="w-full border-2 border-gray-600 rounded-xl p-4 bg-gray-800/50 text-gray-100 input-focus transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-red-600 file:text-white file:font-medium hover:file:bg-red-700" />
-              </div>
+          <!-- Profile Info -->
+          <div class="flex-1 space-y-4">
+            <div>
+              <h2 class="text-3xl font-bold text-white mb-2">
+                <%= user.name %>
+              </h2>
+              <p class="text-gray-300 text-lg flex items-center gap-2">
+                <span class="text-red-400">✉</span>
+                <%= user.email %>
+              </p>
             </div>
 
-            <!-- Bio -->
-            <div class="space-y-2">
-              <label class="block text-lg font-medium text-gray-200 flex items-center gap-2">
-                <span class="text-red-400">📝</span> ชีวประวัติ
-              </label>
-              <textarea name="bio" rows="4" class="w-full border-2 border-gray-600 rounded-xl p-4 bg-gray-800/50 text-gray-100 input-focus transition-all resize-none" placeholder="เล่าเกี่ยวกับตัวคุณ..."><%= profile?.bio ? profile.bio.replace(/</g,'&lt;').replace(/>/g,'&gt;') : '' %></textarea>
+            <div class="bg-gray-800/50 rounded-2xl p-4">
+              <h3 class="text-red-400 font-semibold mb-2 flex items-center gap-2">
+                <span>📝</span> ชีวประวัติ
+              </h3>
+              <p class="text-gray-300 leading-relaxed">
+                <%- profile?.bio ? profile.bio.replace(/\n/g,'<br>') : 'ยังไม่มีข้อมูลชีวประวัติ กรุณาเพิ่มข้อมูลเกี่ยวกับตัวคุณ' %>
+              </p>
             </div>
 
             <!-- Social Links -->
-            <div class="space-y-4">
-              <h4 class="text-lg font-medium text-gray-200 flex items-center gap-2">
-                <span class="text-red-400">🔗</span> ลิงก์โซเชียลมีเดีย
-              </h4>
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="relative">
-                  <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-400 text-xl">📘</span>
-                  <input type="text" name="facebook" placeholder="Facebook URL" class="w-full pl-12 pr-4 py-4 border-2 border-gray-600 rounded-xl bg-gray-800/50 text-gray-100 input-focus transition-all" value="<%= profile?.socialLinks.facebook %>" />
-                </div>
-                <div class="relative">
-                  <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-sky-400 text-xl">🐦</span>
-                  <input type="text" name="twitter" placeholder="Twitter URL" class="w-full pl-12 pr-4 py-4 border-2 border-gray-600 rounded-xl bg-gray-800/50 text-gray-100 input-focus transition-all" value="<%= profile?.socialLinks.twitter %>" />
-                </div>
-                <div class="relative">
-                  <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-pink-400 text-xl">📷</span>
-                  <input type="text" name="instagram" placeholder="Instagram URL" class="w-full pl-12 pr-4 py-4 border-2 border-gray-600 rounded-xl bg-gray-800/50 text-gray-100 input-focus transition-all" value="<%= profile?.socialLinks.instagram %>" />
-                </div>
-              </div>
-            </div>
-
-            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-2xl transition-all w-full md:w-auto">บันทึกข้อมูล</button>
-          </form>
-        </div>
-        <!-- Stats Section -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div
-            class="glass-effect rounded-2xl p-6 text-center card-hover border border-red-500/20"
-          >
-            <div
-              class="w-16 h-16 bg-gradient-to-br from-red-500 to-red-700 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-float"
-            >
-              <span class="text-2xl">⭐</span>
-            </div>
-            <p class="text-4xl font-bold text-red-400 mb-2">
-              <%= stats.totalReviews %>
-            </p>
-            <p class="text-gray-300 font-medium">รีวิวทั้งหมด</p>
-            <div class="mt-3 h-1 bg-gray-700 rounded-full overflow-hidden">
-              <div
-                class="h-full bg-gradient-to-r from-red-500 to-red-600 rounded-full animate-pulse"
-                style="width: 75%"
-              ></div>
-            </div>
-          </div>
-
-          <div
-            class="glass-effect rounded-2xl p-6 text-center card-hover border border-purple-500/20"
-          >
-            <div
-              class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-float"
-              style="animation-delay: 1s"
-            >
-              <span class="text-2xl">📁</span>
-            </div>
-            <p class="text-4xl font-bold text-purple-400 mb-2">
-              <%= stats.totalCollections %>
-            </p>
-            <p class="text-gray-300 font-medium">คอลเลกชันที่สร้าง</p>
-            <div class="mt-3 h-1 bg-gray-700 rounded-full overflow-hidden">
-              <div
-                class="h-full bg-gradient-to-r from-purple-500 to-purple-600 rounded-full animate-pulse"
-                style="width: 60%"
-              ></div>
-            </div>
-          </div>
-
-          <div
-            class="glass-effect rounded-2xl p-6 text-center card-hover border border-yellow-500/20"
-          >
-            <div
-              class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-700 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-float"
-              style="animation-delay: 2s"
-            >
-              <span class="text-2xl">🏆</span>
-            </div>
-            <p class="text-4xl font-bold text-yellow-400 mb-2">
-              <%= stats.avgRating %>
-            </p>
-            <p class="text-gray-300 font-medium">คะแนนเฉลี่ย</p>
-            <div class="mt-3 h-1 bg-gray-700 rounded-full overflow-hidden">
-              <div
-                class="h-full bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full animate-pulse"
-                style="width: 85%"
-              ></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- My Reviews -->
-        <div class="glass-effect rounded-3xl p-8 card-hover">
-          <h2
-            class="text-3xl font-bold text-white mb-6 flex items-center gap-3"
-          >
-            <span class="text-red-400">🎬</span>
-            รีวิวของฉัน
-          </h2>
-
-          <% if (reviews.length > 0) { %>
-          <div class="space-y-6">
-            <% reviews.forEach(r => { %>
-            <div
-              class="bg-gradient-to-r from-gray-800/50 to-gray-700/50 rounded-2xl p-6 border border-gray-600/50 card-hover backdrop-blur-sm flex flex-col md:flex-row gap-6"
-            >
-              <!-- Poster หนัง -->
-              <div class="w-full md:w-32 flex-shrink-0">
-                <% if (r.movie.posterPath) { %>
-                <img
-                  src="https://image.tmdb.org/t/p/w500<%= r.movie.posterPath %>"
-                  alt="<%= r.movie.title %>"
-                  class="rounded-xl w-full"
-                />
-                <% } else { %>
-                <div
-                  class="w-full h-48 bg-gray-700 rounded-xl flex items-center justify-center text-4xl"
-                >
-                  🎬
-                </div>
+            <div class="flex flex-wrap gap-4">
+              <% if (profile?.socialLinks.facebook) { %>
+                <a href="<%= profile.socialLinks.facebook %>" target="_blank"
+                  class="social-icon flex items-center gap-2 bg-blue-600/20 text-blue-400 px-4 py-2 rounded-xl hover:bg-blue-600/30 border border-blue-500/30">
+                  <span class="text-xl">📘</span> Facebook
+                </a>
                 <% } %>
+                  <% if (profile?.socialLinks.twitter) { %>
+                    <a href="<%= profile.socialLinks.twitter %>" target="_blank"
+                      class="social-icon flex items-center gap-2 bg-sky-600/20 text-sky-400 px-4 py-2 rounded-xl hover:bg-sky-600/30 border border-sky-500/30">
+                      <span class="text-xl">🐦</span> Twitter
+                    </a>
+                    <% } %>
+                      <% if (profile?.socialLinks.instagram) { %>
+                        <a href="<%= profile.socialLinks.instagram %>" target="_blank"
+                          class="social-icon flex items-center gap-2 bg-pink-600/20 text-pink-400 px-4 py-2 rounded-xl hover:bg-pink-600/30 border border-pink-500/30">
+                          <span class="text-xl">📷</span> Instagram
+                        </a>
+                        <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Profile Form -->
+      <div class="glass-effect rounded-3xl p-8 card-hover">
+        <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="text-red-400">⚙️</span> แก้ไขโปรไฟล์
+        </h3>
+
+        <form action="/user/updateProfile" method="POST" enctype="multipart/form-data" class="space-y-6">
+          <!-- Avatar Upload -->
+          <div class="space-y-2">
+            <label class="block text-lg font-medium text-gray-200 flex items-center gap-2">
+              <span class="text-red-400">🖼️</span> อัปโหลดรูปโปรไฟล์
+            </label>
+            <div class="relative">
+              <input type="file" name="avatarFile" accept="image/*"
+                class="w-full border-2 border-gray-600 rounded-xl p-4 bg-gray-800/50 text-gray-100 input-focus transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-red-600 file:text-white file:font-medium hover:file:bg-red-700" />
+            </div>
+          </div>
+
+          <!-- Bio -->
+          <div class="space-y-2">
+            <label class="block text-lg font-medium text-gray-200 flex items-center gap-2">
+              <span class="text-red-400">📝</span> ชีวประวัติ
+            </label>
+            <textarea name="bio" rows="4"
+              class="w-full border-2 border-gray-600 rounded-xl p-4 bg-gray-800/50 text-gray-100 input-focus transition-all resize-none"
+              placeholder="เล่าเกี่ยวกับตัวคุณ..."><%= profile?.bio ? profile.bio.replace(/</g,'&lt;').replace(/>/g,'&gt;') : '' %></textarea>
+          </div>
+
+          <!-- Social Links -->
+          <div class="space-y-4">
+            <h4 class="text-lg font-medium text-gray-200 flex items-center gap-2">
+              <span class="text-red-400">🔗</span> ลิงก์โซเชียลมีเดีย
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="relative">
+                <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-400 text-xl">📘</span>
+                <input type="text" name="facebook" placeholder="Facebook URL"
+                  class="w-full pl-12 pr-4 py-4 border-2 border-gray-600 rounded-xl bg-gray-800/50 text-gray-100 input-focus transition-all"
+                  value="<%= profile?.socialLinks.facebook %>" />
               </div>
+              <div class="relative">
+                <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-sky-400 text-xl">🐦</span>
+                <input type="text" name="twitter" placeholder="Twitter URL"
+                  class="w-full pl-12 pr-4 py-4 border-2 border-gray-600 rounded-xl bg-gray-800/50 text-gray-100 input-focus transition-all"
+                  value="<%= profile?.socialLinks.twitter %>" />
+              </div>
+              <div class="relative">
+                <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-pink-400 text-xl">📷</span>
+                <input type="text" name="instagram" placeholder="Instagram URL"
+                  class="w-full pl-12 pr-4 py-4 border-2 border-gray-600 rounded-xl bg-gray-800/50 text-gray-100 input-focus transition-all"
+                  value="<%= profile?.socialLinks.instagram %>" />
+              </div>
+            </div>
+          </div>
 
-              <!-- ข้อมูลรีวิว -->
-              <div class="flex-1 flex flex-col justify-between">
-                <div>
-                  <div
-                    class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-3"
-                  >
-                    <h3 class="font-bold text-xl text-red-400">
-                      <%= r.movie.title %>
-                    </h3>
+          <button type="submit"
+            class="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-2xl transition-all w-full md:w-auto">บันทึกข้อมูล</button>
+        </form>
+      </div>
+      <!-- Stats Section -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div class="glass-effect rounded-2xl p-6 text-center card-hover border border-red-500/20">
+          <div
+            class="w-16 h-16 bg-gradient-to-br from-red-500 to-red-700 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-float">
+            <span class="text-2xl">⭐</span>
+          </div>
+          <p class="text-4xl font-bold text-red-400 mb-2">
+            <%= stats.totalReviews %>
+          </p>
+          <p class="text-gray-300 font-medium">รีวิวทั้งหมด</p>
+          <div class="mt-3 h-1 bg-gray-700 rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-red-500 to-red-600 rounded-full animate-pulse" style="width: 75%">
+            </div>
+          </div>
+        </div>
 
-                    <div
-                      class="flex items-center gap-1 bg-yellow-500/20 px-3 py-1 rounded-full"
-                    >
-                      <span class="text-yellow-400">⭐</span>
-                      <span class="text-yellow-400 font-bold"
-                        ><%= r.rating %>/10</span
-                      >
+        <div class="glass-effect rounded-2xl p-6 text-center card-hover border border-purple-500/20">
+          <div
+            class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-float"
+            style="animation-delay: 1s">
+            <span class="text-2xl">📁</span>
+          </div>
+          <p class="text-4xl font-bold text-purple-400 mb-2">
+            <%= stats.totalCollections %>
+          </p>
+          <p class="text-gray-300 font-medium">คอลเลกชันที่สร้าง</p>
+          <div class="mt-3 h-1 bg-gray-700 rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-purple-500 to-purple-600 rounded-full animate-pulse"
+              style="width: 60%"></div>
+          </div>
+        </div>
+
+        <div class="glass-effect rounded-2xl p-6 text-center card-hover border border-yellow-500/20">
+          <div
+            class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-700 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-float"
+            style="animation-delay: 2s">
+            <span class="text-2xl">🏆</span>
+          </div>
+          <p class="text-4xl font-bold text-yellow-400 mb-2">
+            <%= stats.avgRating %>
+          </p>
+          <p class="text-gray-300 font-medium">คะแนนเฉลี่ย</p>
+          <div class="mt-3 h-1 bg-gray-700 rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full animate-pulse"
+              style="width: 85%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- My Reviews -->
+      <div class="glass-effect rounded-3xl p-8 card-hover">
+        <h2 class="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="text-red-400">🎬</span>
+          รีวิวของฉัน
+        </h2>
+
+        <% if (reviews.length> 0) { %>
+          <div class="space-y-6">
+            <% reviews.forEach(r=> { %>
+              <div
+                class="bg-gradient-to-r from-gray-800/50 to-gray-700/50 rounded-2xl p-6 border border-gray-600/50 card-hover backdrop-blur-sm flex flex-col md:flex-row gap-6">
+                <!-- Poster หนัง -->
+                <div class="w-full md:w-32 flex-shrink-0">
+                  <% if (r.movie.posterPath) { %>
+                    <img src="https://image.tmdb.org/t/p/w500<%= r.movie.posterPath %>" alt="<%= r.movie.title %>"
+                      class="rounded-xl w-full" />
+                    <% } else { %>
+                      <div class="w-full h-48 bg-gray-700 rounded-xl flex items-center justify-center text-4xl">
+                        🎬
+                      </div>
+                      <% } %>
+                </div>
+
+                <!-- ข้อมูลรีวิว -->
+                <div class="flex-1 flex flex-col justify-between">
+                  <div>
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-3">
+                      <h3 class="font-bold text-xl text-red-400">
+                        <%= r.movie.title %>
+                      </h3>
+
+                      <div class="flex items-center gap-1 bg-yellow-500/20 px-3 py-1 rounded-full">
+                        <span class="text-yellow-400">⭐</span>
+                        <span class="text-yellow-400 font-bold">
+                          <%= r.rating %>/10
+                        </span>
+                      </div>
+
+                      <!-- สถานะ review -->
+                      <span
+                        class="ml-4 px-3 py-1 rounded-full font-semibold <% if(r.status === 'pending') { %> bg-yellow-400/30 text-yellow-400 <% } else if(r.status === 'approved') { %> bg-green-400/30 text-green-400 <% } else { %> bg-red-400/30 text-red-400 <% } %>">
+                        <%= r.status.charAt(0).toUpperCase() + r.status.slice(1) %>
+                      </span>
                     </div>
 
-                    <!-- สถานะ review -->
-                    <span
-                      class="ml-4 px-3 py-1 rounded-full font-semibold <% if(r.status === 'pending') { %> bg-yellow-400/30 text-yellow-400 <% } else if(r.status === 'approved') { %> bg-green-400/30 text-green-400 <% } else { %> bg-red-400/30 text-red-400 <% } %>"
-                    >
-                      <%= r.status.charAt(0).toUpperCase() + r.status.slice(1)
-                      %>
+                    <p class="text-gray-300 leading-relaxed mb-3 bg-gray-800/30 p-4 rounded-xl">
+                      "<%= r.comment %>"
+                    </p>
+                  </div>
+
+                  <div
+                    class="flex items-center justify-between text-sm text-gray-400 border-t border-gray-600/50 pt-3 mt-3">
+                    <span class="flex items-center gap-2">
+                      <span>📅</span>
+                      วันที่รีวิว: <%= r.createdAt.toLocaleDateString() %>
+                    </span>
+
+                    <!-- ปุ่มลบรีวิว -->
+                    <form action="/review/delete/<%= r._id %>" method="POST">
+                      <button type="submit"
+                        class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded-lg text-sm font-semibold text-white"
+                        onclick="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบรีวิวนี้?')">
+                        ลบรีวิว
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+          </div>
+
+          <% } else { %>
+            <div class="text-center py-12">
+              <div class="w-24 h-24 bg-gray-700/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-4xl">🎬</span>
+              </div>
+              <p class="text-gray-400 text-lg">ยังไม่มีรีวิว</p>
+              <p class="text-gray-500 text-sm mt-2">
+                เริ่มรีวิวหนังเรื่องแรกของคุณกันเถอะ!
+              </p>
+            </div>
+            <% } %>
+      </div>
+
+      <!-- My Collections -->
+      <div class="glass-effect rounded-3xl p-8 card-hover">
+        <h2 class="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="text-purple-400">📂</span>
+          คอลเลกชันของฉัน
+        </h2>
+
+        <% if (collections.length> 0) { %>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% collections.forEach(c=> { %>
+              <a href="/collection"
+                class="block bg-gradient-to-br from-purple-600/20 to-purple-800/20 p-6 rounded-2xl border border-purple-500/30 card-hover backdrop-blur-sm">
+                <div class="flex items-start justify-between mb-4">
+                  <div
+                    class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl flex items-center justify-center">
+                    <span class="text-xl">📚</span>
+                  </div>
+                  <div class="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-sm font-medium">
+                    <%= c.movies.length %> หนัง
+                  </div>
+                </div>
+                <h3 class="font-bold text-xl text-purple-300 mb-3">
+                  <%= c.name %>
+                </h3>
+                <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                  <%= c.description || 'ไม่มีคำอธิบาย' %>
+                </p>
+                <div class="flex items-center text-xs text-gray-400">
+                  <span class="flex items-center gap-1">
+                    <span>🎭</span>
+                    จำนวนหนัง: <%= c.movies.length %>
+                  </span>
+                </div>
+              </a>
+              <% }) %>
+          </div>
+          <% } else { %>
+            <div class="text-center py-12">
+              <div class="w-24 h-24 bg-gray-700/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-4xl">📁</span>
+              </div>
+              <p class="text-gray-400 text-lg">ยังไม่มีคอลเลกชัน</p>
+              <p class="text-gray-500 text-sm mt-2">
+                สร้างคอลเลกชันแรกของคุณเพื่อจัดเก็บหนังที่ชอบ!
+              </p>
+            </div>
+            <% } %>
+      </div>
+
+      <!-- Recent Activities -->
+      <div class="glass-effect rounded-3xl p-8 card-hover">
+        <h2 class="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="text-green-400">🕒</span>
+          กิจกรรมล่าสุด
+        </h2>
+        <% if (recentActivities.length> 0) { %>
+          <div class="space-y-3">
+            <% recentActivities.forEach(a=> { %>
+              <div
+                class="bg-gradient-to-r from-green-600/10 to-green-800/10 p-4 rounded-2xl border border-green-500/20 card-hover backdrop-blur-sm">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-10 h-10 bg-gradient-to-br from-green-500 to-green-700 rounded-xl flex items-center justify-center">
+                      <span class="text-sm">✨</span>
+                    </div>
+                    <span class="text-gray-200 font-medium">
+                      <%= a.text %>
                     </span>
                   </div>
-
-                  <p
-                    class="text-gray-300 leading-relaxed mb-3 bg-gray-800/30 p-4 rounded-xl"
-                  >
-                    "<%= r.comment %>"
-                  </p>
-                </div>
-
-                <div
-                  class="flex items-center justify-between text-sm text-gray-400 border-t border-gray-600/50 pt-3 mt-3"
-                >
-                  <span class="flex items-center gap-2">
-                    <span>📅</span>
-                    วันที่รีวิว: <%= r.createdAt.toLocaleDateString() %>
-                  </span>
-
-                  <!-- ปุ่มลบรีวิว -->
-    <form action="/review/delete/<%= r._id %>" method="POST">
-      <button
-        type="submit"
-        class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded-lg text-sm font-semibold text-white"
-        onclick="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบรีวิวนี้?')"
-      >
-        ลบรีวิว
-      </button>
-    </form>
-                </div>
-              </div>
-            </div>
-            <% }) %>
-          </div>
-
-          <% } else { %>
-          <div class="text-center py-12">
-            <div
-              class="w-24 h-24 bg-gray-700/50 rounded-full flex items-center justify-center mx-auto mb-4"
-            >
-              <span class="text-4xl">🎬</span>
-            </div>
-            <p class="text-gray-400 text-lg">ยังไม่มีรีวิว</p>
-            <p class="text-gray-500 text-sm mt-2">
-              เริ่มรีวิวหนังเรื่องแรกของคุณกันเถอะ!
-            </p>
-          </div>
-          <% } %>
-        </div>
-
-        <!-- My Collections -->
-        <div class="glass-effect rounded-3xl p-8 card-hover">
-          <h2
-            class="text-3xl font-bold text-white mb-6 flex items-center gap-3"
-          >
-            <span class="text-purple-400">📂</span>
-            คอลเลกชันของฉัน
-          </h2>
-
-          <% if (collections.length > 0) { %>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <% collections.forEach(c => { %>
-            <a
-              href="/collection"
-              class="block bg-gradient-to-br from-purple-600/20 to-purple-800/20 p-6 rounded-2xl border border-purple-500/30 card-hover backdrop-blur-sm"
-            >
-              <div class="flex items-start justify-between mb-4">
-                <div
-                  class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl flex items-center justify-center"
-                >
-                  <span class="text-xl">📚</span>
-                </div>
-                <div
-                  class="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-sm font-medium"
-                >
-                  <%= c.movies.length %> หนัง
-                </div>
-              </div>
-              <h3 class="font-bold text-xl text-purple-300 mb-3">
-                <%= c.name %>
-              </h3>
-              <p class="text-gray-300 text-sm leading-relaxed mb-4">
-                <%= c.description || 'ไม่มีคำอธิบาย' %>
-              </p>
-              <div class="flex items-center text-xs text-gray-400">
-                <span class="flex items-center gap-1">
-                  <span>🎭</span>
-                  จำนวนหนัง: <%= c.movies.length %>
-                </span>
-              </div>
-            </a>
-            <% }) %>
-          </div>
-          <% } else { %>
-          <div class="text-center py-12">
-            <div
-              class="w-24 h-24 bg-gray-700/50 rounded-full flex items-center justify-center mx-auto mb-4"
-            >
-              <span class="text-4xl">📁</span>
-            </div>
-            <p class="text-gray-400 text-lg">ยังไม่มีคอลเลกชัน</p>
-            <p class="text-gray-500 text-sm mt-2">
-              สร้างคอลเลกชันแรกของคุณเพื่อจัดเก็บหนังที่ชอบ!
-            </p>
-          </div>
-          <% } %>
-        </div>
-
-        <!-- Recent Activities -->
-        <div class="glass-effect rounded-3xl p-8 card-hover">
-          <h2
-            class="text-3xl font-bold text-white mb-6 flex items-center gap-3"
-          >
-            <span class="text-green-400">🕒</span>
-            กิจกรรมล่าสุด
-          </h2>
-          <% if (recentActivities.length > 0) { %>
-          <div class="space-y-3">
-            <% recentActivities.forEach(a => { %>
-            <div
-              class="bg-gradient-to-r from-green-600/10 to-green-800/10 p-4 rounded-2xl border border-green-500/20 card-hover backdrop-blur-sm"
-            >
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <div
-                    class="w-10 h-10 bg-gradient-to-br from-green-500 to-green-700 rounded-xl flex items-center justify-center"
-                  >
-                    <span class="text-sm">✨</span>
+                  <div class="flex items-center gap-2 text-xs text-gray-400 bg-gray-800/30 px-3 py-1 rounded-full">
+                    <span>⏰</span>
+                    <%= a.date.toLocaleString() %>
                   </div>
-                  <span class="text-gray-200 font-medium"><%= a.text %></span>
-                </div>
-                <div
-                  class="flex items-center gap-2 text-xs text-gray-400 bg-gray-800/30 px-3 py-1 rounded-full"
-                >
-                  <span>⏰</span>
-                  <%= a.date.toLocaleString() %>
                 </div>
               </div>
-            </div>
-            <% }) %>
+              <% }) %>
           </div>
           <% } else { %>
-          <div class="text-center py-12">
-            <div
-              class="w-24 h-24 bg-gray-700/50 rounded-full flex items-center justify-center mx-auto mb-4"
-            >
-              <span class="text-4xl">🕒</span>
+            <div class="text-center py-12">
+              <div class="w-24 h-24 bg-gray-700/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-4xl">🕒</span>
+              </div>
+              <p class="text-gray-400 text-lg">ยังไม่มีกิจกรรม</p>
+              <p class="text-gray-500 text-sm mt-2">
+                เริ่มใช้งานเพื่อดูกิจกรรมของคุณที่นี่!
+              </p>
             </div>
-            <p class="text-gray-400 text-lg">ยังไม่มีกิจกรรม</p>
-            <p class="text-gray-500 text-sm mt-2">
-              เริ่มใช้งานเพื่อดูกิจกรรมของคุณที่นี่!
-            </p>
-          </div>
-          <% } %>
-        </div>
-      </div>
+            <% } %>
       </div>
     </div>
-  </body>
+  </div>
+  </div>
+</body>
+
 </html>
