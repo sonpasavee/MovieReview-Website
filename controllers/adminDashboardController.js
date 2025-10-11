@@ -1,7 +1,7 @@
 const Review = require("../models/Review");
 const User = require("../models/User");
 const Movie = require("../models/Movie");
-
+const Profile = require("../models/Profile");
 exports.fetchInfoAdminDashboard = async (req, res) => {
   try {
     const filterStatus = req.query.status || "all"; // ตัวกรองจาก dropdown
@@ -31,9 +31,20 @@ exports.fetchInfoAdminDashboard = async (req, res) => {
       { $sort: { createdAt: -1 } },
     ]);
 
-    const allUser = await User.find().lean();
-    const allMovie = await Movie.find().lean();
+    const allUser = await User.aggregate([
+      { $match: { role: "user" } } ,
+      { 
+        $lookup: {
+          from: "profiles",
+          localField: "_id",
+          foreignField: "userId",
+          as: "profile",
+        },
+      },
+      { $unwind: { path: "$profile", preserveNullAndEmptyArrays: true } },
+    ]);
 
+    const allMovie = await Movie.find().lean();
     const stats = {
       users: allUser.length,
       movies: allMovie.length,
@@ -107,6 +118,7 @@ exports.userReviews = async (req, res) => {
   try {
     const userId = req.params.userId;
     const user = await User.findById(userId).lean();
+    const profile = await Profile.findOne({ userId: user._id }).lean();
     const reviews = await Review.aggregate([
       { $match: { userId: user._id } },
       {
@@ -125,15 +137,22 @@ exports.userReviews = async (req, res) => {
       reviews.reduce((sum, r) => sum + r.rating, 0) /
       (totalReviews > 0 ? totalReviews : 1)
     ).toFixed(1);
-    const approvedReviews = reviews.filter((r) => r.status === "approved").length;
-    const rejectedReviews = reviews.filter((r) => r.status === "rejected").length;
+    const approvedReviews = reviews.filter(
+      (r) => r.status === "approved"
+    ).length;
+    const rejectedReviews = reviews.filter(
+      (r) => r.status === "rejected"
+    ).length;
     const pendingReviews = reviews.filter((r) => r.status === "pending").length;
     const latestReviewDate =
-      totalReviews > 0 ? new Date(reviews[0].createdAt).toLocaleDateString() : "-";
+      totalReviews > 0
+        ? new Date(reviews[0].createdAt).toLocaleDateString()
+        : "-";
 
     res.render("adminUserReviews", {
       user,
       reviews,
+      profile ,
       stats: {
         totalReviews,
         avgRating,
@@ -152,23 +171,23 @@ exports.userReviews = async (req, res) => {
 // ban user
 exports.banUser = async (req, res) => {
   try {
-    const userId = req.params.id
-    await User.findByIdAndUpdate(userId, { isBanned: true })
-    res.redirect("/admin/dashboard")
-  }catch (err) {
-    console.error(err)
-    res.status(500).send("เกิดข้อผิดพลาดในระบบ")
+    const userId = req.params.id;
+    await User.findByIdAndUpdate(userId, { isBanned: true });
+    res.redirect("/admin/dashboard");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("เกิดข้อผิดพลาดในระบบ");
   }
-}
+};
 
-// unban user 
+// unban user
 exports.unbanUser = async (req, res) => {
   try {
-    const userId = req.params.id
-    await User.findByIdAndUpdate(userId, { isBanned: false })
-    res.redirect("/admin/dashboard")
-  }catch (err) {
-    console.error(err)
-    res.status(500).send("เกิดข้อผิดพลาดในระบบ")
-  } 
-}
+    const userId = req.params.id;
+    await User.findByIdAndUpdate(userId, { isBanned: false });
+    res.redirect("/admin/dashboard");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("เกิดข้อผิดพลาดในระบบ");
+  }
+};

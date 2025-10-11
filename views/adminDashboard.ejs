@@ -1,209 +1,267 @@
 <!DOCTYPE html>
 <html lang="th">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      body {
-        box-sizing: border-box;
-        font-family: "Kanit", sans-serif;
-        background: #0f0f0f;
-      }
-      .netflix-bg {
-        background: linear-gradient(135deg, #141414 0%, #000000 100%);
-      }
-      .netflix-red {
-        background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
-      }
-      .card-hover {
-        transition: all 0.3s ease;
-        background: rgba(20, 20, 20, 0.8);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-      }
-      .card-hover:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 25px -5px rgba(229, 9, 20, 0.3),
-          0 10px 10px -5px rgba(229, 9, 20, 0.1);
-        border-color: rgba(229, 9, 20, 0.3);
-      }
-      .stat-card {
-        background: rgba(20, 20, 20, 0.9);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-      }
-      .table-row:hover {
-        background-color: rgba(229, 9, 20, 0.1);
-        transition: background-color 0.2s ease;
-      }
-      .glass-effect {
-        background: rgba(20, 20, 20, 0.8);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-    </style>
-  </head>
 
-  <body class="netflix-bg min-h-full text-white">
-    <!-- Header -->
-    <div class="netflix-red py-8 mb-8">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="flex items-center justify-between">
-          <div>
-            <h1 class="text-4xl font-bold mb-2">👑 Admin Dashboard</h1>
-            <p class="text-red-100 text-lg">ระบบจัดการแอดมิน</p>
-          </div>
-          <div class="text-right">
-            <p class="text-red-100">วันที่: <span id="currentDate"></span></p>
-            <p class="text-red-100">เวลา: <span id="currentTime"></span></p>
-          </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      font-family: "Kanit", sans-serif;
+      background: #0f0f0f;
+    }
+
+    .netflix-bg {
+      background: linear-gradient(135deg, #141414 0%, #000000 100%);
+    }
+
+    .netflix-red {
+      background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
+    }
+
+    .card-hover {
+      transition: all 0.3s ease;
+      background: rgba(20, 20, 20, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(229, 9, 20, 0.3),
+        0 10px 10px -5px rgba(229, 9, 20, 0.1);
+      border-color: rgba(229, 9, 20, 0.3);
+    }
+
+    .stat-card {
+      background: rgba(20, 20, 20, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .table-row:hover {
+      background-color: rgba(229, 9, 20, 0.1);
+      transition: background-color 0.2s ease;
+    }
+
+    .glass-effect {
+      background: rgba(20, 20, 20, 0.8);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+
+<body class="netflix-bg min-h-full text-white">
+  <!-- Navbar Admin -->
+  <header class="bg-black text-white shadow">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <!-- Logo / Title -->
+      <h1 class="flex items-center text-xl sm:text-2xl font-extrabold tracking-wide">
+        R-MOVIE
+        <img src="/images/logo.jpg" alt="Logo" class="ml-1 w-8 h-8">
+      </h1>
+
+      <!-- Menu + User -->
+      <div class="flex items-center gap-6">
+        <!-- เมนูหลัก -->
+        <nav class="hidden sm:flex gap-4 font-medium">
+          <a href="/admin/dashboard" class="hover:text-red-500 transition">แดชบอร์ด</a>
+          <a href="/" class="hover:text-red-500 transition">กลับสู่หน้าเว็บหลัก</a>
+        </nav>
+
+        <!-- User -->
+        <div class="flex items-center gap-3">
+          <% if (loggedIn && UserData.role==='admin' ) { %>
+            <span class="hidden sm:inline font-medium">
+              สวัสดี, <%= UserData.name || 'Admin' %>
+            </span>
+            <a href="/logout" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition shadow">
+              ออกจากระบบ
+            </a>
+            <% } else { %>
+              <a href="/login" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition shadow">
+                เข้าสู่ระบบ
+              </a>
+              <% } %>
         </div>
       </div>
     </div>
+  </header>
 
-    <div class="max-w-7xl mx-auto px-6 pb-12">
-      <!-- Overview Stats -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-        <div class="stat-card card-hover rounded-xl p-6 text-center shadow-lg">
-          <div class="w-16 h-16 bg-red-900 bg-opacity-50 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span class="text-2xl">👥</span>
-          </div>
-          <p class="text-gray-300 text-sm font-medium mb-2">ผู้ใช้ทั้งหมด</p>
-          <p class="text-3xl font-bold text-white"><%= stats?.users || 0 %></p>
+  <!-- Header -->
+  <div class="netflix-red py-8 mb-8">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-4xl font-bold mb-2">Admin Dashboard</h1>
+          <p class="text-red-100 text-lg">ระบบจัดการแอดมิน</p>
         </div>
-
-        <div class="stat-card card-hover rounded-xl p-6 text-center shadow-lg">
-          <div class="w-16 h-16 bg-red-900 bg-opacity-50 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span class="text-2xl">⭐</span>
-          </div>
-          <p class="text-gray-300 text-sm font-medium mb-2">จำนวนรีวิว</p>
-          <p class="text-3xl font-bold text-white"><%= stats?.reviews || 0 %></p>
+        <div class="text-right">
+          <p class="text-red-100">วันที่: <span id="currentDate"></span></p>
+          <p class="text-red-100">เวลา: <span id="currentTime"></span></p>
         </div>
+      </div>
+    </div>
+  </div>
 
-        <div class="stat-card card-hover rounded-xl p-6 text-center shadow-lg">
-          <div class="w-16 h-16 bg-red-900 bg-opacity-50 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span class="text-2xl">🎬</span>
-          </div>
-          <p class="text-gray-300 text-sm font-medium mb-2">จำนวนหนัง</p>
-          <p class="text-3xl font-bold text-white"><%= stats?.movies || 0 %></p>
+  <div class="max-w-7xl mx-auto px-6 pb-12">
+    <!-- Overview Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      <div class="stat-card card-hover rounded-xl p-6 text-center shadow-lg">
+        <div class="w-16 h-16 bg-red-900 bg-opacity-50 rounded-full flex items-center justify-center mx-auto mb-4">
+          <span class="text-2xl">👥</span>
         </div>
+        <p class="text-gray-300 text-sm font-medium mb-2">ผู้ใช้ทั้งหมด</p>
+        <p class="text-3xl font-bold text-white">
+          <%= stats?.users || 0 %>
+        </p>
+      </div>
 
-        <div class="stat-card card-hover rounded-xl p-6 text-center shadow-lg">
-          <div class="w-16 h-16 bg-red-900 bg-opacity-50 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span class="text-2xl">📝</span>
-          </div>
-          <p class="text-gray-300 text-sm font-medium mb-2">รีวิวล่าสุด</p>
-          <p class="text-3xl font-bold text-white"><%= latestReviews?.length || 0 %></p>
+      <div class="stat-card card-hover rounded-xl p-6 text-center shadow-lg">
+        <div class="w-16 h-16 bg-red-900 bg-opacity-50 rounded-full flex items-center justify-center mx-auto mb-4">
+          <span class="text-2xl">⭐</span>
+        </div>
+        <p class="text-gray-300 text-sm font-medium mb-2">จำนวนรีวิว</p>
+        <p class="text-3xl font-bold text-white">
+          <%= stats?.reviews || 0 %>
+        </p>
+      </div>
+
+      <div class="stat-card card-hover rounded-xl p-6 text-center shadow-lg">
+        <div class="w-16 h-16 bg-red-900 bg-opacity-50 rounded-full flex items-center justify-center mx-auto mb-4">
+          <span class="text-2xl">🎬</span>
+        </div>
+        <p class="text-gray-300 text-sm font-medium mb-2">จำนวนหนัง</p>
+        <p class="text-3xl font-bold text-white">
+          <%= stats?.movies || 0 %>
+        </p>
+      </div>
+
+      <div class="stat-card card-hover rounded-xl p-6 text-center shadow-lg">
+        <div class="w-16 h-16 bg-red-900 bg-opacity-50 rounded-full flex items-center justify-center mx-auto mb-4">
+          <span class="text-2xl">📝</span>
+        </div>
+        <p class="text-gray-300 text-sm font-medium mb-2">รีวิวล่าสุด</p>
+        <p class="text-3xl font-bold text-white">
+          <%= latestReviews?.length || 0 %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Manage Users -->
+    <div class="glass-effect rounded-xl shadow-lg p-8 mb-8">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-semibold text-white flex items-center">
+          <span class="mr-3">👥</span> จัดการผู้ใช้
+        </h2>
+        <div class="flex space-x-3">
+          <input type="text" placeholder="ค้นหาผู้ใช้..."
+            class="px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            id="searchUser" />
         </div>
       </div>
 
-      <!-- Manage Users -->
-      <div class="glass-effect rounded-xl shadow-lg p-8 mb-8">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-semibold text-white flex items-center">
-            <span class="mr-3">👥</span> จัดการผู้ใช้
-          </h2>
-          <div class="flex space-x-3">
-            <input
-              type="text"
-              placeholder="ค้นหาผู้ใช้..."
-              class="px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-transparent"
-              id="searchUser"
-            />
-          </div>
-        </div>
-
-        <div class="overflow-x-auto">
-          <table class="min-w-full">
-            <thead>
-              <tr class="border-b-2 border-gray-600">
-                <th class="text-left py-4 px-4 font-semibold text-gray-300">ชื่อผู้ใช้</th>
-                <th class="text-left py-4 px-4 font-semibold text-gray-300">อีเมล</th>
-                <th class="text-left py-4 px-4 font-semibold text-gray-300">วันที่สมัคร</th>
-                <th class="text-center py-4 px-4 font-semibold text-gray-300">สถานะ</th>
-                <th class="text-center py-4 px-4 font-semibold text-gray-300">การจัดการ</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% allUser.forEach(u => { %>
+      <div class="overflow-x-auto">
+        <table class="min-w-full">
+          <thead>
+            <tr class="border-b-2 border-gray-600">
+              <th class="text-left py-4 px-4 font-semibold text-gray-300">ชื่อผู้ใช้</th>
+              <th class="text-left py-4 px-4 font-semibold text-gray-300">อีเมล</th>
+              <th class="text-left py-4 px-4 font-semibold text-gray-300">วันที่สมัคร</th>
+              <th class="text-center py-4 px-4 font-semibold text-gray-300">สถานะ</th>
+              <th class="text-center py-4 px-4 font-semibold text-gray-300">การจัดการ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% allUser.forEach(u=> { %>
               <tr class="table-row border-b border-gray-700">
                 <td class="py-4 px-4 flex items-center">
-                  <div class="w-10 h-10 netflix-red rounded-full flex items-center justify-center text-white font-semibold mr-3">
-                    <%= u.name ? u.name.charAt(0).toUpperCase() : '?' %>
+                  <div class="w-10 h-10 rounded-full flex items-center justify-center font-semibold mr-3
+    <% if (!u.profile || !u.profile.avatarUrl) { %> bg-red-600 text-white <% } %>">
+
+                    <% if (u.profile && u.profile.avatarUrl) { %>
+                      <img
+                        src="data:<%= u.profile.avatarUrl.contentType %>;base64,<%= u.profile.avatarUrl.data.toString('base64') %>"
+                        alt="<%= u.name %>" class="w-10 h-10 rounded-full object-cover">
+                      <% } else { %>
+                        <%= u.name ? u.name.charAt(0).toUpperCase() : '?' %>
+                          <% } %>
                   </div>
-                  <span class="font-medium text-white"><%= u.name || 'ไม่ระบุชื่อ' %></span>
+                  <span class="font-medium text-white">
+                    <%= u.name || 'ไม่ระบุชื่อ' %>
+                  </span>
                 </td>
-                <td class="py-4 px-4 text-gray-300"><%= u.email || '-' %></td>
-                <td class="py-4 px-4 text-gray-300"><%= u.createdAt ? new Date(u.createdAt).toLocaleDateString('th-TH') : '-' %></td>
+
+                <td class="py-4 px-4 text-gray-300">
+                  <%= u.email || '-' %>
+                </td>
+                <td class="py-4 px-4 text-gray-300">
+                  <%= u.createdAt ? new Date(u.createdAt).toLocaleDateString('th-TH') : '-' %>
+                </td>
                 <td class="py-4 px-4 text-center">
                   <% if (u.isBanned) { %>
                     <span class="bg-red-600 text-white px-3 py-1 rounded">ถูกแบน</span>
-                  <% } else { %>
-                    <span class="bg-green-600 text-white px-3 py-1 rounded">ปกติ</span>
-                  <% } %>
+                    <% } else { %>
+                      <span class="bg-green-600 text-white px-3 py-1 rounded">ปกติ</span>
+                      <% } %>
                 </td>
                 <td class="py-4 px-4 text-center flex justify-center space-x-2">
-                  <a href="/admin/users/<%= u._id %>/reviews" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">ดูรีวิว</a>
+                  <a href="/admin/users/<%= u._id %>/reviews"
+                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">ดูรีวิว</a>
                   <% if (u.isBanned) { %>
                     <form action="/admin/user/<%= u._id %>/unban" method="POST" style="display:inline;">
-                      <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition">ปลดแบน</button>
+                      <button
+                        class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition">ปลดแบน</button>
                     </form>
-                  <% } else { %>
-                    <form action="/admin/user/<%= u._id %>/ban" method="POST" style="display:inline;">
-                      <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition">แบน</button>
-                    </form>
-                  <% } %>
+                    <% } else { %>
+                      <form action="/admin/user/<%= u._id %>/ban" method="POST" style="display:inline;">
+                        <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition">แบน</button>
+                      </form>
+                      <% } %>
                 </td>
               </tr>
               <% }) %>
-            </tbody>
-          </table>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Manage Reviews -->
+    <div class="glass-effect rounded-xl shadow-lg p-8">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-semibold text-white flex items-center">
+          <span class="mr-3">⭐</span> จัดการรีวิว
+        </h2>
+        <div class="flex items-center space-x-3">
+          <form action="/admin/dashboard" method="get">
+            <select name="status"
+              class="px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-red-500 focus:border-transparent"
+              onchange="this.form.submit()">
+              <option value="all" <%=filterStatus==='all' ? 'selected' : '' %>>ทั้งหมด</option>
+              <option value="pending" <%=filterStatus==='pending' ? 'selected' : '' %>>รอการอนุมัติ</option>
+              <option value="approved" <%=filterStatus==='approved' ? 'selected' : '' %>>อนุมัติแล้ว</option>
+              <option value="rejected" <%=filterStatus==='rejected' ? 'selected' : '' %>>ถูกปฏิเสธ</option>
+            </select>
+          </form>
+
+          <form action="/admin/users/approveAll" method="POST">
+            <button type="submit" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะอนุมัติรีวิวทั้งหมดที่ยัง Pending?')"
+              class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition">
+              ✅ อนุมัติทั้งหมด
+            </button>
+          </form>
         </div>
       </div>
 
-      <!-- Manage Reviews -->
-      <div class="glass-effect rounded-xl shadow-lg p-8">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-semibold text-white flex items-center">
-            <span class="mr-3">⭐</span> จัดการรีวิว
-          </h2>
-          <div class="flex items-center space-x-3">
-            <form action="/admin/dashboard" method="get">
-              <select
-                name="status"
-                class="px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                onchange="this.form.submit()"
-              >
-                <option value="all" <%= filterStatus === 'all' ? 'selected' : '' %>>ทั้งหมด</option>
-                <option value="pending" <%= filterStatus === 'pending' ? 'selected' : '' %>>รอการอนุมัติ</option>
-                <option value="approved" <%= filterStatus === 'approved' ? 'selected' : '' %>>อนุมัติแล้ว</option>
-                <option value="rejected" <%= filterStatus === 'rejected' ? 'selected' : '' %>>ถูกปฏิเสธ</option>
-              </select>
-            </form>
-
-            <form action="/admin/users/approveAll" method="POST">
-              <button
-                type="submit"
-                onclick="return confirm('คุณแน่ใจหรือไม่ที่จะอนุมัติรีวิวทั้งหมดที่ยัง Pending?')"
-                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition"
-              >
-                ✅ อนุมัติทั้งหมด
-              </button>
-            </form>
-          </div>
+      <% if (!allReview || allReview.length===0) { %>
+        <div class="text-center py-12">
+          <div class="text-6xl mb-4">📝</div>
+          <p class="text-gray-400 text-lg">ยังไม่มีรีวิว</p>
         </div>
-
-        <% if (!allReview || allReview.length === 0) { %>
-          <div class="text-center py-12">
-            <div class="text-6xl mb-4">📝</div>
-            <p class="text-gray-400 text-lg">ยังไม่มีรีวิว</p>
-          </div>
         <% } else { %>
           <div class="overflow-x-auto">
             <table class="min-w-full">
@@ -217,59 +275,71 @@
                 </tr>
               </thead>
               <tbody>
-                <% allReview.forEach(r => { %>
-                <tr class="border-b border-gray-700">
-                  <td class="py-4 px-4 flex items-center space-x-3">
-                    <img src="<%= r.movie.posterPath %>" alt="<%= r.movie.title %>" class="w-12 h-16 rounded" />
-                    <span class="text-white"><%= r.movie.title %></span>
-                  </td>
-                  <td class="py-4 px-4 text-white"><%= r.user.name %></td>
-                  <td class="py-4 px-4 text-yellow-400"><%= r.rating %>/10</td>
-                  <td class="py-4 px-4 text-gray-300"><%= new Date(r.createdAt).toLocaleDateString('th-TH') %></td>
-                  <td class="py-4 px-4 text-center flex justify-center space-x-2">
-                    <% if (r.status === 'approved') { %>
-                      <span class="bg-green-600 text-white px-3 py-1 rounded">อนุมัติแล้ว</span>
-                    <% } else if (r.status === 'rejected') { %>
-                      <span class="bg-red-600 text-white px-3 py-1 rounded">ถูกปฏิเสธ</span>
-                    <% } else { %>
-                      <form action="/admin/reviews/<%= r._id %>/approve" method="POST" class="inline">
-                        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded">อนุมัติ</button>
-                      </form>
-                      <form action="/admin/reviews/<%= r._id %>/reject" method="POST" class="inline">
-                        <button type="submit" class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded">ปฏิเสธ</button>
-                      </form>
-                    <% } %>
-                    <form action="/admin/reviews/<%= r._id %>/delete" method="POST" class="inline">
-                      <button type="submit" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบรีวิวนี้?')" class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded">ลบ</button>
-                    </form>
-                  </td>
-                </tr>
-                <% }) %>
+                <% allReview.forEach(r=> { %>
+                  <tr class="border-b border-gray-700">
+                    <td class="py-4 px-4 flex items-center space-x-3">
+                      <img src="<%= r.movie.posterPath %>" alt="<%= r.movie.title %>" class="w-12 h-16 rounded" />
+                      <span class="text-white">
+                        <%= r.movie.title %>
+                      </span>
+                    </td>
+                    <td class="py-4 px-4 text-white">
+                      <%= r.user.name %>
+                    </td>
+                    <td class="py-4 px-4 text-yellow-400">
+                      <%= r.rating %>/10
+                    </td>
+                    <td class="py-4 px-4 text-gray-300">
+                      <%= new Date(r.createdAt).toLocaleDateString('th-TH') %>
+                    </td>
+                    <td class="py-4 px-4 text-center flex justify-center space-x-2">
+                      <% if (r.status==='approved' ) { %>
+                        <span class="bg-green-600 text-white px-3 py-1 rounded">อนุมัติแล้ว</span>
+                        <% } else if (r.status==='rejected' ) { %>
+                          <span class="bg-red-600 text-white px-3 py-1 rounded">ถูกปฏิเสธ</span>
+                          <% } else { %>
+                            <form action="/admin/reviews/<%= r._id %>/approve" method="POST" class="inline">
+                              <button type="submit"
+                                class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded">อนุมัติ</button>
+                            </form>
+                            <form action="/admin/reviews/<%= r._id %>/reject" method="POST" class="inline">
+                              <button type="submit"
+                                class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded">ปฏิเสธ</button>
+                            </form>
+                            <% } %>
+                              <form action="/admin/reviews/<%= r._id %>/delete" method="POST" class="inline">
+                                <button type="submit" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบรีวิวนี้?')"
+                                  class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded">ลบ</button>
+                              </form>
+                    </td>
+                  </tr>
+                  <% }) %>
               </tbody>
             </table>
           </div>
-        <% } %>
-      </div>
+          <% } %>
     </div>
+  </div>
 
-    <script>
-      // แสดงวันที่และเวลา
-      function updateDateTime() {
-        const now = new Date();
-        document.getElementById("currentDate").textContent = now.toLocaleDateString("th-TH");
-        document.getElementById("currentTime").textContent = now.toLocaleTimeString("th-TH");
-      }
-      updateDateTime();
-      setInterval(updateDateTime, 1000);
+  <script>
+    // แสดงวันที่และเวลา
+    function updateDateTime() {
+      const now = new Date();
+      document.getElementById("currentDate").textContent = now.toLocaleDateString("th-TH");
+      document.getElementById("currentTime").textContent = now.toLocaleTimeString("th-TH");
+    }
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
 
-      // ค้นหาผู้ใช้
-      document.getElementById("searchUser").addEventListener("input", function (e) {
-        const searchTerm = e.target.value.toLowerCase();
-        document.querySelectorAll("tbody tr").forEach((row) => {
-          const username = row.textContent.toLowerCase();
-          row.style.display = username.includes(searchTerm) ? "" : "none";
-        });
+    // ค้นหาผู้ใช้
+    document.getElementById("searchUser").addEventListener("input", function (e) {
+      const searchTerm = e.target.value.toLowerCase();
+      document.querySelectorAll("tbody tr").forEach((row) => {
+        const username = row.textContent.toLowerCase();
+        row.style.display = username.includes(searchTerm) ? "" : "none";
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
+
 </html>
