@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
           const response = await axios.get(`${TMDB_BASE_URL}/${tmdbId}`, {
             params: { api_key: process.env.TMDB_KEY, language: 'th-TH' } // เปลี่ยนภาษาได้
           })
-          return response.data
+          return { ...response.data, tmdbId }
         } catch (err) {
           console.error(`Error fetching movie ${tmdbId}`, err.message)
           return null

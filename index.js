@@ -37,8 +37,7 @@ const storeReviewController = require('./controllers/storeReviewController')
 const reviewController = require('./controllers/reviewController')
 const searchController = require('./controllers/searchController')
 const addCollectionController = require('./controllers/addCollectionController')
-const collectionController = require('./controllers/controllerCollection')
-
+const controllerCollection = require('./controllers/controllerCollection')
 
 
 // Middleware Import
@@ -81,10 +80,10 @@ app.post('/reviews', storeReviewController)
 app.get('/review/form/:movieId', reviewController)
 app.get('/searchResults', searchController)
 app.post('/add/collection/:movieId', addCollectionController)
-app.get('/collection', isAuthenticated, collectionController)
-app.post('/collection/rename/:collectionId', collectionController.renameCollection)
-app.post('/collection/delete/:collectionId', collectionController.deleteCollection)
-app.post('/collection/:collectionId/remove/:movieId', collectionController.removeMovie)
+app.get('/collection', isAuthenticated, controllerCollection)
+app.post('/collection/rename/:collectionId', controllerCollection.renameCollection)
+app.post('/collection/delete/:collectionId', controllerCollection.deleteCollection)
+app.post('/collection/:collectionId/remove/:movieId', controllerCollection.removeMovie)
 
 app.post('/admin/reviews/:id/delete',     isAuthenticated, isAdmin, adminDashboardController.deleteReview)
 app.post('/admin/reviews/:id/approve',    isAuthenticated, isAdmin, adminDashboardController.approveReview)
