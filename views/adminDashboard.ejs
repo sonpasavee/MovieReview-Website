@@ -42,54 +42,6 @@
         background-color: rgba(229, 9, 20, 0.1);
         transition: background-color 0.2s ease;
       }
-      .action-btn {
-        padding: 6px 16px;
-        border-radius: 8px;
-        font-size: 0.875rem;
-        font-weight: 500;
-        transition: all 0.2s ease;
-        border: 1px solid transparent;
-      }
-      .btn-view {
-        background: rgba(229, 9, 20, 0.8);
-        color: white;
-        border-color: #e50914;
-      }
-      .btn-view:hover {
-        background: #e50914;
-        transform: scale(1.05);
-        box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
-      }
-      .btn-ban {
-        background: rgba(239, 68, 68, 0.8);
-        color: white;
-        border-color: #ef4444;
-      }
-      .btn-ban:hover {
-        background: #ef4444;
-        transform: scale(1.05);
-        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
-      }
-      .btn-approve {
-        background: rgba(16, 185, 129, 0.8);
-        color: white;
-        border-color: #10b981;
-      }
-      .btn-approve:hover {
-        background: #10b981;
-        transform: scale(1.05);
-        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-      }
-      .btn-delete {
-        background: rgba(245, 158, 11, 0.8);
-        color: white;
-        border-color: #f59e0b;
-      }
-      .btn-delete:hover {
-        background: #f59e0b;
-        transform: scale(1.05);
-        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-      }
       .glass-effect {
         background: rgba(20, 20, 20, 0.8);
         backdrop-filter: blur(20px);
@@ -97,6 +49,7 @@
       }
     </style>
   </head>
+
   <body class="netflix-bg min-h-full text-white">
     <!-- Header -->
     <div class="netflix-red py-8 mb-8">
@@ -118,9 +71,7 @@
       <!-- Overview Stats -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
         <div class="stat-card card-hover rounded-xl p-6 text-center shadow-lg">
-          <div
-            class="w-16 h-16 bg-red-900 bg-opacity-50 rounded-full flex items-center justify-center mx-auto mb-4"
-          >
+          <div class="w-16 h-16 bg-red-900 bg-opacity-50 rounded-full flex items-center justify-center mx-auto mb-4">
             <span class="text-2xl">👥</span>
           </div>
           <p class="text-gray-300 text-sm font-medium mb-2">ผู้ใช้ทั้งหมด</p>
@@ -128,21 +79,15 @@
         </div>
 
         <div class="stat-card card-hover rounded-xl p-6 text-center shadow-lg">
-          <div
-            class="w-16 h-16 bg-red-900 bg-opacity-50 rounded-full flex items-center justify-center mx-auto mb-4"
-          >
+          <div class="w-16 h-16 bg-red-900 bg-opacity-50 rounded-full flex items-center justify-center mx-auto mb-4">
             <span class="text-2xl">⭐</span>
           </div>
           <p class="text-gray-300 text-sm font-medium mb-2">จำนวนรีวิว</p>
-          <p class="text-3xl font-bold text-white">
-            <%= stats?.reviews || 0 %>
-          </p>
+          <p class="text-3xl font-bold text-white"><%= stats?.reviews || 0 %></p>
         </div>
 
         <div class="stat-card card-hover rounded-xl p-6 text-center shadow-lg">
-          <div
-            class="w-16 h-16 bg-red-900 bg-opacity-50 rounded-full flex items-center justify-center mx-auto mb-4"
-          >
+          <div class="w-16 h-16 bg-red-900 bg-opacity-50 rounded-full flex items-center justify-center mx-auto mb-4">
             <span class="text-2xl">🎬</span>
           </div>
           <p class="text-gray-300 text-sm font-medium mb-2">จำนวนหนัง</p>
@@ -150,15 +95,11 @@
         </div>
 
         <div class="stat-card card-hover rounded-xl p-6 text-center shadow-lg">
-          <div
-            class="w-16 h-16 bg-red-900 bg-opacity-50 rounded-full flex items-center justify-center mx-auto mb-4"
-          >
+          <div class="w-16 h-16 bg-red-900 bg-opacity-50 rounded-full flex items-center justify-center mx-auto mb-4">
             <span class="text-2xl">📝</span>
           </div>
           <p class="text-gray-300 text-sm font-medium mb-2">รีวิวล่าสุด</p>
-          <p class="text-3xl font-bold text-white">
-            <%= latestReviews?.length || 0 %>
-          </p>
+          <p class="text-3xl font-bold text-white"><%= latestReviews?.length || 0 %></p>
         </div>
       </div>
 
@@ -166,20 +107,15 @@
       <div class="glass-effect rounded-xl shadow-lg p-8 mb-8">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-2xl font-semibold text-white flex items-center">
-            <span class="mr-3">👥</span>
-            จัดการผู้ใช้
+            <span class="mr-3">👥</span> จัดการผู้ใช้
           </h2>
           <div class="flex space-x-3">
             <input
               type="text"
               placeholder="ค้นหาผู้ใช้..."
               class="px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-transparent"
+              id="searchUser"
             />
-            <button
-              class="px-4 py-2 netflix-red text-white rounded-lg hover:opacity-90 transition-opacity"
-            >
-              🔍 ค้นหา
-            </button>
           </div>
         </div>
 
@@ -187,53 +123,42 @@
           <table class="min-w-full">
             <thead>
               <tr class="border-b-2 border-gray-600">
-                <th class="text-left py-4 px-4 font-semibold text-gray-300">
-                  ชื่อผู้ใช้
-                </th>
-                <th class="text-left py-4 px-4 font-semibold text-gray-300">
-                  อีเมล
-                </th>
-                <th class="text-left py-4 px-4 font-semibold text-gray-300">
-                  วันที่สมัคร
-                </th>
-                <th class="text-center py-4 px-4 font-semibold text-gray-300">
-                  การจัดการ
-                </th>
+                <th class="text-left py-4 px-4 font-semibold text-gray-300">ชื่อผู้ใช้</th>
+                <th class="text-left py-4 px-4 font-semibold text-gray-300">อีเมล</th>
+                <th class="text-left py-4 px-4 font-semibold text-gray-300">วันที่สมัคร</th>
+                <th class="text-center py-4 px-4 font-semibold text-gray-300">สถานะ</th>
+                <th class="text-center py-4 px-4 font-semibold text-gray-300">การจัดการ</th>
               </tr>
             </thead>
             <tbody>
-              <% allUser?.forEach(u => { %>
+              <% allUser.forEach(u => { %>
               <tr class="table-row border-b border-gray-700">
-                <td class="py-4 px-4">
-                  <div class="flex items-center">
-                    <div
-                      class="w-10 h-10 netflix-red rounded-full flex items-center justify-center text-white font-semibold mr-3"
-                    >
-                      <%= u?.name ? u.name.charAt(0).toUpperCase() : '?' %>
-                    </div>
-                    <span class="font-medium text-white"
-                      ><%= u?.name || 'ไม่ระบุชื่อ' %></span
-                    >
+                <td class="py-4 px-4 flex items-center">
+                  <div class="w-10 h-10 netflix-red rounded-full flex items-center justify-center text-white font-semibold mr-3">
+                    <%= u.name ? u.name.charAt(0).toUpperCase() : '?' %>
                   </div>
+                  <span class="font-medium text-white"><%= u.name || 'ไม่ระบุชื่อ' %></span>
                 </td>
-                <td class="py-4 px-4 text-gray-300"><%= u?.email || '-' %></td>
-                <td class="py-4 px-4 text-gray-300">
-                  <%= u?.createdAt ? new
-                  Date(u.createdAt).toLocaleDateString('th-TH') : '-' %>
-                </td>
+                <td class="py-4 px-4 text-gray-300"><%= u.email || '-' %></td>
+                <td class="py-4 px-4 text-gray-300"><%= u.createdAt ? new Date(u.createdAt).toLocaleDateString('th-TH') : '-' %></td>
                 <td class="py-4 px-4 text-center">
-                  <div class="flex justify-center space-x-2">
-                    <a
-                      href="/admin/users/<%= u._id %>/reviews"
-                      class="action-btn btn-view"
-                      >ดูรีวิว</a
-                    >
-                    <a
-                      href="/admin/user/<%= u?._id %>/ban"
-                      class="action-btn btn-ban"
-                      >แบน</a
-                    >
-                  </div>
+                  <% if (u.isBanned) { %>
+                    <span class="bg-red-600 text-white px-3 py-1 rounded">ถูกแบน</span>
+                  <% } else { %>
+                    <span class="bg-green-600 text-white px-3 py-1 rounded">ปกติ</span>
+                  <% } %>
+                </td>
+                <td class="py-4 px-4 text-center flex justify-center space-x-2">
+                  <a href="/admin/users/<%= u._id %>/reviews" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">ดูรีวิว</a>
+                  <% if (u.isBanned) { %>
+                    <form action="/admin/user/<%= u._id %>/unban" method="POST" style="display:inline;">
+                      <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition">ปลดแบน</button>
+                    </form>
+                  <% } else { %>
+                    <form action="/admin/user/<%= u._id %>/ban" method="POST" style="display:inline;">
+                      <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition">แบน</button>
+                    </form>
+                  <% } %>
                 </td>
               </tr>
               <% }) %>
@@ -246,185 +171,105 @@
       <div class="glass-effect rounded-xl shadow-lg p-8">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-2xl font-semibold text-white flex items-center">
-            <span class="mr-3">⭐</span>
-            จัดการรีวิว
+            <span class="mr-3">⭐</span> จัดการรีวิว
           </h2>
-          <div class="flex space-x-3">
-            <select
-              class="px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-red-500 focus:border-transparent"
-            >
-              <option>ทั้งหมด</option>
-              <option>รอการอนุมัติ</option>
-              <option>อนุมัติแล้ว</option>
-            </select>
-            <button
-              class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-            >
-              ✅ อนุมัติทั้งหมด
-            </button>
+          <div class="flex items-center space-x-3">
+            <form action="/admin/dashboard" method="get">
+              <select
+                name="status"
+                class="px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                onchange="this.form.submit()"
+              >
+                <option value="all" <%= filterStatus === 'all' ? 'selected' : '' %>>ทั้งหมด</option>
+                <option value="pending" <%= filterStatus === 'pending' ? 'selected' : '' %>>รอการอนุมัติ</option>
+                <option value="approved" <%= filterStatus === 'approved' ? 'selected' : '' %>>อนุมัติแล้ว</option>
+                <option value="rejected" <%= filterStatus === 'rejected' ? 'selected' : '' %>>ถูกปฏิเสธ</option>
+              </select>
+            </form>
+
+            <form action="/admin/users/approveAll" method="POST">
+              <button
+                type="submit"
+                onclick="return confirm('คุณแน่ใจหรือไม่ที่จะอนุมัติรีวิวทั้งหมดที่ยัง Pending?')"
+                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition"
+              >
+                ✅ อนุมัติทั้งหมด
+              </button>
+            </form>
           </div>
         </div>
 
         <% if (!allReview || allReview.length === 0) { %>
-        <div class="text-center py-12">
-          <div class="text-6xl mb-4">📝</div>
-          <p class="text-gray-400 text-lg">ยังไม่มีรีวิว</p>
-        </div>
+          <div class="text-center py-12">
+            <div class="text-6xl mb-4">📝</div>
+            <p class="text-gray-400 text-lg">ยังไม่มีรีวิว</p>
+          </div>
         <% } else { %>
-        <div class="overflow-x-auto">
-          <table class="min-w-full">
-            <thead>
-              <tr class="border-b-2 border-gray-600">
-                <th class="text-left py-4 px-4 font-semibold text-gray-300">
-                  ชื่อหนัง
-                </th>
-                <th class="text-left py-4 px-4 font-semibold text-gray-300">
-                  ผู้รีวิว
-                </th>
-                <th class="text-left py-4 px-4 font-semibold text-gray-300">
-                  คะแนน
-                </th>
-                <th class="text-left py-4 px-4 font-semibold text-gray-300">
-                  วันที่รีวิว
-                </th>
-                <th class="text-center py-4 px-4 font-semibold text-gray-300">
-                  การจัดการ
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <% allReview.forEach(r => { %>
-              <tr class="table-row border-b border-gray-700">
-                <td class="py-4 px-4">
-                  <div class="flex items-center">
-                    <div class="review">
-                      <img
-                        src="<%= r.movie.posterPath %>"
-                        alt="<%= r.movie.title %>"
-                        class="w-16 h-24"
-                      />
-                    </div>
-                    <div>
-                      <p class="font-medium text-white"><%= r.movie.title %></p>
-                      <p class="text-sm text-gray-400">Movie Review</p>
-                    </div>
-                  </div>
-                </td>
-                <td class="py-4 px-4">
-                  <div class="flex items-center">
-                    <div
-                      class="w-8 h-8 netflix-red rounded-full flex items-center justify-center text-white text-sm font-semibold mr-2"
-                    >
-                      <%= r.user && r.user.name ?
-                      r.user.name.charAt(0).toUpperCase() : '?' %>
-                    </div>
-                    <span class="text-white"> <%= r.user.name %> </span>
-                  </div>
-                </td>
-                <td class="py-4 px-4">
-                  <div class="flex items-center">
-                    <span class="text-yellow-400 mr-1">
-                      <% for(let i = 0; i < Math.floor(r?.rating || 0); i++) {
-                      %>⭐<% } %> <% if((r?.rating || 0) % 1 !== 0) { %>⭐<% }
-                      %>
-                    </span>
-                    <span class="font-semibold text-white"
-                      ><%= r?.rating || 0 %></span
-                    >
-                  </div>
-                </td>
-                <td class="py-4 px-4 text-gray-300">
-                  <%= r?.createdAt ? new
-                  Date(r.createdAt).toLocaleDateString('th-TH') : '-' %>
-                </td>
-                <td class="py-4 px-4 text-center">
-                  <div class="flex justify-center space-x-2">
+          <div class="overflow-x-auto">
+            <table class="min-w-full">
+              <thead>
+                <tr class="border-b-2 border-gray-600">
+                  <th class="text-left py-4 px-4 text-gray-300">ชื่อหนัง</th>
+                  <th class="text-left py-4 px-4 text-gray-300">ผู้รีวิว</th>
+                  <th class="text-left py-4 px-4 text-gray-300">คะแนน</th>
+                  <th class="text-left py-4 px-4 text-gray-300">วันที่รีวิว</th>
+                  <th class="text-center py-4 px-4 text-gray-300">การจัดการ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% allReview.forEach(r => { %>
+                <tr class="border-b border-gray-700">
+                  <td class="py-4 px-4 flex items-center space-x-3">
+                    <img src="<%= r.movie.posterPath %>" alt="<%= r.movie.title %>" class="w-12 h-16 rounded" />
+                    <span class="text-white"><%= r.movie.title %></span>
+                  </td>
+                  <td class="py-4 px-4 text-white"><%= r.user.name %></td>
+                  <td class="py-4 px-4 text-yellow-400"><%= r.rating %>/10</td>
+                  <td class="py-4 px-4 text-gray-300"><%= new Date(r.createdAt).toLocaleDateString('th-TH') %></td>
+                  <td class="py-4 px-4 text-center flex justify-center space-x-2">
                     <% if (r.status === 'approved') { %>
-                    <!-- ถ้าอนุมัติแล้ว แสดงข้อความแทนปุ่ม -->
-                    <span
-                      class="px-3 py-1 rounded bg-gray-600 text-white cursor-not-allowed"
-                    >
-                      อนุมัติแล้ว
-                    </span>
+                      <span class="bg-green-600 text-white px-3 py-1 rounded">อนุมัติแล้ว</span>
+                    <% } else if (r.status === 'rejected') { %>
+                      <span class="bg-red-600 text-white px-3 py-1 rounded">ถูกปฏิเสธ</span>
                     <% } else { %>
-                    <!-- ปุ่มอนุมัติ -->
-                    <form
-                      action="/admin/reviews/<%= r._id %>/approve"
-                      method="POST"
-                      class="inline"
-                    >
-                      <button
-                        type="submit"
-                        class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded transition"
-                      >
-                        อนุมัติ
-                      </button>
-                    </form>
+                      <form action="/admin/reviews/<%= r._id %>/approve" method="POST" class="inline">
+                        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded">อนุมัติ</button>
+                      </form>
+                      <form action="/admin/reviews/<%= r._id %>/reject" method="POST" class="inline">
+                        <button type="submit" class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded">ปฏิเสธ</button>
+                      </form>
                     <% } %>
-
-                    <!-- ปุ่มลบ -->
-                    <form
-                      action="/admin/reviews/<%= r._id %>/delete"
-                      method="POST"
-                      class="inline"
-                    >
-                      <button
-                        type="submit"
-                        class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition"
-                        onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบรีวิวนี้?')"
-                      >
-                        ลบ
-                      </button>
+                    <form action="/admin/reviews/<%= r._id %>/delete" method="POST" class="inline">
+                      <button type="submit" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบรีวิวนี้?')" class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded">ลบ</button>
                     </form>
-                  </div>
-                </td>
-              </tr>
-              <% }) %>
-            </tbody>
-          </table>
-        </div>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
         <% } %>
       </div>
     </div>
 
     <script>
+      // แสดงวันที่และเวลา
       function updateDateTime() {
         const now = new Date();
-        const dateOptions = { year: "numeric", month: "long", day: "numeric" };
-        const timeOptions = {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-        };
-        document.getElementById("currentDate").textContent =
-          now.toLocaleDateString("th-TH", dateOptions);
-        document.getElementById("currentTime").textContent =
-          now.toLocaleTimeString("th-TH", timeOptions);
+        document.getElementById("currentDate").textContent = now.toLocaleDateString("th-TH");
+        document.getElementById("currentTime").textContent = now.toLocaleTimeString("th-TH");
       }
       updateDateTime();
       setInterval(updateDateTime, 1000);
 
-
-      // Search functionality
-      document
-        .querySelector('input[placeholder="ค้นหาผู้ใช้..."]')
-        .addEventListener("input", function (e) {
-          const searchTerm = e.target.value.toLowerCase();
-          const rows = document.querySelectorAll("tbody tr");
-          rows.forEach((row) => {
-            const username = row
-              .querySelector("td:first-child")
-              .textContent.toLowerCase();
-            const email = row
-              .querySelector("td:nth-child(2)")
-              .textContent.toLowerCase();
-            row.style.display =
-              username.includes(searchTerm) || email.includes(searchTerm)
-                ? ""
-                : "none";
-          });
+      // ค้นหาผู้ใช้
+      document.getElementById("searchUser").addEventListener("input", function (e) {
+        const searchTerm = e.target.value.toLowerCase();
+        document.querySelectorAll("tbody tr").forEach((row) => {
+          const username = row.textContent.toLowerCase();
+          row.style.display = username.includes(searchTerm) ? "" : "none";
         });
+      });
     </script>
   </body>
 </html>

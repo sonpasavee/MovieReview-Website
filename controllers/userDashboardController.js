@@ -1,33 +1,114 @@
-const User = require('../models/User')
-const Profile = require('../models/Profile')
+const User = require("../models/User");
+const Profile = require("../models/Profile");
+const Review = require("../models/Review");
+const Collection = require("../models/Collection");
 
-module.exports = async (req, res) => {
+exports.userDashboard = async (req, res) => {
   try {
-    // ตรวจสอบว่า userId อยู่ใน session หรือไม่
-    const users = res.locals.UserData
-    const userId = users._id
-    if (!userId) {
-      req.flash('error', 'กรุณาเข้าสู่ระบบ')
-      return res.redirect('/login')
-    }
+    const loggedIn = res.locals.UserData;
+    const userId = loggedIn._id;
 
-    // ดึงข้อมูลผู้ใช้จากฐานข้อมูล
-    const user = await User.findById(userId).lean()
-    if (!user) {
-      // หากไม่พบผู้ใช้ (session หมดอายุหรือถูกลบ) ให้ลบ session และให้เข้าสู่ระบบใหม่
-      req.session.destroy(() => {})
-      req.flash('error', 'เซสชันหมดอายุ กรุณาเข้าสู่ระบบใหม่')
-      return res.redirect('/login')
-    }
+    // ดึงข้อมูลผู้ใช้และโปรไฟล์
+    const user = await User.findById(userId).lean();
+    const profile = await Profile.findOne({ userId }).lean();
 
-    // ดึงข้อมูล profile ของผู้ใช้จาก collection Profile
-    const profile = await Profile.findOne({ userId: user._id }).populate("userId")
+    // ใช้ aggregate เดิมของคุณ
+    const reviews = await Review.aggregate([
+      { $match: { userId: userId } },
+      {
+        $lookup: {
+          from: "movies",
+          localField: "movieId",
+          foreignField: "movieId",
+          as: "movie",
+        },
+      },
+      { $unwind: "$movie" },
+      { $sort: { createdAt: -1 } },
+    ]);
 
-    // ส่งข้อมูลไปยังหน้าแดชบอร์ด
-    return res.render('userDashboard', { title: 'แดชบอร์ดผู้ใช้', user , profile , messages: req.flash() })
-  } catch (err) {
-    console.error('userDashboardController error:', err)
-    req.flash('error', 'เกิดข้อผิดพลาด กรุณาลองใหม่')
-    return res.redirect('/')
+    // ดึง collections
+    const collections = await Collection.find({ userId })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    // recentActivities
+    const recentActivities = [
+      ...reviews.map((r) => ({
+        type: "review",
+        text: `You reviewed "${
+          r.movie?.title || "Unknown Movie"
+        }" with rating ${r.rating}`,
+        date: r.createdAt,
+      })),
+      ...collections.map((c) => ({
+        type: "collection",
+        text: `You added "${c.name}" to your collection.`,
+        date: c.createdAt,
+      })),
+    ];
+
+    const stats = {
+      totalReviews: reviews.length,
+      totalCollections: collections.length,
+      avgRating: reviews.length
+        ? (
+            reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+          ).toFixed(1)
+        : 0,
+    };
+
+    res.render("userDashboard", {
+      user,
+      profile,
+      reviews,
+      collections,
+      recentActivities,
+      stats,
+    });
+  } catch (error) {
+    console.error("Error loading user dashboard:", error);
+    req.flash("error", "An error occurred while loading the dashboard.");
+    res.redirect("/");
   }
-}
+};
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const user = res.locals.UserData;
+    const userId = user._id;
+    const { name, bio, facebook, twitter, instagram } = req.body;
+
+    // สร้าง object สำหรับอัปเดต
+    const updateData = {
+      bio,
+      socialLinks: { facebook, twitter, instagram },
+    };
+
+    // ถ้ามีไฟล์อัปโหลด ให้เก็บเป็น buffer
+    if (req.file) {
+      updateData.avatarUrl = {
+        data: req.file.buffer,
+        contentType: req.file.mimetype
+      };
+    }
+
+    // อัปเดต profile
+    await Profile.findOneAndUpdate(
+      { userId },
+      updateData,
+      { new: true, upsert: true }
+    );
+
+    // อัปเดตชื่อผู้ใช้
+    await User.findByIdAndUpdate(userId, { name }, { new: true });
+
+    req.flash("success", "Profile updated successfully");
+    res.redirect("/user/dashboard");
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    req.flash("error", "An error occurred while updating the profile.");
+    res.redirect("/user/dashboard");
+  }
+};
+

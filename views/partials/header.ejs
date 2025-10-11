@@ -12,7 +12,11 @@
       <nav class="hidden sm:flex gap-4 font-medium">
         <a href="/" class="hover:text-red-500 transition">หน้าแรก</a>
         <a href="/searchResults" class="hover:text-red-500 transition">ค้นหา</a>
-        <a href="/collection" class="hover:text-red-500 transition">คอลเล็กชัน</a>
+        <% if(loggedIn && UserData.role === 'user') { %>
+          <a href="/user/dashboard" class="hover:text-red-500 transition">แดชบอร์ด</a>
+        <% } else if(loggedIn && UserData.role === 'admin') { %>
+          <a href="/admin/dashboard" class="hover:text-red-500 transition">แดชบอร์ดผู้ดูแล</a>
+        <% } %>
       </nav>
       
 

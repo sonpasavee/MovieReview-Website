@@ -8,9 +8,10 @@ const path = require('path')
 const dotenv = require('dotenv')
 // const multer = require('multer')
 // const upload = multer({ dest: 'public/uploads/' })
-const multer = require('multer')
-const storage = multer.memoryStorage()
-const upload = multer({ storage: storage })
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 dotenv.config()
 
 // MongoDB Connnection
@@ -35,7 +36,6 @@ const movieDetailController = require('./controllers/movieDetailController')
 const storeReviewController = require('./controllers/storeReviewController')
 const reviewController = require('./controllers/reviewController')
 const searchController = require('./controllers/searchController')
-const updateProfileController = require('./controllers/updateProfileController')
 const addCollectionController = require('./controllers/addCollectionController')
 const collectionController = require('./controllers/controllerCollection')
 
@@ -69,7 +69,7 @@ app.get('/', indexController)
 app.get('/login', loginController)
 app.get('/register', registerController)
 app.get('/admin/dashboard', isAuthenticated, isAdmin, adminDashboardController.fetchInfoAdminDashboard)
-app.get('/user/dashboard', isAuthenticated, isUser, userDashboardController)
+app.get('/user/dashboard', isAuthenticated, isUser, userDashboardController.userDashboard)
 app.post('/user/register', storeController)
 app.post('/user/login', loginUserController)
 app.get('/logout', logoutController)
@@ -77,7 +77,6 @@ app.get('/movie/detail/:id', movieDetailController)
 app.post('/reviews', storeReviewController)
 app.get('/review/form/:movieId', reviewController)
 app.get('/searchResults', searchController)
-app.post('/profile/update', upload.single('avatar'), updateProfileController)
 app.post('/add/collection/:movieId', addCollectionController)
 app.get('/collection', isAuthenticated, collectionController)
 app.post('/collection/rename/:collectionId', collectionController.renameCollection)
@@ -88,7 +87,12 @@ app.post('/admin/reviews/:id/delete',     isAuthenticated, isAdmin, adminDashboa
 app.post('/admin/reviews/:id/approve',    isAuthenticated, isAdmin, adminDashboardController.approveReview)
 app.post('/admin/reviews/:id/reject',     isAuthenticated, isAdmin, adminDashboardController.rejectReview)
 app.get('/admin/users/:userId/reviews',   isAuthenticated, isAdmin, adminDashboardController.userReviews)
- app.listen(4000, () => {
+app.post('/admin/users/approveAll',   isAuthenticated, isAdmin, adminDashboardController.approveAllReviews)
+app.post('/user/updateProfile', isAuthenticated, isUser, upload.single('avatarFile') , userDashboardController.updateProfile)
+app.post('/admin/user/:id/ban', isAuthenticated, isAdmin, adminDashboardController.banUser)
+app.post('/admin/user/:id/unban', isAuthenticated, isAdmin, adminDashboardController.unbanUser)
+
+app.listen(4000, () => {
     console.log("App listening on port 4000")
 })
 
