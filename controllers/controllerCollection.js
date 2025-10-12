@@ -47,8 +47,8 @@ module.exports.removeMovie = async (req, res) => {
     const user = res.locals.UserData
     if (!user) return res.redirect('/login')
 
-    const { collectionId, movieId } = req.params
-    await Collection.updateOne({ _id: collectionId, userId: user._id }, { $pull: { movies: movieId } })
+    const { collectionId, tmdbId } = req.params
+    await Collection.updateOne({ _id: collectionId, userId: user._id }, { $pull: { movies: tmdbId } })
     res.redirect('/collection')
   } catch (err) {
     console.error(err)

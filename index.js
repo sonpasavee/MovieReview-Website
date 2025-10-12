@@ -85,7 +85,7 @@ app.post('/add/collection/:movieId', addCollectionController)
 app.get('/collection', isAuthenticated, controllerCollection)
 app.post('/collection/rename/:collectionId', controllerCollection.renameCollection)
 app.post('/collection/delete/:collectionId', controllerCollection.deleteCollection)
-app.post('/collection/:collectionId/remove/:movieId', controllerCollection.removeMovie)
+app.post('/collection/:collectionId/remove/:tmdbId', controllerCollection.removeMovie)
 
 app.post('/admin/reviews/:id/delete',     isAuthenticated, isAdmin, adminDashboardController.deleteReview)
 app.post('/admin/reviews/:id/approve',    isAuthenticated, isAdmin, adminDashboardController.approveReview)

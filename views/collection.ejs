@@ -68,7 +68,7 @@
 
                                                     <!-- ปุ่มลบหนังจาก collection -->
                                                     <button command="show-modal"
-                                                        commandfor="delete-movie-<%= c._id %>-<%= movie.movieId %>"
+                                                        commandfor="delete-movie-<%= c._id %>-<%= movie.tmdbId %>"
                                                         class="absolute top-2 right-2 rounded-full px-2 py-1 text-red-600 hover:text-red-400 font-bold text-lg">&times;</button>
 
                                                     <p class="mt-2 text-sm font-medium text-center text-white truncate">
@@ -77,7 +77,7 @@
 
                                                     <!-- Modal Confirm Delete Movie -->
                                                     <el-dialog>
-                                                        <dialog id="delete-movie-<%= c._id %>-<%= movie.movieId %>"
+                                                        <dialog id="delete-movie-<%= c._id %>-<%= movie.tmdbId %>"
                                                             aria-labelledby="dialog-title"
                                                             class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
                                                             <el-dialog-backdrop
