@@ -71,18 +71,47 @@ module.exports = async (req, res) => {
       })
     );
 
-    // หนังแนะนำ
-    const recommendMovies = latestMovies.slice(0, 3).map((m, index) => ({
-      ...m,
-      customPoster:
-        index === 0
-          ? "/images/demon.png"
-          : index === 1
-          ? "/images/war.jpeg"
-          : index === 2
-          ? "/images/conjur.jpg"
-          : null,
-    }));
+   // หนังแนะนำ
+const recommendPosters = {
+  755898: "/images/war.jpeg",
+  1038392: "/images/conjur.jpg",
+  803796: "/images/kpop.jpg",
+};
+
+const recommendIds = Object.keys(recommendPosters).map(Number);
+
+const recommendMovies = await Promise.all(
+  recommendIds.map(async (id) => {
+    try {
+      const res = await axios.get(`https://api.themoviedb.org/3/movie/${id}`, {
+        params: {
+          api_key: process.env.TMDB_KEY,
+          language: "en-US",
+        },
+      });
+
+      const movie = res.data;
+
+      return {
+        movieId: movie.id,
+        title: movie.title,
+        overview: movie.overview,
+        release_date: movie.release_date,
+        poster_path: movie.poster_path
+          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+          : "/images/default.png",
+        customPoster: recommendPosters[movie.id] || "/images/default.png",
+      };
+    } catch (err) {
+      console.error(`Error fetching movie id ${id}:`, err);
+      return null;
+    }
+  })
+);
+
+// กรอง null เผื่อมี id ไหน fetch ไม่ได้
+const finalRecommendMovies = recommendMovies.filter(Boolean);
+
     const reviews = await Review.find({ status: "approved" })
       .sort({ createdAt: -1 })
       .lean();
@@ -91,7 +120,7 @@ module.exports = async (req, res) => {
     res.render("index", {
       latestMovies,
       UserData,
-      recommendMovies,
+       recommendMovies: finalRecommendMovies,
       popularMovies,
       reviews,
       currentPage: page,
