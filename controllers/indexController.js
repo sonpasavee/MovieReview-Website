@@ -72,25 +72,18 @@ module.exports = async (req, res) => {
     );
 
    // หนังแนะนำ
-const recommendPosters = {
-  755898: "/images/war.jpeg",
-  1038392: "/images/conjur.jpg",
-  803796: "/images/kpop.jpg",
-};
-
-const recommendIds = Object.keys(recommendPosters).map(Number);
-
 const recommendMovies = await Promise.all(
-  recommendIds.map(async (id) => {
+  [755898, 1038392, 803796].map(async (id) => {
     try {
-      const res = await axios.get(`https://api.themoviedb.org/3/movie/${id}`, {
-        params: {
-          api_key: process.env.TMDB_KEY,
-          language: "en-US",
-        },
+      const { data: movie } = await axios.get(`${TMDB_BASE_URL}/movie/${id}`, {
+        params: { api_key: process.env.TMDB_KEY, language: "en-US" },
       });
 
-      const movie = res.data;
+      const customPosters = {
+        755898: "/images/war.jpeg",
+        1038392: "/images/conjur.jpg",
+        803796: "/images/kpop.jpg",
+      };
 
       return {
         movieId: movie.id,
@@ -100,14 +93,14 @@ const recommendMovies = await Promise.all(
         poster_path: movie.poster_path
           ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
           : "/images/default.png",
-        customPoster: recommendPosters[movie.id] || "/images/default.png",
+        customPoster: customPosters[movie.id],
       };
-    } catch (err) {
-      console.error(`Error fetching movie id ${id}:`, err);
+    } catch {
       return null;
     }
   })
-);
+).then(res => res.filter(Boolean));
+
 
 // กรอง null เผื่อมี id ไหน fetch ไม่ได้
 const finalRecommendMovies = recommendMovies.filter(Boolean);
